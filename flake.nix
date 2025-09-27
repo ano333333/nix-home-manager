@@ -21,14 +21,5 @@
         ];
       };
     };
-    
-    # home-manager未導入のため、git config --globalできない
-    devShells.x86_64-linux.default = nixpkgs.legacyPackages.x86_64-linux.mkShell {
-      buildInputs = [ nixpkgs.legacyPackages.x86_64-linux.git ];
-      shellHook = ''
-        git config --global user.name "ano333333"
-        git config --global user.email "ano333333i@gmail.com"
-      '';
-    };
   };
 }
