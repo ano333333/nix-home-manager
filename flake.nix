@@ -21,13 +21,6 @@
         ];
       };
     };
-    packages.x86_64-linux.profiles = nixpkgs.legacyPackages.x86_64-linux.buildEnv {
-      name = "profiles";
-      paths = [
-        nixpkgs.legacyPackages.x86_64-linux.git
-        nixpkgs.legacyPackages.x86_64-linux.curl
-      ];
-    };
     
     # home-manager未導入のため、git config --globalできない
     devShells.x86_64-linux.default = nixpkgs.legacyPackages.x86_64-linux.mkShell {
