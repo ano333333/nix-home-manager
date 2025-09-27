@@ -13,7 +13,8 @@
     home-manager,
   } @ inputs: 
   let
-    pkgs = import nixpkgs { system = "x86_64-linux"; };
+    system = "x86_64-linux";
+    pkgs = import nixpkgs { system = system; };
     # updateコマンドに指定するために、homeManagerUpdate.shをnixストアにコピー
     homeManagerUpdate = pkgs.writeShellApplication {
       name = "home-manager-update";
@@ -22,10 +23,11 @@
     };
   in
   {
-    apps.x86_64-linux.update= {
+    apps.${system}.update= {
       type = "app";
       program = "${homeManagerUpdate}/bin/home-manager-update";
     };
+
     homeConfigurations = {
       homeConfiguration = home-manager.lib.homeManagerConfiguration {
         pkgs = pkgs;
