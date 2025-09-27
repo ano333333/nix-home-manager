@@ -20,9 +20,10 @@ in {
 
     stateVersion = "24.05";
 
-    packages = with pkgs; [
-      git
-      curl
+    packages = [
+      pkgs.git
+      pkgs.curl
+      (import ./packages/asdf.nix { inherit pkgs; })
     ];
   };
 
@@ -34,4 +35,14 @@ in {
     enable = true;
   };
   home.activation.generateSshKey = import ./activations/generate-ssh-key.nix { inherit lib config pkgs email; };
+
+  programs.bash = {
+    enable = true;
+    enableCompletion = true;
+    # sessionVariablesが何故か効かなかったのでbashrcで指定する
+    initExtra = ''
+      # add asdf to path
+      export ASDF_DATA_DIR="$HOME/.asdf";
+    '';
+  };
 }
