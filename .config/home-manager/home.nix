@@ -6,6 +6,7 @@
   ...
 }: let 
   username = "ano3";
+  email = "ano333333github@gmail.com";
 in {
   nixpkgs = {
     config = {
@@ -28,4 +29,9 @@ in {
   programs.home-manager.enable = true;
 
   programs.git = import ./options/git.nix;
+
+  programs.ssh = {
+    enable = true;
+  };
+  home.activation.generateSshKey = import ./activations/generate-ssh-key.nix { inherit lib config pkgs email; };
 }
