@@ -27,9 +27,5 @@ in {
 
   programs.home-manager.enable = true;
 
-  programs.git = {
-    enable = true;
-    userName = "ano333333";
-    userEmail = "ano333333i@gmail.com";
-  };
+  programs.git = import ./options/git.nix;
 }
