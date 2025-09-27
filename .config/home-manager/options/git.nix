@@ -1,5 +1,5 @@
 {
   enable = true;
   userName = "ano333333";
-  userEmail = "ano333333i@gmail.com";
+  userEmail = "ano333333github@gmail.com";
 }
