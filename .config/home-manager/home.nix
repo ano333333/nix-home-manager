@@ -33,7 +33,7 @@ in {
 
   programs.home-manager.enable = true;
 
-  programs.git = import ./options/git.nix;
+  programs.git = import ./options/git.nix { inherit email; };
 
   programs.ssh = {
     enable = true;
