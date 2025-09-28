@@ -24,6 +24,10 @@ in {
       pkgs.git
       pkgs.curl
       (import ./packages/asdf.nix { inherit pkgs; })
+
+      # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
+      pkgs.python312
+      pkgs.python312Packages.pip
     ];
   };
 
@@ -43,6 +47,13 @@ in {
     initExtra = ''
       # add asdf to path
       export ASDF_DATA_DIR="$HOME/.asdf";
+
+      # dir for python simlink
+      export PATH="$HOME/.bin:$PATH"
     '';
   };
+
+  # python / pipのシンボリックリンクを作成
+  home.file.".bin/python".source = "${pkgs.python312}/bin/python3";
+  home.file.".bin/pip".source = "${pkgs.python312Packages.pip}/bin/pip";
 }
