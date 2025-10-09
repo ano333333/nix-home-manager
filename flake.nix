@@ -21,11 +21,18 @@
       runtimeInputs = [ pkgs.nix ];
       text = pkgs.lib.readFile ./scripts/homeManagerUpdate.sh;
     };
+    initDocker = import ./scripts/initDocker.nix { inherit pkgs; };
   in
   {
-    apps.${system}.update= {
-      type = "app";
-      program = "${homeManagerUpdate}/bin/home-manager-update";
+    apps.${system} = {
+      update = {
+        type = "app";
+        program = "${homeManagerUpdate}/bin/home-manager-update";
+      };
+      initDocker = {
+        type = "app";
+        program = "${initDocker}/bin/initDocker";
+      };
     };
 
     homeConfigurations = {
