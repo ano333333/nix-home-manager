@@ -18,6 +18,12 @@ nix run .#update
 ```
 フレークの更新とhome-managerの設定適用を一括で実行します。
 
+### Docker初期化
+```bash
+nix run .#initDocker
+```
+Dockerの初期設定を実行します。
+
 ## セットアップ内容
 
 ### 基本設定
