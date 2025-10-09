@@ -40,6 +40,11 @@ in {
   };
   home.activation.generateSshKey = import ./activations/generate-ssh-key.nix { inherit lib config pkgs email; };
 
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
   programs.bash = {
     enable = true;
     enableCompletion = true;

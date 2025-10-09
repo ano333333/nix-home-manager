@@ -17,4 +17,10 @@
       path = "~/.gitconfig.private";
     }
   ];
+
+  ignores = [
+    # direnv, nix-direnvのignore
+    ".envrc"
+    ".direnv/"
+  ];
 }
