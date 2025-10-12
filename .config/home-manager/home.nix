@@ -7,6 +7,8 @@
 }: let 
   username = "ano3";
   email = "ano333333github@gmail.com";
+
+  gitignoreAi = pkgs.writeText "~/.gitconfig.ai" builtins.readFile ./options/.gitignore.ai;
 in {
   nixpkgs = {
     config = {
@@ -34,6 +36,7 @@ in {
   programs.home-manager.enable = true;
 
   programs.git = import ./options/git.nix { inherit email; };
+  home.file.".gitconfig.ai".source = ./options/.gitignore.ai;
 
   programs.ssh = {
     enable = true;

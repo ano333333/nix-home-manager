@@ -1,6 +1,7 @@
 {
   email,
-}:{
+}:
+{
   enable = true;
   userName = "ano333333";
   userEmail = email;
@@ -10,11 +11,16 @@
     };
   };
 
-  # プライベートのアカウント用の.gitconfigはincludeIfで読み込む
   includes = [
+    # プライベートのアカウント用の.gitconfigはincludeIfで読み込む
     {
       condition = "gitdir:~/private/";
       path = "~/.gitconfig.private";
+    }
+    # AI用のプロファイルをincludeIfで読み込む
+    {
+      condition = "gitdir:~/ai/";
+      path = "~/.gitconfig.ai";
     }
   ];
 
