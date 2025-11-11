@@ -30,7 +30,16 @@ in {
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
       pkgs.python312Packages.pip
-    ];
+    ]
+    # fonts
+    ++ (import ./fonts/nerd-font.nix { inherit pkgs; })
+    ;
+  };
+
+  fonts = {
+    fontconfig = {
+      enable = true;
+    };
   };
 
   programs.home-manager.enable = true;
