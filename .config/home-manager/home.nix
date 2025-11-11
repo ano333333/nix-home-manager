@@ -76,6 +76,8 @@ in {
     '';
   };
 
+  programs.starship = import ./options/starship.nix;
+
   # python / pipのシンボリックリンクを作成
   home.file.".bin/python".source = "${pkgs.python312}/bin/python3";
   home.file.".bin/pip".source = "${pkgs.python312Packages.pip}/bin/pip";
