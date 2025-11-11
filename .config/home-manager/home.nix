@@ -48,11 +48,11 @@ in {
     nix-direnv.enable = true;
   };
 
-  programs.bash = {
+  programs.zsh = {
     enable = true;
     enableCompletion = true;
-    # sessionVariablesが何故か効かなかったのでbashrcで指定する
-    initExtra = ''
+    # sessionVariablesが何故か効かなかったのでzshrcで指定する
+    initContent = ''
       # add asdf to path
       export ASDF_DATA_DIR="$HOME/.asdf";
 
