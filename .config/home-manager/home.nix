@@ -29,6 +29,7 @@ in {
       pkgs.curl
       (import ./packages/asdf.nix { inherit pkgs; })
       pkgs.fzf
+      pkgs.zsh-abbr
 
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
@@ -63,6 +64,20 @@ in {
   programs.zsh = {
     enable = true;
     enableCompletion = true;
+
+    zsh-abbr = {
+      enable = true;
+
+      globalAbbreviations = {
+        gitst = "git status";
+        gita = "git add";
+        gitc = "git commit -m \"%\"";
+        gitca = "git commit --amend";
+        gitcf = "git commit --fixup";
+        gitsw = "git switch";
+      };
+    };
+
     # sessionVariablesが何故か効かなかったのでzshrcで指定する
     initContent = ''
       # add asdf to path
@@ -70,6 +85,10 @@ in {
 
       # dir for python simlink
       export PATH="$HOME/.bin:$PATH"
+
+      # zsh-abbr
+      # カーソルの位置を"%"に移動する
+      ABBR_SET_LINE_CURSOR=1
 
       # install zinit
       ZINIT_HOME="$HOME/.local/share/zinit/zinit.git"
