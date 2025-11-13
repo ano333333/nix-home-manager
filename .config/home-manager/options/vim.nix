@@ -4,6 +4,7 @@
 }: 
 {
   enable = true;
+  defaultEditor = true;
   plugins = vimPlugins;
   extraConfig = ''
     " wildmenu
