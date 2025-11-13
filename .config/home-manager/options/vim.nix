@@ -1,6 +1,11 @@
 {
+  vimPlugins,
+  ...
+}: 
+{
   enable = true;
   defaultEditor = true;
+  plugins = vimPlugins;
   extraConfig = ''
     " wildmenu
     set wildmenu
@@ -78,5 +83,17 @@
       autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
       autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
     augroup END
+  
+    " ----------------------------------------
+    " plugins(general)
+    " ----------------------------------------
+    filetype plugin indent on
+
+    " ----------------------------------------
+    " plugins(airline)
+    " ----------------------------------------
+    " themeをsolarized darkに設定
+    let g:airline_theme='solarized'
+    let g:airline_solarized_bg='dark'
   '';
 }

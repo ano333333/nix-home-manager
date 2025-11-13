@@ -9,6 +9,8 @@
   email = "ano333333github@gmail.com";
 
   gitignoreAi = pkgs.writeText "~/.gitconfig.ai" builtins.readFile ./options/.gitignore.ai;
+
+  vimPlugins = (import ./packages/vim-plugins.nix { inherit pkgs; });
 in {
   nixpkgs = {
     config = {
@@ -78,7 +80,7 @@ in {
 
   programs.starship = import ./options/starship.nix;
 
-  programs.vim = import ./options/vim.nix;
+  programs.vim = import ./options/vim.nix { inherit vimPlugins; };
 
   # python / pipのシンボリックリンクを作成
   home.file.".bin/python".source = "${pkgs.python312}/bin/python3";
