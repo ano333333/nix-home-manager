@@ -83,7 +83,13 @@
       autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
       autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
     augroup END
-  
+
+    " ----------------------------------------
+    " nnoremap(pluginに関わるものを除く)
+    " ----------------------------------------
+    " <leader>wに<C-w>を割り当て(window操作用)
+    nnoremap <leader>w <C-w>
+
     " ----------------------------------------
     " plugins(general)
     " ----------------------------------------
