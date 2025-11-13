@@ -118,8 +118,6 @@
     " ----------------------------------------
     " plugins(nerdtree)
     " ----------------------------------------
-    " Vimスタート時にNERDTreeを開く
-    autocmd VimEnter * NERDTree | wincmd p
     " <leader>nでNERDTreeにフォーカスする
     nnoremap <leader>n :NERDTreeFocus<CR>
     " <C-t>でNERDTreeをトグルする
