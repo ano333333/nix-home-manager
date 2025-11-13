@@ -3,6 +3,7 @@
   ...
 }: 
 with pkgs.vimPlugins; [
+  vim-sensible
   vim-airline
   vim-airline-themes
   vim-devicons
