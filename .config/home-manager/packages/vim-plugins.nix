@@ -8,4 +8,5 @@ with pkgs.vimPlugins; [
   vim-airline-themes
   vim-devicons
   fzf-vim
+  vim-gitgutter
 ]
