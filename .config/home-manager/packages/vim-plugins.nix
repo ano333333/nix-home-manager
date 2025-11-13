@@ -9,4 +9,5 @@ with pkgs.vimPlugins; [
   vim-devicons
   fzf-vim
   vim-gitgutter
+  nerdtree
 ]
