@@ -99,6 +99,16 @@
     let g:airline_powerline_fonts=1
 
     " ----------------------------------------
+    " plugins(nerdtree)
+    " ----------------------------------------
+    " Vimスタート時にNERDTreeを開く
+    autocmd VimEnter * NERDTree | wincmd p
+    " <leader>nでNERDTreeにフォーカスする
+    nnoremap <leader>n :NERDTreeFocus<CR>
+    " <C-t>でNERDTreeをトグルする
+    nnoremap <C-t> :NERDTreeToggle<CR>
+
+    " ----------------------------------------
     " plugins(nerdtree-git-plugin)
     " ----------------------------------------
     " nerdfontsのpredefined mapを使う
