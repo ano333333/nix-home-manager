@@ -65,19 +65,7 @@ in {
     enable = true;
     enableCompletion = true;
 
-    zsh-abbr = {
-      enable = true;
-
-      globalAbbreviations = {
-        gitst = "git status";
-        gita = "git add";
-        gitc = "git commit";
-        gitca = "git commit --amend";
-        gitcf = "git commit --fixup";
-        gitsw = "git switch";
-      };
-    };
-
+    zsh-abbr = import ./options/zsh/zsh-abbr.nix;
     # sessionVariablesが何故か効かなかったのでzshrcで指定する
     initContent = ''
       # add asdf to path
