@@ -95,5 +95,7 @@
     " themeをsolarized darkに設定
     let g:airline_theme='solarized'
     let g:airline_solarized_bg='dark'
+    " powerline-fonts有効化
+    let g:airline_powerline_fonts=1
   '';
 }

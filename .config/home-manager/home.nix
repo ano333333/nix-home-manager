@@ -28,13 +28,14 @@ in {
       pkgs.git
       pkgs.curl
       (import ./packages/asdf.nix { inherit pkgs; })
+      pkgs.fzf
 
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
       pkgs.python312Packages.pip
     ]
     # fonts
-    ++ (import ./fonts/nerd-font.nix { inherit pkgs; })
+    ++ (import ./font.nix { inherit pkgs; })
     ;
   };
 
