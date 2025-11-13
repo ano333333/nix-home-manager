@@ -97,5 +97,13 @@
     let g:airline_solarized_bg='dark'
     " powerline-fonts有効化
     let g:airline_powerline_fonts=1
+
+    " ----------------------------------------
+    " plugins(nerdtree-git-plugin)
+    " ----------------------------------------
+    " nerdfontsのpredefined mapを使う
+    let g:NERDTreeGitStatusUseNerdFonts = 1
+    " ignoredファイルを表示する
+    let g:NERDTreeGitStaatusShowIgnored = 1
   '';
 }

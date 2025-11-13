@@ -10,4 +10,5 @@ with pkgs.vimPlugins; [
   fzf-vim
   vim-gitgutter
   nerdtree
+  nerdtree-git-plugin
 ]
