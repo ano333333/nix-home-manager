@@ -3,11 +3,10 @@
   ...
 }: 
 with pkgs.vimPlugins; [
-  vim-sensible
   vim-airline
   vim-airline-themes
   vim-devicons
-  fzf-vim
+  fzf-lua
   vim-gitgutter
   nerdtree
   nerdtree-git-plugin

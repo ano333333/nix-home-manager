@@ -10,7 +10,7 @@
 
   gitignoreAi = pkgs.writeText "~/.gitconfig.ai" builtins.readFile ./options/.gitignore.ai;
 
-  vimPlugins = (import ./packages/vim-plugins.nix { inherit pkgs; });
+  neovimPlugins = (import ./packages/neovim-plugins.nix { inherit pkgs; });
 in {
   nixpkgs = {
     config = {
@@ -88,7 +88,7 @@ in {
 
   programs.starship = import ./options/starship.nix;
 
-  programs.vim = import ./options/vim.nix { inherit vimPlugins; };
+  programs.neovim = import ./options/neovim.nix { inherit neovimPlugins; };
 
   # python / pipのシンボリックリンクを作成
   home.file.".bin/python".source = "${pkgs.python312}/bin/python3";

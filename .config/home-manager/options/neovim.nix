@@ -1,11 +1,11 @@
 {
-  vimPlugins,
+  neovimPlugins,
   ...
 }: 
 {
   enable = true;
   defaultEditor = true;
-  plugins = vimPlugins;
+  plugins = neovimPlugins;
   extraConfig = ''
     " wildmenu
     set wildmenu
