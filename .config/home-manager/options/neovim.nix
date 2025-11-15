@@ -6,149 +6,176 @@
   enable = true;
   defaultEditor = true;
   plugins = neovimPlugins;
-  extraConfig = ''
-    " wildmenu
-    set wildmenu
+  extraLuaConfig = ''
+-- ========================================
+-- 基本オプション
+-- ========================================
+local opt = vim.opt
+local g   = vim.g
+local keymap = vim.keymap
 
-    " クリップボード連携
-    " set clipboard+=unnamed,autoselect
-    set clipboard=unnamedplus
+-- wildmenu
+opt.wildmenu = true
 
-    " マウスサポート
-    set mouse=a
+-- クリップボード連携
+opt.clipboard = "unnamedplus"
 
-    " 水平方向の分割を下に設定する
-    set splitbelow
-    " 垂直方向の分割を右に設定する
-    set splitright
+-- マウスサポート
+opt.mouse = "a"
 
-    " スワップファイル無効
-    set noswapfile
+-- 分割方向
+opt.splitbelow = true
+opt.splitright = true
 
-    " ----------------------------------------
-    " insert mode
-    " ----------------------------------------
-    " タブをスペースに展開
-    set expandtab
-    " バックスペース削除
-    set backspace=indent,eol,start
+-- スワップファイル無効
+opt.swapfile = false
 
-    " ----------------------------------------
-    " virtual edit
-    " ----------------------------------------
-    " 矩形選択で文字がない箇所も進める
-    set virtualedit=block
+-- ----------------------------------------
+-- insert mode / インデントまわり
+-- ----------------------------------------
+-- タブをスペースに展開
+opt.expandtab = true
+-- バックスペース削除
+opt.backspace = { "indent", "eol", "start" }
 
-    " ----------------------------------------
-    " 表示
-    " ----------------------------------------
-    " 行番号表示
-    set number
-    " 現在の行をハイライトする
-    set cursorline
-    " タイトルの表示
-    set title
-    " タブストップ
-    set tabstop=2
-    " シフト幅
-    set shiftwidth=2
-    " 全角文字
-    set ambiwidth=double
-    " シンタックスハイライト
-    syntax on
-    " 対応するカッコやブレースを表示
-    set showmatch matchtime=1
-    " メッセージ表示欄2行
-    set cmdheight=2
-    " ステータス行を常に表示
-    set laststatus=2
-    " 行末のスペースの可視化
-    set listchars=tab:^\ ,trail:~
-    " コメントを水色で表示
-    hi Comment ctermfg=3
-    " 検索結果をハイライト表示
-    set hlsearch
-    " 単語の途中で折り返さないようにする
-    set linebreak
-    " 折返しの表示
-    set showbreak=>>>
-    " シンタックスに基づいて折りたたみを設定する
-    set foldmethod=syntax
+-- ----------------------------------------
+-- virtual edit
+-- ----------------------------------------
+-- 矩形選択で文字がない箇所も進める
+opt.virtualedit = "block"
 
-    " ----------------------------------------
-    " HTML/XML閉じタグ自動補完
-    " ----------------------------------------
-    augroup htmlXmlAutoClose
-      autocmd!
-      autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
-      autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
-    augroup END
+-- ----------------------------------------
+-- 表示
+-- ----------------------------------------
+-- 行番号表示
+opt.number = true
+-- 現在の行をハイライトする
+opt.cursorline = true
+-- タイトルの表示
+opt.title = true
+-- タブストップ
+opt.tabstop = 2
+-- シフト幅
+opt.shiftwidth = 2
+-- 全角文字
+opt.ambiwidth = "double"
+-- シンタックスハイライト
+vim.cmd("syntax on")
+-- 対応するカッコやブレースを表示 + 時間
+opt.showmatch = true
+opt.matchtime = 1
+-- メッセージ表示欄2行
+opt.cmdheight = 2
+-- ステータス行を常に表示
+opt.laststatus = 2
+-- 行末のスペースの可視化
+opt.listchars = "tab:^\\ ,trail:~"
+-- コメントを水色で表示
+vim.cmd("highlight Comment ctermfg=3")
+-- 検索結果をハイライト表示
+opt.hlsearch = true
+-- 単語の途中で折り返さないようにする
+opt.linebreak = true
+-- 折返しの表示
+opt.showbreak = ">>>"
+-- シンタックスに基づいて折りたたみを設定する
+opt.foldmethod = "syntax"
 
-    " ----------------------------------------
-    " nnoremap(pluginに関わるものを除く)
-    " ----------------------------------------
-    " <leader>wに<C-w>を割り当て(window操作用)
-    nnoremap <leader>w <C-w>
+-- ========================================
+-- HTML/XML 閉じタグ自動補完
+-- ========================================
+do
+local group = vim.api.nvim_create_augroup("htmlXmlAutoClose", { clear = true })
 
-    " ----------------------------------------
-    " tnoremap(pluginに関わるものを除く)
-    " ----------------------------------------
-    " Escでノーマルモード
-    tnoremap <Esc> <C-w>N
+vim.api.nvim_create_autocmd("FileType", {
+group = group,
+pattern = { "html", "xml" },
+callback = function()
+-- inoremap <buffer> </ </<C-x><C-o>
+vim.api.nvim_buf_set_keymap(
+0,
+"i",
+"</",
+[[</<C-x><C-o>]],
+{ noremap = true, silent = true }
+)
+end,
+})
+end
 
-    " ----------------------------------------
-    " 独自コマンド
-    " ----------------------------------------
-    command! Vterm vert term
+-- ========================================
+-- キーマップ（プラグイン非依存のもの）
+-- ========================================
 
-    " ----------------------------------------
-    " plugins(general)
-    " ----------------------------------------
-    filetype plugin indent on
+-- <leader> はデフォルトで "\" ですが、
+-- もしスペースにしたいなら:
+-- vim.g.mapleader = " "
 
-    " ----------------------------------------
-    " plugins(airline)
-    " ----------------------------------------
-    " themeをsolarized darkに設定
-    let g:airline_theme='solarized'
-    let g:airline_solarized_bg='dark'
-    " powerline-fonts有効化
-    let g:airline_powerline_fonts=1
+-- <leader>w に <C-w> を割り当て (window 操作用)
+keymap.set("n", "<leader>w", "<C-w>", { noremap = true })
 
-    " ----------------------------------------
-    " plugins(nerdtree)
-    " ----------------------------------------
-    " <leader>nでNERDTreeにフォーカスする
-    nnoremap <leader>n :NERDTreeFocus<CR>
-    " <C-t>でNERDTreeをトグルする
-    nnoremap <C-t> :NERDTreeToggle<CR>
+-- terminal モード: Esc でノーマルモード
+-- 元設定と同じく <C-w>N を送る
+keymap.set("t", "<Esc>", [[<C-w>N]], { noremap = true })
 
-    " ----------------------------------------
-    " plugins(nerdtree-git-plugin)
-    " ----------------------------------------
-    " nerdfontsのpredefined mapを使う
-    let g:NERDTreeGitStatusUseNerdFonts = 1
-    " ignoredファイルを表示する
-    let g:NERDTreeGitStaatusShowIgnored = 1
+-- ========================================
+-- 独自コマンド
+-- ========================================
+-- :Vterm で縦分割ターミナルを開く
+vim.api.nvim_create_user_command("Vterm", function()
+vim.cmd("vert term")
+end, {})
 
-    " ----------------------------------------
-    " plugins(barbar.nvim)
-    " ----------------------------------------
-    " 前後のバッファへ移動
-    nnoremap <silent> <A-,> <Cmd>BufferPrevious<CR>
-    nnoremap <silent> <A-.> <Cmd>BufferNext<CR>
+-- ========================================
+-- plugins(general)
+-- ========================================
+vim.cmd("filetype plugin indent on")
 
-    " 指定位置のバッファへ移動
-    nnoremap <silent> <A-1> <Cmd>BufferGoto 1<CR>
-    nnoremap <silent> <A-2> <Cmd>BufferGoto 2<CR>
-    nnoremap <silent> <A-3> <Cmd>BufferGoto 3<CR>
-    nnoremap <silent> <A-4> <Cmd>BufferGoto 4<CR>
-    nnoremap <silent> <A-5> <Cmd>BufferGoto 5<CR>
-    nnoremap <silent> <A-6> <Cmd>BufferGoto 6<CR>
-    nnoremap <silent> <A-7> <Cmd>BufferGoto 7<CR>
-    nnoremap <silent> <A-8> <Cmd>BufferGoto 8<CR>
-    nnoremap <silent> <A-9> <Cmd>BufferGoto 9<CR>
-    " 末尾のバッファへ移動
-    nnoremap <silent> <A-0> <Cmd>BufferLast<CR>
+-- ========================================
+-- plugins(airline)
+-- ========================================
+g.airline_theme = "solarized"
+g.airline_solarized_bg = "dark"
+g.airline_powerline_fonts = 1
+
+-- ========================================
+-- plugins(nerdtree)
+-- ========================================
+
+-- <leader>n で NERDTree にフォーカス
+keymap.set("n", "<leader>n", ":NERDTreeFocus<CR>", { noremap = true, silent = true })
+
+-- <C-t> で NERDTree をトグル
+keymap.set("n", "<C-t>", ":NERDTreeToggle<CR>", { noremap = true, silent = true })
+
+-- ========================================
+-- plugins(nerdtree-git-plugin)
+-- ========================================
+-- nerdfonts の predefined map を使う
+g.NERDTreeGitStatusUseNerdFonts = 1
+-- ignored ファイルを表示する
+-- (元の設定は Staatus と typo があったので Status に直しています)
+g.NERDTreeGitStatusShowIgnored = 1
+
+-- ========================================
+-- plugins(barbar.nvim)
+-- ========================================
+
+-- 前後のバッファへ移動
+keymap.set("n", "<A-,>", "<Cmd>BufferPrevious<CR>", { noremap = true, silent = true })
+keymap.set("n", "<A-.>", "<Cmd>BufferNext<CR>",     { noremap = true, silent = true })
+
+-- 指定位置のバッファへ移動
+keymap.set("n", "<A-1>", "<Cmd>BufferGoto 1<CR>", { noremap = true, silent = true })
+keymap.set("n", "<A-2>", "<Cmd>BufferGoto 2<CR>", { noremap = true, silent = true })
+keymap.set("n", "<A-3>", "<Cmd>BufferGoto 3<CR>", { noremap = true, silent = true })
+keymap.set("n", "<A-4>", "<Cmd>BufferGoto 4<CR>", { noremap = true, silent = true })
+keymap.set("n", "<A-5>", "<Cmd>BufferGoto 5<CR>", { noremap = true, silent = true })
+keymap.set("n", "<A-6>", "<Cmd>BufferGoto 6<CR>", { noremap = true, silent = true })
+keymap.set("n", "<A-7>", "<Cmd>BufferGoto 7<CR>", { noremap = true, silent = true })
+keymap.set("n", "<A-8>", "<Cmd>BufferGoto 8<CR>", { noremap = true, silent = true })
+keymap.set("n", "<A-9>", "<Cmd>BufferGoto 9<CR>", { noremap = true, silent = true })
+-- 末尾のバッファへ移動
+keymap.set("n", "<A-0>", "<Cmd>BufferLast<CR>",   { noremap = true, silent = true })
   '';
 }
