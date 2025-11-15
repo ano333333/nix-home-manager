@@ -10,4 +10,7 @@ with pkgs.vimPlugins; [
   vim-gitgutter
   nerdtree
   nerdtree-git-plugin
+  tint-nvim
+  nvim-web-devicons
+  barbar-nvim
 ]
