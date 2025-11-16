@@ -60,17 +60,19 @@ in {
     nix-direnv.enable = true;
   };
 
-  xdg.enable = true;
   home.sessionVariables = {
     ZENO_HOME = "${config.xdg.configHome}/zeno";
   };
-  xdg.configFile."zeno/config.yml".text = builtins.readFile ./options/zsh/zeno.yml;
+  xdg = {
+    enable = true;
+    configFile."zeno/config.yml".text = builtins.readFile ./options/zsh/zeno.yml;
+  };
   programs.zsh = {
     enable = true;
     enableCompletion = true;
 
     # sessionVariablesが何故か効かなかったのでzshrcで指定する
-    initExtra = ''
+    initContent = ''
       # add asdf to path
       export ASDF_DATA_DIR="$HOME/.asdf";
 
