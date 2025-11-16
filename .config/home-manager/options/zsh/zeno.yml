@@ -1,0 +1,32 @@
+snippets:
+  - name: git add
+    keyword: gita
+    snippet: git add
+
+  - name: git status --branch
+    keyword: gitst
+    snippet: git status --branch
+
+  - name: git commit -m
+    keyword: gitc
+    snippet: git commit -m '{{commit_message}}'
+
+  - name: git commit --amend --no-edit
+    keyword: gitca
+    snippet: git commit --amend --no-edit
+
+  - name: git commit --fixup
+    keyword: gitcf
+    snippet: git commit --fixup {{hash}}
+
+  - name: git switch
+    keyword: gitsw
+    snippet: git switch
+
+  - name: branch
+    keyword: br
+    snippet: git symbolic-ref --short HEAD
+    context:
+      lbuffer: '^git\s+'
+    evaluate: true
+

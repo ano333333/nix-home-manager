@@ -29,7 +29,7 @@ in {
       pkgs.curl
       (import ./packages/asdf.nix { inherit pkgs; })
       pkgs.fzf
-      pkgs.zsh-abbr
+      pkgs.deno
 
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
@@ -47,7 +47,6 @@ in {
   };
 
   programs.home-manager.enable = true;
-
   programs.git = import ./options/git.nix { inherit email; };
   home.file.".gitconfig.ai".source = ./options/.gitignore.ai;
 
@@ -61,28 +60,53 @@ in {
     nix-direnv.enable = true;
   };
 
+  xdg.enable = true;
+  home.sessionVariables = {
+    ZENO_HOME = "${config.xdg.configHome}/zeno";
+  };
+  xdg.configFile."zeno/config.yml".text = builtins.readFile ./options/zsh/zeno.yml;
   programs.zsh = {
     enable = true;
     enableCompletion = true;
 
-    zsh-abbr = import ./options/zsh/zsh-abbr.nix;
     # sessionVariablesが何故か効かなかったのでzshrcで指定する
-    initContent = ''
+    initExtra = ''
       # add asdf to path
       export ASDF_DATA_DIR="$HOME/.asdf";
 
       # dir for python simlink
       export PATH="$HOME/.bin:$PATH"
 
-      # zsh-abbr
-      # カーソルの位置を"%"に移動する
-      ABBR_SET_LINE_CURSOR=1
-
       # install zinit
       ZINIT_HOME="$HOME/.local/share/zinit/zinit.git"
       [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
       [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
       source "$ZINIT_HOME/zinit.zsh"
+      zinit ice lucid depth"1" blockf
+      zinit light yuki-yano/zeno.zsh
+
+      # ########################################
+      # zeno
+      # ########################################
+      # git file preview with color
+      export ZENO_GIT_CAT="bat --color=always"
+
+      # git folder preview with color
+      export ZENO_GIT_TREE="eza --tree"
+
+      if [[ -n $ZENO_LOADED ]]; then
+        bindkey ' '  zeno-auto-snippet
+
+        bindkey '^m' zeno-auto-snippet-and-accept-line
+
+        bindkey '^i' zeno-completion
+
+        bindkey '^x '  zeno-insert-space
+        bindkey '^x^m' accept-line
+        bindkey '^x^z' zeno-toggle-auto-snippet
+
+        bindkey '^r' zeno-smart-history-selection # smart history widget
+      fi
     '';
   };
 
