@@ -118,6 +118,10 @@ keymap.set("n", "<leader>w", "<C-w>", { noremap = true })
 -- 元設定と同じく <C-\><C-N> を送る
 keymap.set("t", "<Esc>", [[<C-\><C-N>]], { noremap = true })
 
+-- j, kで自動的にgj, gkする
+keymap.set("n", "j", "gj", { noremap = true })
+keymap.set("n", "k", "gk", { noremap = true })
+
 -- ========================================
 -- 独自コマンド
 -- ========================================
