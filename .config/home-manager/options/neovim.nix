@@ -115,8 +115,8 @@ end
 keymap.set("n", "<leader>w", "<C-w>", { noremap = true })
 
 -- terminal モード: Esc でノーマルモード
--- 元設定と同じく <C-w>N を送る
-keymap.set("t", "<Esc>", [[<C-w>N]], { noremap = true })
+-- 元設定と同じく <C-\><C-N> を送る
+keymap.set("t", "<Esc>", [[<C-\><C-N>]], { noremap = true })
 
 -- ========================================
 -- 独自コマンド
