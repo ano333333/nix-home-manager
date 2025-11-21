@@ -183,5 +183,7 @@ keymap.set("n", "<A-9>", "<Cmd>BufferGoto 9<CR>", { noremap = true, silent = tru
 keymap.set("n", "<A-0>", "<Cmd>BufferLast<CR>",   { noremap = true, silent = true })
 -- バッファを閉じる
 keymap.set("n", "<A-c>", "<Cmd>BufferClose<CR>",  { noremap = true, silent = true})
+
+require("nvim-autopairs").setup {}
   '';
 }

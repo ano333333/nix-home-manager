@@ -13,4 +13,5 @@ with pkgs.vimPlugins; [
   tint-nvim
   nvim-web-devicons
   barbar-nvim
+  nvim-autopairs
 ]
