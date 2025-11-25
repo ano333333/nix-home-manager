@@ -30,6 +30,7 @@ in {
       (import ./packages/asdf.nix { inherit pkgs; })
       pkgs.fzf
       pkgs.deno
+      pkgs.lazygit
 
       pkgs.jetbrains.phpstorm
 
