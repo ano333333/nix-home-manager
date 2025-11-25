@@ -3,6 +3,7 @@
   lib,
   config,
   pkgs,
+  system,
   ...
 }: let 
   username = "ano3";
@@ -20,7 +21,9 @@ in {
 
   home = {
     username = username;
-    homeDirectory = "/home/${username}";
+    homeDirectory = if system == "x86_64-linux" then "/home/${username}"
+                    else if system == "aarch64-darwin" then "/Users/${username}"
+                    else throw "Unsupported system: ${system}";
 
     stateVersion = "24.05";
 
@@ -31,7 +34,7 @@ in {
       pkgs.fzf
       pkgs.deno
       pkgs.lazygit
-
+      
       pkgs.jetbrains.phpstorm
 
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする

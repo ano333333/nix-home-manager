@@ -14,36 +14,47 @@
   } @ inputs: 
   
   let
-    system = "x86_64-linux";
-    pkgs = import nixpkgs { system = system; };
-    # updateコマンドに指定するために、homeManagerUpdate.shをnixストアにコピー
-    homeManagerUpdate = pkgs.writeShellApplication {
-      name = "home-manager-update";
-      runtimeInputs = [ pkgs.nix ];
-      text = pkgs.lib.readFile ./scripts/homeManagerUpdate.sh;
+    systems = [ "x86_64-linux" "aarch64-darwin" ];
+    appsForSystems = nixpkgs.lib.genAttrs systems (
+      system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+        # updateコマンドに指定するために、homeManagerUpdate.shをnixストアにコピー
+        homeManagerUpdate = pkgs.writeShellApplication {
+          name = "home-manager-update";
+          runtimeInputs = [ pkgs.nix ];
+          text = pkgs.lib.readFile ./scripts/homeManagerUpdate.sh;
+        };
+        initDocker = import ./scripts/initDocker.nix { inherit pkgs; };
+      in
+      {
+        update = {
+          type = "app";
+          program = "${homeManagerUpdate}/bin/home-manager-update";
+        };
+        initDocker = {
+          type = "app";
+          program = "${initDocker}/bin/initDocker";
+        };
+      }
+    );
+    homeConfigurationFor = system: home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs { system = system; };
+      extraSpecialArgs = {
+        inherit inputs;
+        system = system;
+      };
+      modules = [
+        ./.config/home-manager/home.nix
+      ];
     };
-    initDocker = import ./scripts/initDocker.nix { inherit pkgs; };
   in
   {
-    apps.${system} = {
-      update = {
-        type = "app";
-        program = "${homeManagerUpdate}/bin/home-manager-update";
-      };
-      initDocker = {
-        type = "app";
-        program = "${initDocker}/bin/initDocker";
-      };
-    };
+    apps = appsForSystems;
 
     homeConfigurations = {
-      homeConfiguration = home-manager.lib.homeManagerConfiguration {
-        pkgs = pkgs;
-        extraSpecialArgs = { inherit inputs; };
-        modules = [
-          ./.config/home-manager/home.nix
-        ];
-      };
+      linux = homeConfigurationFor "x86_64-linux";
+      darwin = homeConfigurationFor "aarch64-darwin";
     };
   };
 }
