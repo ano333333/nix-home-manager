@@ -5,12 +5,17 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
     self,
     nixpkgs,
     home-manager,
+    nix-darwin,
   } @ inputs: 
   
   let
@@ -55,6 +60,11 @@
     homeConfigurations = {
       linux = homeConfigurationFor "x86_64-linux";
       darwin = homeConfigurationFor "aarch64-darwin";
+    };
+
+    darwinConfigurations.darwin = nix-darwin.lib.darwinSystem {
+      system = "aarch64-darwin";
+      modules = [ ./.config/nix-darwin/default.nix ];
     };
   };
 }
