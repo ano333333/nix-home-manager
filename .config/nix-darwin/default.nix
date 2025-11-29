@@ -23,6 +23,9 @@
         autohide = false;
         show-recents = true;
         orientation = "bottom";
+        persistent-apps = [
+          "/Applications/Ghostty.app"
+        ];
       };
     };
   };
