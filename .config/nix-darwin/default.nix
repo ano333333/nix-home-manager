@@ -24,6 +24,7 @@
         show-recents = true;
         orientation = "bottom";
         persistent-apps = [
+          "/System/Applications/LaunchPad.app"
           "/Applications/Ghostty.app"
         ];
       };
