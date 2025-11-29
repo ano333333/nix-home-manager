@@ -1,0 +1,13 @@
+# Theme
+theme = Calamity
+
+# Font
+font-family = FiraCode Nerd Font Mono
+font-feature = -dlig
+font-size = 17
+
+# Cursor
+cursor-style = block
+cursor-style-blink = false
+cursor-opacity = 0.8
+

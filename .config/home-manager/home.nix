@@ -122,6 +122,9 @@ in {
 
   programs.neovim = import ./options/neovim.nix { inherit neovimPlugins; };
 
+  # ghostty config
+  home.file.".config/ghostty/config".source = ./options/ghostty;
+
   # python / pipのシンボリックリンクを作成
   home.file.".bin/python".source = "${pkgs.python312}/bin/python3";
   home.file.".bin/pip".source = "${pkgs.python312Packages.pip}/bin/pip";
