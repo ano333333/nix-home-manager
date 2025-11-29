@@ -36,6 +36,7 @@ in {
       pkgs.lazygit
       
       pkgs.jetbrains.phpstorm
+      pkgs.code-cursor
 
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
