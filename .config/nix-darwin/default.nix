@@ -31,6 +31,8 @@
     };
   };
 
+  time.timeZone = "Asia/Tokyo";
+
   homebrew = {
     enable = true;
     onActivation = {
