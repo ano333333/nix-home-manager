@@ -62,6 +62,7 @@ in {
     enable = true;
   };
   home.activation.generateSshKey = import ./activations/generate-ssh-key.nix { inherit lib config pkgs email; };
+  home.activation.cloneTilRepo = import ./activations/clone-til-repo.nix { inherit lib config pkgs; };
 
   programs.direnv = {
     enable = true;
