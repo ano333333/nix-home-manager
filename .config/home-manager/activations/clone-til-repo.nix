@@ -7,6 +7,9 @@
 }: lib.hm.dag.entryAfter [ "generateSshKey" ] ''
   set -eu
 
+  # opensshをPATHに追加
+  export PATH="${pkgs.openssh}/bin:$PATH"
+
   PRIVATE_DIR="${config.home.homeDirectory}/private"
   TIL_DIR="$PRIVATE_DIR/TIL"
 
