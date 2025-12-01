@@ -37,6 +37,7 @@ in {
       
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
+      pkgs.claude-code
 
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
