@@ -131,6 +131,9 @@ in {
 
   programs.neovim = import ./options/neovim.nix { inherit neovimPlugins; };
 
+  # claude-code config
+  home.file.".claude/settings.json".source = ./options/claude-code.json;
+
   # ghostty config
   home.file.".config/ghostty/config".source = ./options/ghostty;
 
