@@ -25,6 +25,7 @@
         orientation = "bottom";
         persistent-apps = [
           "/System/Applications/LaunchPad.app"
+          "/System/Applications/System Settings.app"
           "/Applications/Ghostty.app"
         ];
       };
