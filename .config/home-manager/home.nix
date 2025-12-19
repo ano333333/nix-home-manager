@@ -12,6 +12,13 @@
   gitignoreAi = pkgs.writeText "~/.gitconfig.ai" builtins.readFile ./options/.gitignore.ai;
 
   neovimPlugins = (import ./packages/neovim-plugins.nix { inherit pkgs; });
+
+  # pkgをx86_64-linuxの場合のみNixGLでラップする
+  wrapNixGLWrapper = pkg: (
+    if system == "x86_64-linux"
+    then config.lib.nixGL.wrap pkg
+    else pkg
+  );
 in {
   nixpkgs = {
     config = {
@@ -34,6 +41,7 @@ in {
       pkgs.fzf
       pkgs.deno
       pkgs.lazygit
+      (wrapNixGLWrapper pkgs.wezterm)
       
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
@@ -133,6 +141,13 @@ in {
 
   # claude-code config
   home.file.".claude/settings.json".source = ./options/claude-code.json;
+
+  # nixGL(Linux on amd64 only)
+  nixGL = lib.mkIf (system == "x86_64-linux") {
+    packages = import inputs.nixgl { inherit pkgs; };
+    defaultWrapper = "mesa";
+    installScripts = [ "mesa" ];
+  };
 
   # ghostty config
   home.file.".config/ghostty/config".source = ./options/ghostty;

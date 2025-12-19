@@ -5,6 +5,9 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixgl = {
+      url = "github:nix-community/nixGL";
+    };
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -15,6 +18,7 @@
     self,
     nixpkgs,
     home-manager,
+    nixgl,
     nix-darwin,
   } @ inputs: 
   
