@@ -72,7 +72,6 @@ in {
     enable = true;
   };
   home.activation.generateSshKey = import ./activations/generate-ssh-key.nix { inherit lib config pkgs email; };
-  home.activation.cloneTilRepo = import ./activations/clone-til-repo.nix { inherit lib config pkgs; };
   # Obsidian AppImageセットアップ (Linux only)
   home.activation.setupObsidianAppImage = if system == "x86_64-linux"
     then import ./activations/setup-obsidian-appimage.nix { inherit lib config pkgs; }
