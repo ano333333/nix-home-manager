@@ -38,6 +38,34 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_wid
     }
 end)
 
+-- ウィンドウのフォーカスが変わった時に背景を変更する
+wezterm.on('window-focus-changed', function(window, pane)
+    local background_layer = {
+        source = {
+            Color = 'black'
+        },
+        width = '100%',
+        height = '100%',
+    }
+    local image_layer = {
+        source = {
+            File = '/home/ano3/.config/wezterm/image.png'
+        },
+        opacity = 0.3,
+        vertical_align = 'Bottom',
+        horizontal_align = 'Right',
+        width = 288,
+        height = 192,
+        vertical_offset = 10,
+    }
+
+    if window:is_focused() then
+        window:set_config_overrides({ background = {background_layer, image_layer}})
+    else
+        window:set_config_overrides({ background = {background_layer}})
+    end
+end)
+
 config.keys = require('keybinds').keys
 config.key_tables = require('keybinds').key_tables
 
