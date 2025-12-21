@@ -41,6 +41,7 @@ in {
       pkgs.fzf
       pkgs.deno
       pkgs.lazygit
+      pkgs.delta
       (wrapNixGLWrapper pkgs.wezterm)
       
       pkgs.jetbrains.phpstorm
@@ -100,6 +101,11 @@ in {
   programs.starship = import ./options/starship.nix;
 
   programs.neovim = import ./options/neovim.nix { inherit neovimPlugins; };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+  };
 
   # claude-code config
   home.file.".claude/settings.json".source = ./options/claude-code.json;

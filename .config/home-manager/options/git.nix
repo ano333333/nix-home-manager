@@ -11,6 +11,17 @@
     core = {
       sshCommand = "ssh -i ~/.ssh/id_ed25519";
     };
+    pager = {
+      diff = "delta";
+      log = "delta";
+      show = "delta";
+      blame = "delta";
+    };
+    delta = {
+      navigate = true;
+      dark = true;
+      line-numbers = true;
+    };
   };
 
   includes = [
