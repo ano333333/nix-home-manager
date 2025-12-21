@@ -38,8 +38,8 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_wid
     }
 end)
 
--- ウィンドウのフォーカスが変わった時に背景を変更する
-wezterm.on('window-focus-changed', function(window, pane)
+-- フォーカスが当たっておりプロセスが/bin/zshのとき背景を変更する
+function set_background(window, pane)
     local background_layer = {
         source = {
             Color = 'black'
@@ -58,12 +58,22 @@ wezterm.on('window-focus-changed', function(window, pane)
         height = 192,
         vertical_offset = 10,
     }
-
-    if window:is_focused() then
+    local process_name = pane:get_foreground_process_name()
+    if window:is_focused() and process_name:find('/bin/zsh') then
         window:set_config_overrides({ background = {background_layer, image_layer}})
     else
         window:set_config_overrides({ background = {background_layer}})
     end
+end
+
+-- ウィンドウのフォーカスが変わった時に背景を変更する
+wezterm.on('window-focus-changed', function(window, pane)
+    set_background(window, pane)
+end)
+
+-- ステータス(実行中プロセス)が更新された時に背景を変更する
+wezterm.on('update-status', function(window, pane)
+    set_background(window, pane)
 end)
 
 config.keys = require('keybinds').keys
