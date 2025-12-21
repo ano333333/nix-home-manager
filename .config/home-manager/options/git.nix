@@ -3,9 +3,11 @@
 }:
 {
   enable = true;
-  userName = "ano333333";
-  userEmail = email;
-  extraConfig = {
+  settings = {
+    user = {
+      inherit email;
+      name = "ano333333";
+    };
     core = {
       sshCommand = "ssh -i ~/.ssh/id_ed25519";
     };
