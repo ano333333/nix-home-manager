@@ -120,6 +120,7 @@ in {
   home.file.".config/wezterm/wezterm.lua".source = ./options/wezterm/wezterm.lua;
   home.file.".config/wezterm/keybinds.lua".source = ./options/wezterm/keybinds.lua;
   home.file.".config/wezterm/image.png".source = ./options/wezterm/image.png;
+  home.file.".config/wezterm/image-enter-pressed.png".source = ./options/wezterm/image-enter-pressed.png;
 
   # ghostty config
   home.file.".config/ghostty/config".source = ./options/ghostty;

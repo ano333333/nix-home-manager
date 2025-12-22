@@ -1,4 +1,5 @@
 local wezterm = require 'wezterm'
+local act = wezterm.action
 
 local config = wezterm.config_builder()
 config.automatically_reload_config = true
@@ -38,40 +39,80 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_wid
     }
 end)
 
--- フォーカスが当たっておりプロセスが/bin/zshのとき背景を変更する
+-- ========================================
+-- フォーカスとキーによる背景画像変更
+-- ========================================
+
+-- Enterキー押下イベントが発生したか
+local enter_pressed = false
+
+local background_layer = {
+    source = {
+        Color = 'black'
+    },
+    width = '100%',
+    height = '100%',
+}
+local image_layer_default = {
+    source = {
+        File = '/home/ano3/.config/wezterm/image.png'
+    },
+    opacity = 0.3,
+    vertical_align = 'Bottom',
+    horizontal_align = 'Right',
+    width = 288,
+    height = 192,
+    vertical_offset = 10,
+}
+local image_layer_enter_pressed = {
+    source = {
+        File = '/home/ano3/.config/wezterm/image-enter-pressed.png'
+    },
+    opacity = 0.3,
+    vertical_align = 'Bottom',
+    horizontal_align = 'Right',
+    width = 288,
+    height = 192,
+    vertical_offset = 10,
+}
+
+-- 背景画像を変更する
+-- - フォーカスが当たっている
+-- - プロセス名が「/bin/zsh」を含む
+-- のときのみ背景画像を表示
 function set_background(window, pane)
-    local background_layer = {
-        source = {
-            Color = 'black'
-        },
-        width = '100%',
-        height = '100%',
-    }
-    local image_layer = {
-        source = {
-            File = '/home/ano3/.config/wezterm/image.png'
-        },
-        opacity = 0.3,
-        vertical_align = 'Bottom',
-        horizontal_align = 'Right',
-        width = 288,
-        height = 192,
-        vertical_offset = 10,
-    }
     local process_name = pane:get_foreground_process_name()
-    if window:is_focused() and process_name:find('/bin/zsh') then
-        window:set_config_overrides({ background = {background_layer, image_layer}})
+    if window:is_focused() and process_name and process_name:find('/bin/zsh') then
+        if enter_pressed then
+            window:set_config_overrides({ background = {background_layer, image_layer_enter_pressed}})
+        else
+            window:set_config_overrides({ background = {background_layer, image_layer_default}})
+        end
     else
         window:set_config_overrides({ background = {background_layer}})
     end
 end
+
+wezterm.on('off-enter', function(window, pane)
+    enter_pressed = false
+    set_background(window, pane)
+end)
+
+wezterm.on('press-enter', function(window, pane)
+    enter_pressed = true
+    set_background(window, pane)
+    wezterm.time.call_after(0.75, function()
+        wezterm.emit('off-enter', window, pane)
+    end)
+    window:perform_action(act.SendKey { key = 'Enter'}, pane)
+end)
 
 -- ウィンドウのフォーカスが変わった時に背景を変更する
 wezterm.on('window-focus-changed', function(window, pane)
     set_background(window, pane)
 end)
 
--- ステータス(実行中プロセス)が更新された時に背景を変更する
+-- -- ステータス(実行中プロセス等)が更新された時に背景を変更する
 wezterm.on('update-status', function(window, pane)
     set_background(window, pane)
 end)

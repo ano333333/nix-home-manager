@@ -122,6 +122,13 @@ return {
     { key = '0', mods = 'SHIFT|CTRL', action = act.ResetFontSize },
 
     -- ========================================
+    -- 独自イベント
+    -- 
+    -- Enterで'press-enter'イベントを送信
+    -- ========================================
+    { key = 'Enter', mods = 'NONE', action = act.EmitEvent 'press-enter' },
+    
+    -- ========================================
     -- その他
     -- ========================================
     { key = 'Enter', mods = 'ALT', action = act.ToggleFullScreen },
