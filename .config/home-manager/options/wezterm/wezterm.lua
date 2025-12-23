@@ -55,7 +55,7 @@ local background_layer = {
 }
 local image_layer_default = {
     source = {
-        File = '/home/ano3/.config/wezterm/image.png'
+        File = wezterm.config_dir .. '/image.png'
     },
     opacity = 0.3,
     vertical_align = 'Bottom',
@@ -66,7 +66,7 @@ local image_layer_default = {
 }
 local image_layer_enter_pressed = {
     source = {
-        File = '/home/ano3/.config/wezterm/image-enter-pressed.png'
+        File = wezterm.config_dir .. '/image-enter-pressed.png'
     },
     opacity = 0.3,
     vertical_align = 'Bottom',
