@@ -8,8 +8,10 @@
     nixgl = {
       url = "github:nix-community/nixGL";
     };
+    # バージョン指定のnixpkgsをnix-darwinと併用する場合はnixpkgs-xx.xx-darwinブランチが必要
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
     nix-darwin = {
-      url = "github:LnL7/nix-darwin";
+      url = "github:LnL7/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -19,6 +21,7 @@
     nixpkgs,
     home-manager,
     nixgl,
+    nixpkgs-darwin,
     nix-darwin,
   } @ inputs: 
   
@@ -27,7 +30,11 @@
     appsForSystems = nixpkgs.lib.genAttrs systems (
       system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        # nix-darwinと併用するか否かでnixpkgsのブランチを分ける
+        pkgs =
+          if builtins.match "^.*-darwin"
+          then import nixpkgs-darwin { inherit system; }
+          else import nixpkgs { inherit system; };
         # updateコマンドに指定するために、homeManagerUpdate.shをnixストアにコピー
         homeManagerUpdate = pkgs.writeShellApplication {
           name = "home-manager-update";
