@@ -45,6 +45,11 @@ end)
 
 math.randomseed(os.time())
 
+local background_opacity = 1.0
+if wezterm.target_triple == 'aarch64-apple-darwin' then
+    background_opacity = 0.85
+end
+
 -- Enterキー押下イベントが発生したか
 local enter_pressed = false
 
@@ -59,8 +64,9 @@ local headpat_finished = 0
 
 local background_layer = {
     source = {
-        Color = 'black'
+        Color = '#202020'
     },
+    opacity = background_opacity,
     width = '100%',
     height = '100%',
 }
@@ -70,7 +76,7 @@ function image_layer(name)
         source = {
             File = wezterm.config_dir .. '/' .. name
         },
-        opacity = 0.3,
+        opacity = 0.5,
         vertical_align = 'Bottom',
         horizontal_align = 'Right',
         width = 288,
