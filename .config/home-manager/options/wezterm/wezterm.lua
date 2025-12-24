@@ -43,8 +43,19 @@ end)
 -- フォーカスとキーによる背景画像変更
 -- ========================================
 
+math.randomseed(os.time())
+
 -- Enterキー押下イベントが発生したか
 local enter_pressed = false
+
+-- 最後にCtrl+Shift+Aイベントがemitされた時刻の文字列
+local csa_last_pressed_time = '0'
+-- Ctrl+Shift+Aイベントが何回連続でemitされたか
+local csa_count = 0
+
+-- 表示中の頭撫でフィニッシュイラストのインデックス(1, 2)
+-- 非表示は0
+local headpat_finished = 0
 
 local background_layer = {
     source = {
@@ -53,28 +64,28 @@ local background_layer = {
     width = '100%',
     height = '100%',
 }
-local image_layer_default = {
-    source = {
-        File = wezterm.config_dir .. '/image.png'
-    },
-    opacity = 0.3,
-    vertical_align = 'Bottom',
-    horizontal_align = 'Right',
-    width = 288,
-    height = 192,
-    vertical_offset = 10,
-}
-local image_layer_enter_pressed = {
-    source = {
-        File = wezterm.config_dir .. '/image-enter-pressed.png'
-    },
-    opacity = 0.3,
-    vertical_align = 'Bottom',
-    horizontal_align = 'Right',
-    width = 288,
-    height = 192,
-    vertical_offset = 10,
-}
+
+function image_layer(name)
+    return {
+        source = {
+            File = wezterm.config_dir .. '/' .. name
+        },
+        opacity = 0.3,
+        vertical_align = 'Bottom',
+        horizontal_align = 'Right',
+        width = 288,
+        height = 192,
+        vertical_offset = 10,
+    }
+end
+
+local image_layer_default = image_layer('image.png')
+local image_layer_enter_pressed = image_layer('image-enter-pressed.png')
+local image_layer_headpat_center = image_layer('image-headpat-center.png')
+local image_layer_headpat_left = image_layer('image-headpat-left.png')
+local image_layer_headpat_right = image_layer('image-headpat-right.png')
+local image_layer_headpat_finished_1 = image_layer('image-headpat-finished-1.png')
+local image_layer_headpat_finished_2 = image_layer('image-headpat-finished-2.png')
 
 -- 背景画像を変更する
 -- - フォーカスが当たっている
@@ -83,7 +94,23 @@ local image_layer_enter_pressed = {
 function set_background(window, pane)
     local process_name = pane:get_foreground_process_name()
     if window:is_focused() and process_name and process_name:find('/bin/zsh') then
-        if enter_pressed then
+        if headpat_finished == 1 then
+            window:set_config_overrides({ background = {background_layer, image_layer_headpat_finished_1}})
+        elseif headpat_finished == 2 then
+            window:set_config_overrides({ background = {background_layer, image_layer_headpat_finished_2}})
+        elseif csa_count > 0 then
+            -- 頭撫でアニメーションの表示
+            -- 15回呼び出しごとにイラストを切り替える
+            -- イラストは中左中右中左中右...の順で表示
+            local frame = (csa_count - csa_count % 15) / 15
+            if frame % 2 == 0 then
+                window:set_config_overrides({ background = {background_layer, image_layer_headpat_center}})
+            elseif frame % 4 == 1 then
+                window:set_config_overrides({ background = {background_layer, image_layer_headpat_left}})
+            else
+                window:set_config_overrides({ background = {background_layer, image_layer_headpat_right}})
+            end
+        elseif enter_pressed then
             window:set_config_overrides({ background = {background_layer, image_layer_enter_pressed}})
         else
             window:set_config_overrides({ background = {background_layer, image_layer_default}})
@@ -114,6 +141,41 @@ end)
 
 -- -- ステータス(実行中プロセス等)が更新された時に背景を変更する
 wezterm.on('update-status', function(window, pane)
+    set_background(window, pane)
+end)
+
+wezterm.on('turn-off-headpat-finished', function(window, pane)
+    headpat_finished = 0
+    set_background(window, pane)
+end)
+
+-- Ctrl+Shift+Aイベントが0.55秒間途切れたら、csa_countをリセットする
+-- (キーを押しっぱなしにした際、1回目と2回目の間隔のみ約0.5秒になるため)
+wezterm.on('press-c-s-a-call_after', function(window, pane, csa_prev_pressed_time)
+    if csa_last_pressed_time == csa_prev_pressed_time then
+        if csa_count > 10 then
+            headpat_finished = math.random(1, 2)
+        else
+            headpat_finished = 0
+        end
+        csa_count = 0
+        wezterm.time.call_after(1.5, function()
+            wezterm.emit('turn-off-headpat-finished', window, pane)
+        end)
+    end
+    set_background(window, pane)
+end)
+
+wezterm.on('press-c-s-a', function(window, pane)
+    headpat_finished = 0
+    local now = wezterm.to_string(wezterm.time.now())
+    if csa_count == 0 then
+    end
+    csa_last_pressed_time = now
+    csa_count = csa_count + 1
+    wezterm.time.call_after(0.55, function()
+        wezterm.emit('press-c-s-a-call_after', window, pane, now)
+    end)
     set_background(window, pane)
 end)
 

@@ -32,7 +32,7 @@
       let
         # nix-darwinと併用するか否かでnixpkgsのブランチを分ける
         pkgs =
-          if builtins.match "^.*-darwin"
+          if builtins.match "^.*-darwin" system != null
           then import nixpkgs-darwin { inherit system; }
           else import nixpkgs { inherit system; };
         # updateコマンドに指定するために、homeManagerUpdate.shをnixストアにコピー

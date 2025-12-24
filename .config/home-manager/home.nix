@@ -121,6 +121,11 @@ in {
   home.file.".config/wezterm/keybinds.lua".source = ./options/wezterm/keybinds.lua;
   home.file.".config/wezterm/image.png".source = ./options/wezterm/image.png;
   home.file.".config/wezterm/image-enter-pressed.png".source = ./options/wezterm/image-enter-pressed.png;
+  home.file.".config/wezterm/image-headpat-center.png".source = ./options/wezterm/image-headpat-center.png;
+  home.file.".config/wezterm/image-headpat-left.png".source = ./options/wezterm/image-headpat-left.png;
+  home.file.".config/wezterm/image-headpat-right.png".source = ./options/wezterm/image-headpat-right.png;
+  home.file.".config/wezterm/image-headpat-finished-1.png".source = ./options/wezterm/image-headpat-finished-1.png;
+  home.file.".config/wezterm/image-headpat-finished-2.png".source = ./options/wezterm/image-headpat-finished-2.png;
 
   # ghostty config
   home.file.".config/ghostty/config".source = ./options/ghostty;

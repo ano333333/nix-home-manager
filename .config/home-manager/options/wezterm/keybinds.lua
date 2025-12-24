@@ -127,6 +127,7 @@ return {
     -- Enterで'press-enter'イベントを送信
     -- ========================================
     { key = 'Enter', mods = 'NONE', action = act.EmitEvent 'press-enter' },
+    { key = 'A', mods = 'CTRL', action = act.EmitEvent 'press-c-s-a' },
     
     -- ========================================
     -- その他
