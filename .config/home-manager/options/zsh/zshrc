@@ -34,3 +34,6 @@ bindkey '^x^z' zeno-toggle-auto-snippet
 
 bindkey '^r' zeno-smart-history-selection # smart history widget
 fi
+
+# wezterm shell integration
+source "$HOME/.config/wezterm/wezterm.sh"

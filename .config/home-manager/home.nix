@@ -119,6 +119,8 @@ in {
 
   home.file.".config/wezterm/wezterm.lua".source = ./options/wezterm/wezterm.lua;
   home.file.".config/wezterm/keybinds.lua".source = ./options/wezterm/keybinds.lua;
+  # shell integration
+  home.file.".config/wezterm/wezterm.sh".source = ./options/wezterm/wezterm.sh;
   home.file.".config/wezterm/image.png".source = ./options/wezterm/image.png;
   home.file.".config/wezterm/image-enter-pressed.png".source = ./options/wezterm/image-enter-pressed.png;
   home.file.".config/wezterm/image-headpat-center.png".source = ./options/wezterm/image-headpat-center.png;
