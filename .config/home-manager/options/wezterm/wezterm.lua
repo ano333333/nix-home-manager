@@ -51,7 +51,7 @@ if wezterm.target_triple == 'aarch64-apple-darwin' then
 end
 
 -- Enterキー押下イベントが発生したか
-local enter_pressed = false
+local command_enter_pressed = false
 
 -- 最後にCtrl+Shift+Aイベントがemitされた時刻の文字列
 local csa_last_pressed_time = '0'
@@ -116,7 +116,7 @@ function set_background(window, pane)
             else
                 window:set_config_overrides({ background = {background_layer, image_layer_headpat_right}})
             end
-        elseif enter_pressed then
+        elseif command_enter_pressed then
             window:set_config_overrides({ background = {background_layer, image_layer_enter_pressed}})
         else
             window:set_config_overrides({ background = {background_layer, image_layer_default}})
@@ -126,18 +126,21 @@ function set_background(window, pane)
     end
 end
 
-wezterm.on('off-enter', function(window, pane)
-    enter_pressed = false
+wezterm.on('off-command-enter', function(window, pane, name, value)
+    command_enter_pressed = false
     set_background(window, pane)
 end)
 
-wezterm.on('press-enter', function(window, pane)
-    enter_pressed = true
-    set_background(window, pane)
-    wezterm.time.call_after(0.75, function()
-        wezterm.emit('off-enter', window, pane)
-    end)
-    window:perform_action(act.SendKey { key = 'Enter'}, pane)
+-- Enterキー押下を直接拾うとmacOSでIMEがEnterを受け取れなくなるため
+-- shell integrationでコマンド実行タイミングを拾う
+wezterm.on('user-var-changed', function(window, pane, name, value)
+    if name == 'WEZTERM_PROG' then
+        command_enter_pressed = true
+        set_background(window, pane)
+        wezterm.time.call_after(0.75, function()
+            wezterm.emit('off-command-enter', window, pane)
+        end)
+    end
 end)
 
 -- ウィンドウのフォーカスが変わった時に背景を変更する
