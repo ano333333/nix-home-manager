@@ -2,3 +2,5 @@ result
 
 # Claude Code local settings
 .claude/
+
+.DS_Store
