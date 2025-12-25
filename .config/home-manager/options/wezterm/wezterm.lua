@@ -58,9 +58,15 @@ local csa_last_pressed_time = '0'
 -- Ctrl+Shift+Aイベントが何回連続でemitされたか
 local csa_count = 0
 
+-- 瞬き中の目をつぶっている状態か
+local blinking = false
+
 -- 表示中の頭撫でフィニッシュイラストのインデックス(1, 2)
 -- 非表示は0
 local headpat_finished = 0
+
+-- 一度でもupdate-statusイベントが発生したらマウント処理が行われたと解釈する
+local mounted = false
 
 local background_layer = {
     source = {
@@ -118,6 +124,8 @@ function set_background(window, pane)
             end
         elseif command_enter_pressed then
             window:set_config_overrides({ background = {background_layer, image_layer_enter_pressed}})
+        elseif blinking then
+            window:set_config_overrides({ background = {background_layer, image_layer_headpat_center}})
         else
             window:set_config_overrides({ background = {background_layer, image_layer_default}})
         end
@@ -143,6 +151,33 @@ wezterm.on('user-var-changed', function(window, pane, name, value)
     end
 end)
 
+-- 瞬き
+
+wezterm.on('start-blinking', function(window, pane)
+    blinking = true
+    wezterm.time.call_after(0.2, function()
+        wezterm.emit('stop-blinking', window, pane)
+    end)
+    set_background(window, pane)
+end)
+
+wezterm.on('stop-blinking', function(window, pane)
+    blinking = false
+    wezterm.time.call_after(5.0, function()
+        wezterm.emit('start-blinking', window, pane)
+    end)
+    set_background(window, pane)
+end)
+
+function on_mount(window, pane)
+    wezterm.log_info('window-mount')
+    mounted = true
+
+    wezterm.time.call_after(5.0, function()
+        wezterm.emit('start-blinking', window, pane)
+    end)
+end
+
 -- ウィンドウのフォーカスが変わった時に背景を変更する
 wezterm.on('window-focus-changed', function(window, pane)
     set_background(window, pane)
@@ -150,6 +185,9 @@ end)
 
 -- -- ステータス(実行中プロセス等)が更新された時に背景を変更する
 wezterm.on('update-status', function(window, pane)
+    if not mounted then
+        on_mount(window, pane)
+    end
     set_background(window, pane)
 end)
 
