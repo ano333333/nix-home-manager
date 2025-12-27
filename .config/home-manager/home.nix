@@ -121,13 +121,15 @@ in {
   home.file.".config/wezterm/keybinds.lua".source = ./options/wezterm/keybinds.lua;
   # shell integration
   home.file.".config/wezterm/wezterm.sh".source = ./options/wezterm/wezterm.sh;
-  home.file.".config/wezterm/image.png".source = ./options/wezterm/image.png;
-  home.file.".config/wezterm/image-enter-pressed.png".source = ./options/wezterm/image-enter-pressed.png;
-  home.file.".config/wezterm/image-headpat-center.png".source = ./options/wezterm/image-headpat-center.png;
-  home.file.".config/wezterm/image-headpat-left.png".source = ./options/wezterm/image-headpat-left.png;
-  home.file.".config/wezterm/image-headpat-right.png".source = ./options/wezterm/image-headpat-right.png;
-  home.file.".config/wezterm/image-headpat-finished-1.png".source = ./options/wezterm/image-headpat-finished-1.png;
-  home.file.".config/wezterm/image-headpat-finished-2.png".source = ./options/wezterm/image-headpat-finished-2.png;
+  # nekotyan 
+  home.file.".config/wezterm/nekotyan/nekotyan.lua".source = ./options/wezterm/nekotyan/nekotyan.lua;
+  home.file.".config/wezterm/nekotyan/image.png".source = ./options/wezterm/nekotyan/image.png;
+  home.file.".config/wezterm/nekotyan/image-enter-pressed.png".source = ./options/wezterm/nekotyan/image-enter-pressed.png;
+  home.file.".config/wezterm/nekotyan/image-headpat-center.png".source = ./options/wezterm/nekotyan/image-headpat-center.png;
+  home.file.".config/wezterm/nekotyan/image-headpat-left.png".source = ./options/wezterm/nekotyan/image-headpat-left.png;
+  home.file.".config/wezterm/nekotyan/image-headpat-right.png".source = ./options/wezterm/nekotyan/image-headpat-right.png;
+  home.file.".config/wezterm/nekotyan/image-headpat-finished-1.png".source = ./options/wezterm/nekotyan/image-headpat-finished-1.png;
+  home.file.".config/wezterm/nekotyan/image-headpat-finished-2.png".source = ./options/wezterm/nekotyan/image-headpat-finished-2.png;
 
   # ghostty config
   home.file.".config/ghostty/config".source = ./options/ghostty;

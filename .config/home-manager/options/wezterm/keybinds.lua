@@ -124,9 +124,9 @@ return {
     -- ========================================
     -- 独自イベント
     -- 
-    -- Enterで'press-enter'イベントを送信
+    -- Ctrl+Shift+Aで頭撫でを開始
     -- ========================================
-    { key = 'A', mods = 'CTRL', action = act.EmitEvent 'press-c-s-a' },
+    { key = 'A', mods = 'CTRL', action = act.EmitEvent 'nekotyan:headpat-start' },
     
     -- ========================================
     -- その他
