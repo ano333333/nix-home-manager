@@ -67,7 +67,7 @@ in {
 
   programs.home-manager.enable = true;
   programs.git = import ./options/git.nix { inherit email; };
-  home.file.".gitconfig.ai".source = ./options/.gitignore.ai;
+  home.file.".gitconfig.ai".source = ./options/.gitconfig.ai;
 
   programs.ssh = {
     enable = true;
