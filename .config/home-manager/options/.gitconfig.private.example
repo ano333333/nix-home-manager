@@ -1,0 +1,6 @@
+[user]
+    email = <private email>
+    name = <private name>
+
+[core]
+    sshCommand = "ssh -i ~/.ssh/id_ed25519_2"
