@@ -99,13 +99,9 @@ local image_layer_headpat_right = image_layer('image-headpat-right.png')
 local image_layer_headpat_finished_1 = image_layer('image-headpat-finished-1.png')
 local image_layer_headpat_finished_2 = image_layer('image-headpat-finished-2.png')
 
--- 背景画像を変更する
--- - フォーカスが当たっている
--- - プロセス名が「/bin/zsh」を含む
--- のときのみ背景画像を表示
+-- 背景画像を変更する。フォーカスが当たっているのときのみ背景画像を表示
 function set_background(window, pane)
-    local process_name = pane:get_foreground_process_name()
-    if window:is_focused() and process_name and process_name:find('/bin/zsh') then
+    if window:is_focused() then
         if headpat_finished == 1 then
             window:set_config_overrides({ background = {background_layer, image_layer_headpat_finished_1}})
         elseif headpat_finished == 2 then
