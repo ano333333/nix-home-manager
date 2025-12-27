@@ -138,7 +138,9 @@ end)
 -- Enterキー押下を直接拾うとmacOSでIMEがEnterを受け取れなくなるため
 -- shell integrationでコマンド実行タイミングを拾う
 wezterm.on('user-var-changed', function(window, pane, name, value)
-    if name == 'WEZTERM_PROG' then
+    -- 空行以外のコマンドを実行すると、value='実行コマンド'とvalue=''で2回WEZTERM_PROGイベントが発生するため、その初回のみを拾う
+    -- limitation: 空行でコマンドを実行すると、猫ちゃんが応答しない
+    if name == 'WEZTERM_PROG' and value ~= '' then
         command_enter_pressed = true
         set_background(window, pane)
         wezterm.time.call_after(0.75, function()
