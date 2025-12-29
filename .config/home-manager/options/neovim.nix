@@ -185,5 +185,12 @@ keymap.set("n", "<A-0>", "<Cmd>BufferLast<CR>",   { noremap = true, silent = tru
 keymap.set("n", "<A-c>", "<Cmd>BufferClose<CR>",  { noremap = true, silent = true})
 
 require("nvim-autopairs").setup {}
+
+-- ========================================
+-- plugins(LSP/Mason, lspconfig)
+-- ========================================
+
+require("mason").setup()
+require("mason-lspconfig").setup()
 '';
 }
