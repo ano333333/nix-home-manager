@@ -25,6 +25,14 @@ if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
     config.window_decorations = 'RESIZE'
 end
 
+config.initial_cols = 80
+config.window_padding = {
+    left = 0,
+    right = 0,
+    top = 0,
+    bottom = 0,
+}
+
 -- タブのタイトル更新時のイベントを拾い、アクティブなタブの背景色を変更する
 wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
     local background = '#5c6d74'
