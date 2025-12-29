@@ -48,6 +48,8 @@ in {
       pkgs.code-cursor
       pkgs.claude-code
 
+      pkgs.lua-language-server
+
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
       pkgs.python312Packages.pip

@@ -192,5 +192,36 @@ require("nvim-autopairs").setup {}
 
 require("mason").setup()
 require("mason-lspconfig").setup()
+
+keymap.set('n', 'H', '<cmd>lua vim.lsp.buf.hover()<CR>')
+keymap.set('n','gj','<cmd>lua vim.lsp.buf.definition()<CR>')
+keymap.set('n','gf','<cmd>lua vim.lsp.buf.format()<CR>')
+keymap.set('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
+keymap.set('n','gR','<cmd>lua vim.lsp.buf.rename()<CR>')
+keymap.set('n','ga','<cmd>lua vim.lsp.buf.code_action()<CR>')
+
+-- ========================================
+-- plugins(LSP/lua-language-server)
+-- ========================================
+
+vim.lsp.config['luals'] = {
+  cmd = { 'lua-language-server' },
+  filetypes = { 'lua' },
+  -- Sets the "root directory" to the parent directory of the file in the
+  -- current buffer that contains either a ".luarc.json" or a
+  -- ".luarc.jsonc" file. Files that share a root directory will reuse
+  -- the connection to the same LSP server.
+  -- Nested lists indicate equal priority, see |vim.lsp.Config|.
+  root_markers = { { '.luarc.json', '.luarc.jsonc' }, '.git' },
+
+  settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',
+      }
+    }
+  }
+}
+vim.lsp.enable('luals')
 '';
 }
