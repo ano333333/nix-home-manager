@@ -102,7 +102,7 @@ in {
 
   programs.starship = import ./options/starship.nix;
 
-  programs.neovim = import ./options/neovim.nix { inherit neovimPlugins; };
+  programs.neovim = import ./options/neovim/neovim.nix { inherit neovimPlugins; };
 
   programs.delta = {
     enable = true;
