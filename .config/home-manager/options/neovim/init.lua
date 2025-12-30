@@ -184,7 +184,7 @@ require("nvim-autopairs").setup {}
 require("mason").setup()
 require("mason-lspconfig").setup()
 
-vim.cmd[[set completeopt+=menuone,noselect,popup]]
+vim.cmd [[set completeopt+=menuone,noselect,popup]]
 
 keymap.set('n', 'H', function()
   vim.lsp.buf.hover()
@@ -248,4 +248,3 @@ vim.lsp.config['luals'] = {
   end,
 }
 vim.lsp.enable('luals')
-
