@@ -184,12 +184,35 @@ require("nvim-autopairs").setup {}
 require("mason").setup()
 require("mason-lspconfig").setup()
 
-keymap.set('n', 'H', '<cmd>lua vim.lsp.buf.hover()<CR>')
-keymap.set('n', 'gj', '<cmd>lua vim.lsp.buf.definition()<CR>')
-keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.format()<CR>')
-keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
-keymap.set('n', 'gR', '<cmd>lua vim.lsp.buf.rename()<CR>')
-keymap.set('n', 'ga', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+vim.cmd[[set completeopt+=menuone,noselect,popup]]
+
+keymap.set('n', 'H', function()
+  vim.lsp.buf.hover()
+end)
+keymap.set('n', 'gd', function()
+  vim.lsp.buf.definition()
+end)
+keymap.set('n', 'gc', function()
+  vim.lsp.buf.declaration()
+end)
+keymap.set('n', 'gt', function()
+  vim.lsp.buf.type_definition()
+end)
+keymap.set('n', 'gf', function()
+  vim.lsp.buf.format()
+end)
+keymap.set('n', 'ge', function()
+  vim.lsp.buf.references()
+end)
+keymap.set('n', 'gr', function()
+  vim.lsp.buf.rename()
+end)
+keymap.set('n', 'ga', function()
+  vim.lsp.buf.code_action()
+end)
+keymap.set('i', '<c-x><c-m>', function()
+  vim.lsp.completion.get()
+end)
 
 -- ========================================
 -- plugins(LSP/lua-language-server)
@@ -211,6 +234,18 @@ vim.lsp.config['luals'] = {
         version = 'LuaJIT',
       }
     }
-  }
+  },
+
+  on_attach = function(client, bufnr)
+    vim.lsp.completion.enable(true, client.id, bufnr, {
+      autotrigger = true,
+      convert = function(item)
+        return {
+          abbr = item.label:gsub("%b()", ""),
+        }
+      end,
+    })
+  end,
 }
 vim.lsp.enable('luals')
+
