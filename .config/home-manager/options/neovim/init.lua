@@ -248,3 +248,30 @@ vim.lsp.config['luals'] = {
   end,
 }
 vim.lsp.enable('luals')
+
+-- ========================================
+-- plugins(LSP/gopls)
+-- ========================================
+
+vim.lsp.config['gopls'] = {
+  cmd = { 'gopls' },
+  filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+  root_markers = { 'go.work', 'go.mod', '.git' },
+
+  settings = {
+    gopls = {
+      analyses = {
+        unusedparams = true,
+      },
+      staticcheck = true,
+      gofumpt = true,
+    },
+  },
+
+  on_attach = function(client, bufnr)
+    vim.lsp.completion.enable(true, client.id, bufnr, {
+      autotrigger = true,
+    })
+  end,
+}
+vim.lsp.enable('gopls')
