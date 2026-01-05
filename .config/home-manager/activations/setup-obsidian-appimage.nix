@@ -64,7 +64,7 @@ in lib.hm.dag.entryAfter [ "writeBoundary" ] ''
 Type=Application
 Name=Obsidian
 Comment=Obsidian - A knowledge base that works on local Markdown files
-Exec=${config.home.homeDirectory}/.local/bin/obsidian.AppImage --no-sandbox %u
+Exec=nixGL ${config.home.homeDirectory}/.local/bin/obsidian.AppImage --no-sandbox %u
 Icon=${config.home.homeDirectory}/.local/share/icons/obsidian-icon.svg
 Categories=Office;
 MimeType=x-scheme-handler/obsidian;
