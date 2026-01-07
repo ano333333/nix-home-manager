@@ -6,7 +6,7 @@ config.automatically_reload_config = true
 
 config.color_scheme = 'Calamity'
 
-config.font_size = 15.0
+config.font_size = 12.0
 config.font = wezterm.font 'FiraCode Nerd Font Mono'
 -- disable ligatures
 config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }

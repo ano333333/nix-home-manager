@@ -275,3 +275,21 @@ vim.lsp.config['gopls'] = {
   end,
 }
 vim.lsp.enable('gopls')
+
+-- ========================================
+-- plugins(LSP/rust-analyzer)
+-- ========================================
+
+vim.lsp.config['rust-analyzer'] = {
+  cmd = { 'rust-analyzer' },
+  filetypes = { 'rust' },
+  root_markers = { 'Cargo.toml', 'Cargo.lock', '.git' },
+
+  on_attach = function(client, bufnr)
+    vim.lsp.completion.enable(true, client.id, bufnr, {
+      autotrigger = true,
+    })
+  end,
+}
+vim.lsp.enable('rust-analyzer')
+

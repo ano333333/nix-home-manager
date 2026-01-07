@@ -50,6 +50,7 @@ in {
 
       pkgs.lua-language-server
       pkgs.gopls
+      pkgs.rust-analyzer
 
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
@@ -80,6 +81,7 @@ in {
   home.activation.setupObsidianAppImage = if system == "x86_64-linux"
     then import ./activations/setup-obsidian-appimage.nix { inherit lib config pkgs; }
     else lib.hm.dag.entryAfter [ "writeBoundary" ] "";
+  home.activation.setup-rust-analyzer = import ./activations/setup-rust-analyzer.nix { inherit lib pkgs; };
 
   programs.direnv = {
     enable = true;
