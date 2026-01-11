@@ -280,16 +280,88 @@ vim.lsp.enable('gopls')
 -- plugins(LSP/rust-analyzer)
 -- ========================================
 
-vim.lsp.config['rust-analyzer'] = {
+-- 診断の表示設定
+vim.diagnostic.config({
+  virtual_text = {
+    -- 診断メッセージをインラインで表示
+    spacing = 4,
+    source = "if_many",
+    prefix = "●",
+  },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = "✘",
+      [vim.diagnostic.severity.WARN] = "▲",
+      [vim.diagnostic.severity.HINT] = "⚑",
+      [vim.diagnostic.severity.INFO] = "»",
+    },
+  },
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+  -- フロートウィンドウで診断の詳細を表示
+  float = {
+    source = "always",
+    border = "rounded",
+  },
+})
+
+local on_attach = function(client, bufnr)
+  vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+  vim.lsp.completion.enable(true, client.id, bufnr, {
+    autotrigger = true,
+  })
+
+  -- LSP接続完了後に診断を表示
+  vim.schedule(function()
+    vim.diagnostic.show(nil, bufnr)
+  end)
+end
+
+vim.lsp.config('rust_analyzer', {
   cmd = { 'rust-analyzer' },
   filetypes = { 'rust' },
-  root_markers = { 'Cargo.toml', 'Cargo.lock', '.git' },
-
-  on_attach = function(client, bufnr)
-    vim.lsp.completion.enable(true, client.id, bufnr, {
-      autotrigger = true,
-    })
-  end,
-}
-vim.lsp.enable('rust-analyzer')
+  root_markers = { 'Cargo.toml', 'rust-project.json', '.git' },
+  on_attach = on_attach,
+  settings = {
+    ['rust-analyzer'] = {
+      imports = {
+        granularity = {
+          group = "module",
+        },
+        prefix = "self",
+      },
+      cargo = {
+        buildScripts = {
+          enable = true,
+        },
+        allFeatures = true,
+      },
+      procMacro = {
+        enable = true
+      },
+      check = {
+        command = "clippy"
+      },
+      diagnostics = {
+        enable = true,
+        experimental = {
+          enable = true,
+        },
+        -- 無効化する診断を指定（空の場合は全て有効）
+        disabled = {},
+        -- 警告レベルの診断も表示
+        warningsAsHint = {},
+        warningsAsInfo = {},
+      },
+      -- インポート関連の診断を強化
+      checkOnSave = {
+        enable = true,
+        command = "clippy",
+        allTargets = true,
+      },
+    }
+  }
+})
+vim.lsp.enable('rust_analyzer')
 
