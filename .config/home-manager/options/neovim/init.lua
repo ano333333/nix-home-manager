@@ -277,8 +277,15 @@ vim.lsp.config['luals'] = {
     Lua = {
       runtime = {
         version = 'LuaJIT',
-      }
-    }
+      },
+      diagnostics = {
+        globals = { 'vim' },
+        undefined_globals = false,
+      },
+      workspace = {
+        library = vim.api.nvim_get_runtime_file("", true)
+      },
+    },
   },
 
   on_attach = function(client, bufnr)
