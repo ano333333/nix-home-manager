@@ -32,6 +32,10 @@ config.window_padding = {
   top = 0,
   bottom = 0,
 }
+-- Linuxではwindow_decorationsを出しており、ウィンドウを全画面にすると下が見切れるため
+if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
+  config.window_padding.bottom = 30
+end
 
 -- タブのタイトル更新時のイベントを拾い、アクティブなタブの背景色を変更する
 wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
