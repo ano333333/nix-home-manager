@@ -55,6 +55,8 @@ in {
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
       pkgs.python312Packages.pip
+
+      pkgs.alsa-utils
     ]
     # fonts
     ++ (import ./font.nix { inherit pkgs; })
