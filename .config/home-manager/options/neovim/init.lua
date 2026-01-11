@@ -71,6 +71,8 @@ opt.linebreak = true
 opt.showbreak = ">>>"
 -- シンタックスに基づいて折りたたみを設定する
 opt.foldmethod = "syntax"
+-- ファイルを開いた時に全てのfoldを展開する
+opt.foldlevelstart = 99
 
 -- ========================================
 -- HTML/XML 閉じタグ自動補完
