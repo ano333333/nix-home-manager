@@ -17,4 +17,5 @@ with pkgs.vimPlugins; [
   mason-nvim
   nvim-lspconfig
   mason-lspconfig-nvim
+  quicker-nvim
 ]

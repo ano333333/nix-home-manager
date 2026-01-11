@@ -39,6 +39,7 @@ in {
       pkgs.curl
       (import ./packages/asdf.nix { inherit pkgs; })
       pkgs.fzf
+      pkgs.ripgrep
       pkgs.deno
       pkgs.lazygit
       pkgs.delta

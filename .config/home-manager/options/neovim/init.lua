@@ -180,6 +180,49 @@ keymap.set("n", "<A-c>", "<Cmd>BufferClose<CR>", { noremap = true, silent = true
 require("nvim-autopairs").setup {}
 
 -- ========================================
+-- plugins(quicker.nvim)
+-- ========================================
+
+require("quicker").setup({
+  edit = {
+    -- Enable editing the quickfix like a normal buffer
+    enabled = true,
+    -- Set to true to write buffers after applying edits.
+    -- Set to "unmodified" to only write unmodified buffers.
+    autosave = true,
+  },
+  highlight = {
+    lsp = true,
+    load_buffers = false,
+  },
+  keys = {
+    {
+      ">",
+      function()
+        require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
+      end,
+      desc = "Expand quickfix context",
+    },
+    {
+      "<",
+      function()
+        require("quicker").collapse()
+      end,
+      desc = "Collapse quickfix context",
+    },
+  },
+})
+vim.o.grepprg = "rg --vimgrep --ignore-file=.gitignore --hidden --smart-case"
+vim.api.nvim_create_user_command(
+  "Grep",
+  function(opts)
+    vim.cmd("silent! grep! " .. opts.args)
+    vim.cmd("copen")
+  end,
+  { nargs = "+" }
+)
+
+-- ========================================
 -- plugins(LSP/Mason, lspconfig)
 -- ========================================
 
