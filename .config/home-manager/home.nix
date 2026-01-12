@@ -68,6 +68,8 @@ in {
     ++ (import ./font.nix { inherit pkgs; })
     # obsidian(mac only)
     ++ (if system == "aarch64-darwin" then [ pkgs.obsidian ] else [])
+    # kooha(ubuntu only)
+    ++ (if system == "x86_64-linux" then [ pkgs.kooha ] else [])
     ;
   };
 
