@@ -417,3 +417,45 @@ vim.lsp.config('rust_analyzer', {
 })
 vim.lsp.enable('rust_analyzer')
 
+-- ========================================
+-- plugins(LSP/vtsls, denols)
+-- ========================================
+
+vim.lsp.enable("htmx")
+
+vim.lsp.enable("vtsls")
+
+vim.lsp.config("denols", {
+  root_dir = function(bufnr, on_dir)
+    -- The project root is where the LSP can be started from
+    local root_markers = { 'deno.lock' }
+    local project_root = vim.fs.root(bufnr, root_markers)
+    -- consider "\" as *Deno* project root if bufnr has no deno.lock as its parent
+    project_root = not project_root and '\\' or project_root
+    -- exclude non-deno projects (npm, yarn, pnpm, bun)
+    local non_deno_path = vim.fs.root(
+      bufnr,
+      { 'package.json', 'package-lock.json', 'yarn.lock', 'pnpm-lock.yaml', 'bun.lockb', 'bun.lock' }
+    )
+    -- same trick as project_root
+    non_deno_path = not non_deno_path and '\\' or non_deno_path
+    if #non_deno_path >= #project_root then
+      return
+    end
+    -- We fallback to the current working directory if no project root is found
+    on_dir(project_root or vim.fn.getcwd())
+  end,
+})
+vim.lsp.enable("denols")
+
+-- only for svelte-language-server
+vim.lsp.config("ts_ls", {
+  root_markers = { "pacakge.json" },
+  filetypes = {
+    "svelte",
+  },
+})
+vim.lsp.enable("ts_ls")
+
+vim.lsp.enable("svelte")
+

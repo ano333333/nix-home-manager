@@ -18,4 +18,5 @@ with pkgs.vimPlugins; [
   nvim-lspconfig
   mason-lspconfig-nvim
   quicker-nvim
+  typescript-tools-nvim
 ]

@@ -52,6 +52,10 @@ in {
       pkgs.lua-language-server
       pkgs.gopls
       pkgs.rust-analyzer
+      pkgs.htmx-lsp
+      pkgs.typescript-language-server
+      pkgs.vtsls
+      pkgs.svelte-language-server
 
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
