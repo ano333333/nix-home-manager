@@ -4,6 +4,7 @@
   config,
   pkgs,
   system,
+  pkgs-claudecode,
   ...
 }: let 
   username = "ano3";
@@ -47,7 +48,7 @@ in {
       
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
-      pkgs.claude-code
+      pkgs-claudecode.claude-code
 
       pkgs.lua-language-server
       pkgs.gopls

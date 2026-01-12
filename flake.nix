@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/25.11";
+    nixpkgs-claudecode.url = "github:NixOS/nixpkgs/d1c2cd5033acedf3f29affd8d44e288107e95238";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,6 +24,7 @@
     nixgl,
     nixpkgs-darwin,
     nix-darwin,
+    nixpkgs-claudecode,
   } @ inputs: 
   
   let
@@ -59,6 +61,10 @@
       extraSpecialArgs = {
         inherit inputs;
         system = system;
+        pkgs-claudecode = import nixpkgs-claudecode {
+          system = system;
+          config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs-claudecode.lib.getName pkg) ["claude-code"];
+        };
       };
       modules = [
         ./.config/home-manager/home.nix
