@@ -259,6 +259,32 @@ keymap.set('i', '<c-x><c-m>', function()
   vim.lsp.completion.get()
 end)
 
+-- 診断の表示設定
+vim.diagnostic.config({
+  virtual_text = {
+    -- 診断メッセージをインラインで表示
+    spacing = 4,
+    source = "if_many",
+    prefix = "●",
+  },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = "✘",
+      [vim.diagnostic.severity.WARN] = "▲",
+      [vim.diagnostic.severity.HINT] = "⚑",
+      [vim.diagnostic.severity.INFO] = "»",
+    },
+  },
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+  -- フロートウィンドウで診断の詳細を表示
+  float = {
+    source = "if_many",
+    border = "rounded",
+  },
+})
+
 -- ========================================
 -- plugins(LSP/lua-language-server)
 -- ========================================
@@ -331,32 +357,6 @@ vim.lsp.enable('gopls')
 -- ========================================
 -- plugins(LSP/rust-analyzer)
 -- ========================================
-
--- 診断の表示設定
-vim.diagnostic.config({
-  virtual_text = {
-    -- 診断メッセージをインラインで表示
-    spacing = 4,
-    source = "if_many",
-    prefix = "●",
-  },
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = "✘",
-      [vim.diagnostic.severity.WARN] = "▲",
-      [vim.diagnostic.severity.HINT] = "⚑",
-      [vim.diagnostic.severity.INFO] = "»",
-    },
-  },
-  underline = true,
-  update_in_insert = false,
-  severity_sort = true,
-  -- フロートウィンドウで診断の詳細を表示
-  float = {
-    source = "always",
-    border = "rounded",
-  },
-})
 
 local on_attach = function(client, bufnr)
   vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
