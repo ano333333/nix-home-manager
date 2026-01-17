@@ -177,6 +177,29 @@ keymap.set("n", "<A-0>", "<Cmd>BufferLast<CR>", { noremap = true, silent = true 
 -- バッファを閉じる
 keymap.set("n", "<A-c>", "<Cmd>BufferClose<CR>", { noremap = true, silent = true })
 
+-- BufferCurrentの背景色を明るくして目立たせる
+vim.api.nvim_set_hl(0, 'BufferCurrent', {
+  fg = '#abb2bf',  -- 文字色
+  bg = '#3e4451',  -- 背景色
+  bold = true      -- 太字にする
+})
+
+vim.api.nvim_set_hl(0, 'BufferCurrentSign', {
+  fg = '#abb2bf',  -- 文字色
+  bg = '#3e4451',  -- 背景色
+  bold = true      -- 太字にする
+})
+
+vim.api.nvim_set_hl(0, 'BufferVisible', {
+  fg = '#5c6370',
+  bg = '#282c34'
+})
+
+vim.api.nvim_set_hl(0, 'BufferInactive', {
+  fg = '#5c6370',
+  bg = '#1c1f24'
+})
+
 require("nvim-autopairs").setup {}
 
 -- ========================================
