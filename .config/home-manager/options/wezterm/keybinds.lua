@@ -125,8 +125,13 @@ return {
     -- 独自イベント
     --
     -- Ctrl+Shift+Aで頭撫でを開始
+    -- Ctrl+Shift+Kでチートシートを開く
     -- ========================================
     { key = 'A',          mods = 'CTRL',       action = act.EmitEvent 'nekotyan:headpat-start' },
+    { key = 'K', mods = 'SHIFT|CTRL', action = wezterm.action_callback(function(window, _)
+      local cheatsheet = require './cheatsheet'
+      cheatsheet.ToggleCheatsheet(window)
+    end) },
 
     -- ========================================
     -- その他
@@ -134,8 +139,6 @@ return {
     { key = 'Enter',      mods = 'ALT',        action = act.ToggleFullScreen },
     { key = 'F',          mods = 'CTRL',       action = act.Search 'CurrentSelectionOrEmptyString' },
     { key = 'F',          mods = 'SHIFT|CTRL', action = act.Search 'CurrentSelectionOrEmptyString' },
-    { key = 'K',          mods = 'CTRL',       action = act.ClearScrollback 'ScrollbackOnly' },
-    { key = 'K',          mods = 'SHIFT|CTRL', action = act.ClearScrollback 'ScrollbackOnly' },
     { key = 'L',          mods = 'CTRL',       action = act.ShowDebugOverlay },
     { key = 'L',          mods = 'SHIFT|CTRL', action = act.ShowDebugOverlay },
     { key = 'M',          mods = 'CTRL',       action = act.Hide },
@@ -152,8 +155,6 @@ return {
     { key = '_',          mods = 'SHIFT|CTRL', action = act.DecreaseFontSize },
     { key = 'f',          mods = 'SHIFT|CTRL', action = act.Search 'CurrentSelectionOrEmptyString' },
     { key = 'f',          mods = 'SUPER',      action = act.Search 'CurrentSelectionOrEmptyString' },
-    { key = 'k',          mods = 'SHIFT|CTRL', action = act.ClearScrollback 'ScrollbackOnly' },
-    { key = 'k',          mods = 'SUPER',      action = act.ClearScrollback 'ScrollbackOnly' },
     { key = 'l',          mods = 'SHIFT|CTRL', action = act.ShowDebugOverlay },
     { key = 'm',          mods = 'SHIFT|CTRL', action = act.Hide },
     { key = 'm',          mods = 'SUPER',      action = act.Hide },

@@ -145,6 +145,8 @@ in {
   home.file.".config/wezterm/nekotyan/image-headpat-right.png".source = ./options/wezterm/nekotyan/image-headpat-right.png;
   home.file.".config/wezterm/nekotyan/image-headpat-finished-1.png".source = ./options/wezterm/nekotyan/image-headpat-finished-1.png;
   home.file.".config/wezterm/nekotyan/image-headpat-finished-2.png".source = ./options/wezterm/nekotyan/image-headpat-finished-2.png;
+  # cheatsheet
+  home.file.".config/wezterm/cheatsheet.lua".source = ./options/wezterm/cheatsheet.lua;
 
   # ghostty config
   home.file.".config/ghostty/config".source = ./options/ghostty;
