@@ -49,7 +49,7 @@ opt.tabstop     = 2
 -- シフト幅
 opt.shiftwidth  = 2
 -- 全角文字
-opt.ambiwidth   = "double"
+opt.ambiwidth   = "single"
 -- シンタックスハイライト
 vim.cmd("syntax on")
 -- 対応するカッコやブレースを表示 + 時間

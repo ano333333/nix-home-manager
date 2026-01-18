@@ -22,9 +22,9 @@ end
 
 -- Linux + Waylandでウィンドウの移動やリサイズが出来ない問題の対応
 -- see: https://github.com/wezterm/wezterm/pull/6923#issuecomment-2848766442
-if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
-  config.window_decorations = 'RESIZE'
-end
+-- if wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
+--   config.window_decorations = 'RESIZE'
+-- end
 
 config.initial_cols = 80
 config.window_padding = {
