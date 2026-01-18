@@ -65,13 +65,13 @@ in {
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
       pkgs.python312Packages.pip
-
-      pkgs.alsa-utils
     ]
     # fonts
     ++ (import ./font.nix { inherit pkgs; })
     # obsidian(mac only)
     ++ (if system == "aarch64-darwin" then [ pkgs.obsidian ] else [])
+    # alsa-utils for aplay command(ubuntu only)
+    ++ (if system == "x86_64-linux" then [ pkgs.alsa-utils ] else [])
     # kooha(ubuntu only)
     ++ (if system == "x86_64-linux" then [ pkgs.kooha ] else [])
     ;
