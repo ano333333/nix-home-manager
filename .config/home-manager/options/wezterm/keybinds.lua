@@ -125,13 +125,25 @@ return {
     -- 独自イベント
     --
     -- Ctrl+Shift+Aで頭撫でを開始
-    -- Ctrl+Shift+Kでチートシートを開く
+    -- Ctrl+Shift+k/SUPER+kでチートシートを開く
     -- ========================================
     { key = 'A',          mods = 'CTRL',       action = act.EmitEvent 'nekotyan:headpat-start' },
-    { key = 'K', mods = 'SHIFT|CTRL', action = wezterm.action_callback(function(window, _)
-      local cheatsheet = require './cheatsheet'
-      cheatsheet.ToggleCheatsheet(window)
-    end) },
+    {
+      key = 'K',
+      mods = 'SHIFT|CTRL',
+      action = wezterm.action_callback(function(window, _)
+        local cheatsheet = require './cheatsheet'
+        cheatsheet.ToggleCheatsheet(window)
+      end)
+    },
+    {
+      key = 'k',
+      mods = 'SUPER',
+      action = wezterm.action_callback(function(window, _)
+        local cheatsheet = require './cheatsheet'
+        cheatsheet.ToggleCheatsheet(window)
+      end)
+    },
 
     -- ========================================
     -- その他
