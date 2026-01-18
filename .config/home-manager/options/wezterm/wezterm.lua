@@ -6,7 +6,7 @@ config.automatically_reload_config = true
 
 config.color_scheme = 'Calamity'
 
-config.font_size = 12.0
+config.font_size = 10.0
 config.font = wezterm.font 'HackGen Console NF'
 
 -- disable ligatures
