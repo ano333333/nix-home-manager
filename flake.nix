@@ -2,6 +2,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/25.11";
     nixpkgs-claudecode.url = "github:NixOS/nixpkgs/d1c2cd5033acedf3f29affd8d44e288107e95238";
+    # for yazi version 26.1.4
+    nixpkgs-yazi.url = "github:NixOS/nixpkgs/a56cd57f820aff743ba6aaa7894f88ed77f085a9";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,6 +27,7 @@
     nixpkgs-darwin,
     nix-darwin,
     nixpkgs-claudecode,
+    nixpkgs-yazi,
   } @ inputs: 
   
   let
@@ -64,6 +67,9 @@
         pkgs-claudecode = import nixpkgs-claudecode {
           system = system;
           config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs-claudecode.lib.getName pkg) ["claude-code"];
+        };
+        pkgs-yazi = import nixpkgs-yazi {
+          system = system;
         };
       };
       modules = [

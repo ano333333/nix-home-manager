@@ -5,6 +5,7 @@
   pkgs,
   system,
   pkgs-claudecode,
+  pkgs-yazi,
   ...
 }: let 
   username = "ano3";
@@ -12,7 +13,10 @@
 
   gitignoreAi = pkgs.writeText "~/.gitconfig.ai" builtins.readFile ./options/.gitignore.ai;
 
-  neovimPlugins = (import ./packages/neovim-plugins.nix { inherit pkgs; });
+  neovimPlugins = (import ./packages/neovim-plugins.nix {
+    inherit pkgs;
+    inherit pkgs-yazi;
+  });
 
   # pkgをx86_64-linuxの場合のみNixGLでラップする
   wrapNixGLWrapper = pkg: (
@@ -147,6 +151,30 @@ in {
   home.file.".config/wezterm/nekotyan/image-headpat-finished-2.png".source = ./options/wezterm/nekotyan/image-headpat-finished-2.png;
   # cheatsheet
   home.file.".config/wezterm/cheatsheet.lua".source = ./options/wezterm/cheatsheet.lua;
+
+  # yazi
+  programs.yazi = {
+    enable = true;
+    enableZshIntegration = true;
+    initLua = ./options/yazi/init.lua;
+    keymap = {
+      mgr.prepend_keymap = [
+        { on = [ "<C-c>" ]; run = "escape --all"; }
+        { on = [ "<F2>" ]; run = "rename"; }
+        { on = [ "<S-4>" ]; run = "copy path"; }
+        { on = [ "<C-f>" ]; run = "find --smart"; }
+        { on = [ "<C-d>" ]; run = "plugin diff"; }
+        { on = [ "g" "i" ]; run = "plugin lazygit"; }
+      ];
+    };
+    package = pkgs-yazi.yazi;
+    plugins = with pkgs-yazi.yaziPlugins; {
+      git = git;
+      diff = diff;
+      lazygit = lazygit;
+    };
+  };
+  home.file.".config/yazi/yazi.toml".source = ./options/yazi/yazi.toml;
 
   # ghostty config
   home.file.".config/ghostty/config".source = ./options/ghostty;

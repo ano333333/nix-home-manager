@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgs-yazi,
   ...
 }: 
 with pkgs.vimPlugins; [
@@ -19,4 +20,7 @@ with pkgs.vimPlugins; [
   mason-lspconfig-nvim
   quicker-nvim
   typescript-tools-nvim
-]
+] ++
+(with pkgs-yazi.vimPlugins; [
+  yazi-nvim
+])

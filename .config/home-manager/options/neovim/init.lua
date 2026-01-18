@@ -246,6 +246,13 @@ vim.api.nvim_create_user_command(
 )
 
 -- ========================================
+-- plugins(yazi.nvim)
+-- ========================================
+keymap.set("n", "Y", function()
+  vim.cmd("Yazi")
+end)
+
+-- ========================================
 -- plugins(LSP/Mason, lspconfig)
 -- ========================================
 
