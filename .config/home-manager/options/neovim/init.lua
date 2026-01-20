@@ -259,7 +259,16 @@ end)
 require("mason").setup()
 require("mason-lspconfig").setup()
 
-vim.cmd [[set completeopt+=menuone,noselect,popup]]
+-- 補完オプションの設定
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+vim.opt.pumheight = 15  -- ポップアップメニューの最大高さ
+vim.opt.shortmess:append('c')  -- 補完メッセージを短くする
+
+-- 補完の動作を設定
+vim.lsp.completion.default_config = {
+  -- 文字を入力したときに補完候補を自動的にフィルタリング
+  filter_completions = true,
+}
 
 keymap.set('n', 'H', function()
   vim.lsp.buf.hover()
@@ -285,9 +294,50 @@ end)
 keymap.set('n', 'ga', function()
   vim.lsp.buf.code_action()
 end)
-keymap.set('i', '<c-x><c-m>', function()
-  vim.lsp.completion.get()
-end)
+-- Ctrl+Space で LSP 補完をトリガー
+-- 入力した文字列で自動的にフィルタリングされる
+keymap.set('i', '<C-Space>', '<C-x><C-o>', { noremap = true, silent = true })
+
+-- 補完候補の選択
+-- Ctrl+j で次の候補、Ctrl+k で前の候補
+-- pumvisible(): ポップアップメニュー（補完候補リスト）が表示されているかを確認する関数
+--   戻り値: 1 = 表示中, 0 = 非表示
+keymap.set('i', '<C-j>', function()
+  -- 補完メニューが表示されている場合は次の候補へ移動
+  if vim.fn.pumvisible() == 1 then
+    return '<C-n>'
+  else
+    -- 補完メニューが表示されていない場合は通常のCtrl+jの動作
+    return '<C-j>'
+  end
+end, { expr = true, noremap = true, silent = true })
+
+keymap.set('i', '<C-k>', function()
+  -- 補完メニューが表示されている場合は前の候補へ移動
+  if vim.fn.pumvisible() == 1 then
+    return '<C-p>'
+  else
+    -- 補完メニューが表示されていない場合は通常のCtrl+kの動作
+    return '<C-k>'
+  end
+end, { expr = true, noremap = true, silent = true })
+
+-- 補完メニューの動作をカスタマイズ
+vim.api.nvim_create_autocmd('CompleteDone', {
+  callback = function()
+    -- 補完完了後の処理（必要に応じて）
+  end,
+})
+
+-- Insert モードでの文字入力時に補完候補を自動的にフィルタリング
+vim.api.nvim_create_autocmd('TextChangedI', {
+  callback = function()
+    if vim.fn.pumvisible() == 1 then
+      -- ポップアップメニューが表示されている場合、
+      -- 入力に応じて候補をフィルタリング（Neovim 0.11では自動）
+    end
+  end,
+})
 
 -- 診断の表示設定
 vim.diagnostic.config({
@@ -345,6 +395,10 @@ vim.lsp.config['luals'] = {
   },
 
   on_attach = function(client, bufnr)
+    -- omnifunc を設定して、<C-x><C-o> で補完できるようにする
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+    -- 新しいLSP補完APIも有効にする（自動トリガー用）
     vim.lsp.completion.enable(true, client.id, bufnr, {
       autotrigger = true,
       convert = function(item)
@@ -377,6 +431,10 @@ vim.lsp.config['gopls'] = {
   },
 
   on_attach = function(client, bufnr)
+    -- omnifunc を設定して、<C-x><C-o> で補完できるようにする
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+    -- 新しいLSP補完APIも有効にする（自動トリガー用）
     vim.lsp.completion.enable(true, client.id, bufnr, {
       autotrigger = true,
     })
@@ -389,6 +447,9 @@ vim.lsp.enable('gopls')
 -- ========================================
 
 local on_attach = function(client, bufnr)
+  -- omnifunc を設定して、<C-x><C-o> で補完できるようにする
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
   vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
   vim.lsp.completion.enable(true, client.id, bufnr, {
     autotrigger = true,
