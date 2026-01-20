@@ -62,6 +62,8 @@ in {
       pkgs.typescript-language-server
       pkgs.vtsls
       pkgs.svelte-language-server
+      pkgs.nil
+      pkgs.nixfmt-classic
 
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312

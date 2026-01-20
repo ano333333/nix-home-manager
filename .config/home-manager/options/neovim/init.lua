@@ -509,6 +509,32 @@ vim.lsp.config('rust_analyzer', {
 vim.lsp.enable('rust_analyzer')
 
 -- ========================================
+-- plugins(LSP/nil_ls for nix)
+-- ========================================
+
+vim.lsp.config['nil_ls'] = {
+  cmd = { 'nil' },
+  filetypes = { 'nix' },
+  root_markers = { 'flake.nix', 'flake.lock', '.git' },
+
+  settings = {
+    ['nil'] = {
+      formatting = {
+        command = { "nixfmt" },
+      },
+    },
+  },
+
+  on_attach = function(client, bufnr)
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+    vim.lsp.completion.enable(true, client.id, bufnr, {
+      autotrigger = true,
+    })
+  end,
+}
+vim.lsp.enable('nil_ls')
+
+-- ========================================
 -- plugins(LSP/vtsls, denols)
 -- ========================================
 
