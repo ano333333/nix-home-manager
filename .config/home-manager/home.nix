@@ -49,6 +49,7 @@ in {
       pkgs.lazygit
       pkgs.delta
       (wrapNixGLWrapper pkgs.wezterm)
+      pkgs.zoxide
       
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor

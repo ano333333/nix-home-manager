@@ -37,3 +37,7 @@ fi
 
 # wezterm shell integration
 source "$HOME/.config/wezterm/wezterm.sh"
+
+# enable zoxide
+eval "$(zoxide init zsh)"
+
