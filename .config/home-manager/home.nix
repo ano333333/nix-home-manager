@@ -42,7 +42,7 @@ in {
     packages = [
       pkgs.git
       pkgs.curl
-      (import ./packages/asdf.nix { inherit pkgs; })
+      (import ./packages/asdf.nix { inherit pkgs; inherit system; })
       pkgs.fzf
       pkgs.ripgrep
       pkgs.deno
