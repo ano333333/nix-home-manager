@@ -21,6 +21,7 @@ with pkgs.vimPlugins; [
   quicker-nvim
   typescript-tools-nvim
   comment-nvim
+  vim-sandwich
 ] ++
 (with pkgs-yazi.vimPlugins; [
   yazi-nvim
