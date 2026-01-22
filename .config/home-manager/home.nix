@@ -124,6 +124,7 @@ in {
   programs.starship = import ./options/starship.nix;
 
   programs.neovim = import ./options/neovim/neovim.nix { inherit neovimPlugins; };
+  home.file.".config/nvim/lua/lsp.lua".source = ./options/neovim/lua/lsp.lua;
 
   programs.delta = {
     enable = true;
