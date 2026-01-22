@@ -203,6 +203,11 @@ vim.api.nvim_set_hl(0, 'BufferInactive', {
 require("nvim-autopairs").setup {}
 
 -- ========================================
+-- plugins(Comment.nvim)
+-- ========================================
+require('Comment').setup()
+
+-- ========================================
 -- plugins(quicker.nvim)
 -- ========================================
 

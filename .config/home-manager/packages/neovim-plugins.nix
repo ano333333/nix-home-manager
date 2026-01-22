@@ -20,6 +20,7 @@ with pkgs.vimPlugins; [
   mason-lspconfig-nvim
   quicker-nvim
   typescript-tools-nvim
+  comment-nvim
 ] ++
 (with pkgs-yazi.vimPlugins; [
   yazi-nvim
