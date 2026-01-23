@@ -1,7 +1,7 @@
 local M = {}
 
 function M.initLsp()
-  local keymap    = vim.keymap
+  local keymap = vim.keymap
   -- ========================================
   -- plugins(LSP/Mason, lspconfig)
   -- ========================================
@@ -11,8 +11,8 @@ function M.initLsp()
 
   -- 補完オプションの設定
   vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
-  vim.opt.pumheight = 15  -- ポップアップメニューの最大高さ
-  vim.opt.shortmess:append('c')  -- 補完メッセージを短くする
+  vim.opt.pumheight = 15        -- ポップアップメニューの最大高さ
+  vim.opt.shortmess:append('c') -- 補完メッセージを短くする
 
   -- 補完の動作を設定
   vim.lsp.completion.default_config = {
@@ -325,8 +325,6 @@ function M.initLsp()
   vim.lsp.enable("ts_ls")
 
   vim.lsp.enable("svelte")
-
 end
 
 return M
-

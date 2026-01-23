@@ -96,4 +96,3 @@ function M.initTreesitter()
 end
 
 return M
-

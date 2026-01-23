@@ -179,15 +179,15 @@ keymap.set("n", "<A-c>", "<Cmd>BufferClose<CR>", { noremap = true, silent = true
 
 -- BufferCurrentの背景色を明るくして目立たせる
 vim.api.nvim_set_hl(0, 'BufferCurrent', {
-  fg = '#abb2bf',  -- 文字色
-  bg = '#3e4451',  -- 背景色
-  bold = true      -- 太字にする
+  fg = '#abb2bf', -- 文字色
+  bg = '#3e4451', -- 背景色
+  bold = true     -- 太字にする
 })
 
 vim.api.nvim_set_hl(0, 'BufferCurrentSign', {
-  fg = '#abb2bf',  -- 文字色
-  bg = '#3e4451',  -- 背景色
-  bold = true      -- 太字にする
+  fg = '#abb2bf', -- 文字色
+  bg = '#3e4451', -- 背景色
+  bold = true     -- 太字にする
 })
 
 vim.api.nvim_set_hl(0, 'BufferVisible', {
@@ -270,4 +270,3 @@ lsp.initLsp()
 
 local treesitter = require './treesitter'
 treesitter.initTreesitter()
-
