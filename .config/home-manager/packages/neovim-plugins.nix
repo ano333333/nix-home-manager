@@ -36,6 +36,7 @@ with pkgs.vimPlugins; [
   nvim-treesitter-textobjects
   nvim-treesitter-context
   rainbow-delimiters-nvim
+  indent-blankline-nvim
 ] ++
 (with pkgs-yazi.vimPlugins; [
   yazi-nvim
