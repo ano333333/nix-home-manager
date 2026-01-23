@@ -35,6 +35,7 @@ with pkgs.vimPlugins; [
   ]))
   nvim-treesitter-textobjects
   nvim-treesitter-context
+  rainbow-delimiters-nvim
 ] ++
 (with pkgs-yazi.vimPlugins; [
   yazi-nvim

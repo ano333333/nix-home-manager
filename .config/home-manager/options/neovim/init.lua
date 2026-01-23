@@ -313,6 +313,27 @@ require('treesitter-context').setup {
 }
 
 -- ========================================
+-- plugins(rainbow-delimiters.nvim)
+-- ========================================
+g.rainbow_delimiters = {
+  strategy = {
+    [''] = require('rainbow-delimiters').strategy['global'],
+  },
+  query = {
+    [''] = 'rainbow-delimiters',
+  },
+  highlight = {
+    'RainbowDelimiterRed',
+    'RainbowDelimiterYellow',
+    'RainbowDelimiterBlue',
+    'RainbowDelimiterOrange',
+    'RainbowDelimiterGreen',
+    'RainbowDelimiterViolet',
+    'RainbowDelimiterCyan',
+  },
+}
+
+-- ========================================
 -- plugins(LSPをlsp.luaから読み込み)
 -- ========================================
 
