@@ -304,6 +304,15 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- ========================================
+-- plugins(nvim-treesitter-context)
+-- ========================================
+require('treesitter-context').setup {
+  enable = true,
+  max_lines = 0,
+  mode = 'cursor',
+}
+
+-- ========================================
 -- plugins(LSPをlsp.luaから読み込み)
 -- ========================================
 
