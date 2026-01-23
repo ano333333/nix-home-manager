@@ -33,6 +33,7 @@ with pkgs.vimPlugins; [
     p.html
     p.svelte
   ]))
+  nvim-treesitter-textobjects
 ] ++
 (with pkgs-yazi.vimPlugins; [
   yazi-nvim
