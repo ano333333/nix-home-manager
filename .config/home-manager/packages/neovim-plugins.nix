@@ -2,7 +2,7 @@
   pkgs,
   pkgs-yazi,
   ...
-}: 
+}:
 with pkgs.vimPlugins; [
   vim-airline
   vim-airline-themes
@@ -22,6 +22,17 @@ with pkgs.vimPlugins; [
   typescript-tools-nvim
   comment-nvim
   vim-sandwich
+  (nvim-treesitter.withPlugins (p: [
+    p.lua
+    p.go
+    p.rust
+    p.nix
+    p.typescript
+    p.javascript
+    p.tsx
+    p.html
+    p.svelte
+  ]))
 ] ++
 (with pkgs-yazi.vimPlugins; [
   yazi-nvim

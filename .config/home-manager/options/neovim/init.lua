@@ -258,6 +258,26 @@ keymap.set("n", "Y", function()
 end)
 
 -- ========================================
+-- plugins(nvim-treesitter)
+-- ========================================
+require('nvim-treesitter.configs').setup {
+  -- 自動インストールを無効化（Nixで宣言的に管理）
+  auto_install = false,
+
+  -- シンタックスハイライトを有効化
+  highlight = {
+    enable = true,
+    -- Vimのシンタックスを無効化（Treesitterを優先）
+    additional_vim_regex_highlighting = false,
+  },
+
+  -- インデントを有効化
+  indent = {
+    enable = true,
+  },
+}
+
+-- ========================================
 -- plugins(LSPをlsp.luaから読み込み)
 -- ========================================
 
