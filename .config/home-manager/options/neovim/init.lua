@@ -339,6 +339,17 @@ g.rainbow_delimiters = {
 require("ibl").setup()
 
 -- ========================================
+-- plugins(nvim-ts-autotag)
+-- ========================================
+require('nvim-ts-autotag').setup({
+  opts = {
+    enable_close = true,
+    enable_rename = true,
+    enable_close_on_slash = false,
+  },
+})
+
+-- ========================================
 -- plugins(LSPをlsp.luaから読み込み)
 -- ========================================
 
