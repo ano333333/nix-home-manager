@@ -38,6 +38,7 @@ with pkgs.vimPlugins; [
   rainbow-delimiters-nvim
   indent-blankline-nvim
   nvim-ts-autotag
+  blink-cmp
 ] ++
 (with pkgs-yazi.vimPlugins; [
   yazi-nvim

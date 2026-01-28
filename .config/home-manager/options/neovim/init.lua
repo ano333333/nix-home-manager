@@ -253,9 +253,38 @@ vim.api.nvim_create_user_command(
 -- ========================================
 -- plugins(yazi.nvim)
 -- ========================================
+
 keymap.set("n", "Y", function()
   vim.cmd("Yazi")
 end)
+
+-- ========================================
+-- plugins(blink.cmp)
+-- ========================================
+
+require('blink.cmp').setup({
+  -- キーマップの設定
+  keymap = {
+    preset = 'default',
+    ['<Tab>'] = { 'snippet_forward', 'fallback', 'accept', 'fallback' },
+  },
+  completion = {
+    ghost_text = {
+      enabled = true,
+    },
+    menu = {
+      draw = {
+        columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
+      },
+    },
+  },
+  sources = {
+    default = { 'lsp', 'path', 'snippets', 'buffer' },
+  },
+  appearance = {
+    use_nvim_cmp_as_default = false,
+  },
+})
 
 -- ========================================
 -- plugins(LSPをlsp.luaから読み込み)
@@ -270,3 +299,4 @@ lsp.initLsp()
 
 local treesitter = require './treesitter'
 treesitter.initTreesitter()
+

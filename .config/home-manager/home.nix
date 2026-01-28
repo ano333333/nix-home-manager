@@ -54,6 +54,7 @@ in {
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
       pkgs-claudecode.claude-code
+      pkgs.lsp-ai
 
       pkgs.lua-language-server
       pkgs.gopls

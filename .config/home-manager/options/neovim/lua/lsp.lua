@@ -325,6 +325,36 @@ function M.initLsp()
   vim.lsp.enable("ts_ls")
 
   vim.lsp.enable("svelte")
+
+  -- ========================================
+  -- plugins(LSP/lsp-ai)
+  -- (https://github.com/SilasMarvin/lsp-ai/wiki/Configuration)
+  -- ========================================
+
+  vim.lsp.config("lsp_ai", {
+    filetypes = {
+      "nix", "lua", "javascript", "typescript",
+      "css", "html", "json"
+    },
+    init_options = {
+      models = {
+        model1 = {
+          type = "ollama",
+          model = "qwen2.5-coder:7b",
+        },
+      },
+      completion = {
+        model = "model1",
+        parameters = {
+          max_context = 1800,
+          options = {
+            num_predict = 50,
+          },
+        },
+      },
+    },
+  })
+  vim.lsp.enable("lsp_ai")
 end
 
 return M
