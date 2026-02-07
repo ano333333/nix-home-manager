@@ -67,6 +67,11 @@ in {
       pkgs.nil
       pkgs.nixfmt-classic
 
+      pkgs.stylua
+      pkgs.gofumpt
+      pkgs.gotools # for goimports
+      pkgs.nodePackages.prettier
+
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
       pkgs.python312Packages.pip
