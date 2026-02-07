@@ -35,6 +35,7 @@ with pkgs.vimPlugins; [
   nvim-ts-autotag
   blink-cmp
   trouble-nvim
+  conform-nvim
 ] ++
 (with pkgs-yazi.vimPlugins; [
   yazi-nvim

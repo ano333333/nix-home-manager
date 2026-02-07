@@ -278,6 +278,13 @@ local lsp = require './lsp'
 lsp.initLsp()
 
 -- ========================================
+-- plugins(conform.nvim)
+-- ========================================
+
+local conform = require './conform-config'
+conform.initConform()
+
+-- ========================================
 -- plugins(Treesitterとプラグインをtreesitter.luaから読み込み)
 -- ========================================
 
