@@ -39,6 +39,7 @@ with pkgs.vimPlugins; [
   indent-blankline-nvim
   nvim-ts-autotag
   blink-cmp
+  trouble-nvim
 ] ++
 (with pkgs-yazi.vimPlugins; [
   yazi-nvim

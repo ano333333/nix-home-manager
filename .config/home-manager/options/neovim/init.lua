@@ -300,3 +300,40 @@ lsp.initLsp()
 local treesitter = require './treesitter'
 treesitter.initTreesitter()
 
+-- ========================================
+-- plugins(trouble.nvim)
+-- ========================================
+
+require('trouble').setup({
+  opts= {},
+  cmd = "Trouble",
+  modes = {
+    diagnostics_window = {
+      mode = "diagnostics",
+      preview = {
+        type = "split",
+        relative = "win",
+        position = "right",
+        size = 0.3,
+      },
+      focus = true,
+      pinned = true,
+    },
+    diagnostics_buffer_window = {
+      mode = "diagnostics",
+      filter = { buf = 0 },
+      preview = {
+        type = "split",
+        relative = "win",
+        position = "right",
+        size = 0.3,
+      },
+      focus = true,
+      pinned = true,
+    },
+  },
+})
+
+keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics_window<cr>", { noremap = true, silent = true, desc = "Diagnostics (Trouble)" })
+keymap.set("n", "<leader>xX", "<cmd>Trouble diagnostics_buffer_window<cr>", { noremap = true, silent = true, desc = "Buffer Diagnostics (Trouble)" })
+
