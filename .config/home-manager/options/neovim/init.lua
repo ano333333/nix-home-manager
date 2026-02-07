@@ -139,25 +139,6 @@ require("lualine").setup({
 })
 
 -- ========================================
--- plugins(nerdtree)
--- ========================================
-
--- <leader>n で NERDTree にフォーカス
-keymap.set("n", "<leader>n", ":NERDTreeFocus<CR>", { noremap = true, silent = true })
-
--- <C-t> で NERDTree をトグル
-keymap.set("n", "<C-t>", ":NERDTreeToggle<CR>", { noremap = true, silent = true })
-
--- ========================================
--- plugins(nerdtree-git-plugin)
--- ========================================
--- nerdfonts の predefined map を使う
-g.NERDTreeGitStatusUseNerdFonts = 1
--- ignored ファイルを表示する
--- (元の設定は Staatus と typo があったので Status に直しています)
-g.NERDTreeGitStatusShowIgnored = 1
-
--- ========================================
 -- plugins(barbar.nvim)
 -- ========================================
 

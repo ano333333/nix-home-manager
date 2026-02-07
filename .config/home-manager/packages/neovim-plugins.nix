@@ -8,8 +8,6 @@ with pkgs.vimPlugins; [
   vim-devicons
   fzf-lua
   gitsigns-nvim
-  nerdtree
-  nerdtree-git-plugin
   tint-nvim
   nvim-web-devicons
   barbar-nvim
