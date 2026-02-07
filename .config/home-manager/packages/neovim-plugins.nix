@@ -12,9 +12,7 @@ with pkgs.vimPlugins; [
   nvim-web-devicons
   barbar-nvim
   nvim-autopairs
-  mason-nvim
   nvim-lspconfig
-  mason-lspconfig-nvim
   quicker-nvim
   typescript-tools-nvim
   comment-nvim

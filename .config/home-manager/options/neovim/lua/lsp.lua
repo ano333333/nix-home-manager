@@ -3,11 +3,8 @@ local M = {}
 function M.initLsp()
   local keymap = vim.keymap
   -- ========================================
-  -- plugins(LSP/Mason, lspconfig)
+  -- plugins(LSP/lspconfig)
   -- ========================================
-
-  require("mason").setup()
-  require("mason-lspconfig").setup()
 
   -- 補完オプションの設定
   vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
