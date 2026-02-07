@@ -15,11 +15,10 @@ function M.initConform()
       -- Nix
       nix = { "nixfmt" },
 
-      -- JavaScript/TypeScript
-      javascript = { "prettier" },
-      typescript = { "prettier" },
-      javascriptreact = { "prettier" },
-      typescriptreact = { "prettier" },
+      javascript = { "biome", "prettier" },
+      typescript = { "biome", "prettier" },
+      javascriptreact = { "biome", "prettier" },
+      typescriptreact = { "biome", "prettier" },
 
       -- Svelte
       svelte = { "prettier" },

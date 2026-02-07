@@ -63,6 +63,7 @@ in {
       pkgs.gofumpt
       pkgs.gotools # for goimports
       pkgs.nodePackages.prettier
+      pkgs.biome
 
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
