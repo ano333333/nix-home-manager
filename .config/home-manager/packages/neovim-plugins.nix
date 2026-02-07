@@ -4,8 +4,7 @@
   ...
 }:
 with pkgs.vimPlugins; [
-  vim-airline
-  vim-airline-themes
+  lualine-nvim
   vim-devicons
   fzf-lua
   vim-gitgutter

@@ -129,11 +129,14 @@ end, {})
 vim.cmd("filetype plugin indent on")
 
 -- ========================================
--- plugins(airline)
+-- plugins(lualine)
 -- ========================================
-g.airline_theme = "solarized"
-g.airline_solarized_bg = "dark"
-g.airline_powerline_fonts = 1
+
+require("lualine").setup({
+  options = {
+    theme = "solarized",
+  },
+})
 
 -- ========================================
 -- plugins(nerdtree)
