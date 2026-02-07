@@ -7,7 +7,7 @@ with pkgs.vimPlugins; [
   lualine-nvim
   vim-devicons
   fzf-lua
-  vim-gitgutter
+  gitsigns-nvim
   nerdtree
   nerdtree-git-plugin
   tint-nvim
