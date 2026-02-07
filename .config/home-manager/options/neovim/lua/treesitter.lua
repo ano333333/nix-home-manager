@@ -5,7 +5,7 @@ function M.initTreesitter()
   -- ========================================
   -- plugins(nvim-treesitter)
   -- ========================================
-  require('nvim-treesitter.configs').setup {
+  require("nvim-treesitter.configs").setup({
     -- 自動インストールを無効化（Nixで宣言的に管理）
     auto_install = false,
 
@@ -46,35 +46,35 @@ function M.initTreesitter()
         },
       },
     },
-  }
+  })
 
   -- ========================================
   -- plugins(nvim-treesitter-context)
   -- ========================================
-  require('treesitter-context').setup {
+  require("treesitter-context").setup({
     enable = true,
     max_lines = 0,
-    mode = 'cursor',
-  }
+    mode = "cursor",
+  })
 
   -- ========================================
   -- plugins(rainbow-delimiters.nvim)
   -- ========================================
   g.rainbow_delimiters = {
     strategy = {
-      [''] = require('rainbow-delimiters').strategy['global'],
+      [""] = require("rainbow-delimiters").strategy["global"],
     },
     query = {
-      [''] = 'rainbow-delimiters',
+      [""] = "rainbow-delimiters",
     },
     highlight = {
-      'RainbowDelimiterRed',
-      'RainbowDelimiterYellow',
-      'RainbowDelimiterBlue',
-      'RainbowDelimiterOrange',
-      'RainbowDelimiterGreen',
-      'RainbowDelimiterViolet',
-      'RainbowDelimiterCyan',
+      "RainbowDelimiterRed",
+      "RainbowDelimiterYellow",
+      "RainbowDelimiterBlue",
+      "RainbowDelimiterOrange",
+      "RainbowDelimiterGreen",
+      "RainbowDelimiterViolet",
+      "RainbowDelimiterCyan",
     },
   }
 
@@ -86,7 +86,7 @@ function M.initTreesitter()
   -- ========================================
   -- plugins(nvim-ts-autotag)
   -- ========================================
-  require('nvim-ts-autotag').setup({
+  require("nvim-ts-autotag").setup({
     opts = {
       enable_close = true,
       enable_rename = true,

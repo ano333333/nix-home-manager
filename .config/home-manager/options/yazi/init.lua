@@ -9,4 +9,3 @@ th.git.deleted_sign = "D"
 th.git.updated_sign = "C"
 
 require("git"):setup()
-

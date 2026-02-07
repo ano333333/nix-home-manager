@@ -1,33 +1,33 @@
 -- ========================================
 -- 基本オプション
 -- ========================================
-local opt       = vim.opt
-local g         = vim.g
-local keymap    = vim.keymap
+local opt = vim.opt
+local g = vim.g
+local keymap = vim.keymap
 
 -- wildmenu
-opt.wildmenu    = true
+opt.wildmenu = true
 
 -- クリップボード連携
-opt.clipboard   = "unnamedplus"
+opt.clipboard = "unnamedplus"
 
 -- マウスサポート
-opt.mouse       = "a"
+opt.mouse = "a"
 
 -- 分割方向
-opt.splitbelow  = true
-opt.splitright  = true
+opt.splitbelow = true
+opt.splitright = true
 
 -- スワップファイル無効
-opt.swapfile    = false
+opt.swapfile = false
 
 -- ----------------------------------------
 -- insert mode / インデントまわり
 -- ----------------------------------------
 -- タブをスペースに展開
-opt.expandtab   = true
+opt.expandtab = true
 -- バックスペース削除
-opt.backspace   = { "indent", "eol", "start" }
+opt.backspace = { "indent", "eol", "start" }
 
 -- ----------------------------------------
 -- virtual edit
@@ -39,17 +39,17 @@ opt.virtualedit = "block"
 -- 表示
 -- ----------------------------------------
 -- 行番号表示
-opt.number      = true
+opt.number = true
 -- 現在の行をハイライトする
-opt.cursorline  = true
+opt.cursorline = true
 -- タイトルの表示
-opt.title       = true
+opt.title = true
 -- タブストップ
-opt.tabstop     = 2
+opt.tabstop = 2
 -- シフト幅
-opt.shiftwidth  = 2
+opt.shiftwidth = 2
 -- 全角文字
-opt.ambiwidth   = "single"
+opt.ambiwidth = "single"
 -- シンタックスハイライト
 vim.cmd("syntax on")
 -- 対応するカッコやブレースを表示 + 時間
@@ -78,7 +78,8 @@ opt.foldlevelstart = 99
 -- HTML/XML 閉じタグ自動補完
 -- ========================================
 do
-  local group = vim.api.nvim_create_augroup("htmlXmlAutoClose", { clear = true })
+  local group =
+    vim.api.nvim_create_augroup("htmlXmlAutoClose", { clear = true })
 
   vim.api.nvim_create_autocmd("FileType", {
     group = group,
@@ -143,53 +144,118 @@ require("lualine").setup({
 -- ========================================
 
 -- 前後のバッファへ移動
-keymap.set("n", "<A-,>", "<Cmd>BufferPrevious<CR>", { noremap = true, silent = true })
-keymap.set("n", "<A-.>", "<Cmd>BufferNext<CR>", { noremap = true, silent = true })
+keymap.set(
+  "n",
+  "<A-,>",
+  "<Cmd>BufferPrevious<CR>",
+  { noremap = true, silent = true }
+)
+keymap.set(
+  "n",
+  "<A-.>",
+  "<Cmd>BufferNext<CR>",
+  { noremap = true, silent = true }
+)
 
 -- 指定位置のバッファへ移動
-keymap.set("n", "<A-1>", "<Cmd>BufferGoto 1<CR>", { noremap = true, silent = true })
-keymap.set("n", "<A-2>", "<Cmd>BufferGoto 2<CR>", { noremap = true, silent = true })
-keymap.set("n", "<A-3>", "<Cmd>BufferGoto 3<CR>", { noremap = true, silent = true })
-keymap.set("n", "<A-4>", "<Cmd>BufferGoto 4<CR>", { noremap = true, silent = true })
-keymap.set("n", "<A-5>", "<Cmd>BufferGoto 5<CR>", { noremap = true, silent = true })
-keymap.set("n", "<A-6>", "<Cmd>BufferGoto 6<CR>", { noremap = true, silent = true })
-keymap.set("n", "<A-7>", "<Cmd>BufferGoto 7<CR>", { noremap = true, silent = true })
-keymap.set("n", "<A-8>", "<Cmd>BufferGoto 8<CR>", { noremap = true, silent = true })
-keymap.set("n", "<A-9>", "<Cmd>BufferGoto 9<CR>", { noremap = true, silent = true })
+keymap.set(
+  "n",
+  "<A-1>",
+  "<Cmd>BufferGoto 1<CR>",
+  { noremap = true, silent = true }
+)
+keymap.set(
+  "n",
+  "<A-2>",
+  "<Cmd>BufferGoto 2<CR>",
+  { noremap = true, silent = true }
+)
+keymap.set(
+  "n",
+  "<A-3>",
+  "<Cmd>BufferGoto 3<CR>",
+  { noremap = true, silent = true }
+)
+keymap.set(
+  "n",
+  "<A-4>",
+  "<Cmd>BufferGoto 4<CR>",
+  { noremap = true, silent = true }
+)
+keymap.set(
+  "n",
+  "<A-5>",
+  "<Cmd>BufferGoto 5<CR>",
+  { noremap = true, silent = true }
+)
+keymap.set(
+  "n",
+  "<A-6>",
+  "<Cmd>BufferGoto 6<CR>",
+  { noremap = true, silent = true }
+)
+keymap.set(
+  "n",
+  "<A-7>",
+  "<Cmd>BufferGoto 7<CR>",
+  { noremap = true, silent = true }
+)
+keymap.set(
+  "n",
+  "<A-8>",
+  "<Cmd>BufferGoto 8<CR>",
+  { noremap = true, silent = true }
+)
+keymap.set(
+  "n",
+  "<A-9>",
+  "<Cmd>BufferGoto 9<CR>",
+  { noremap = true, silent = true }
+)
 -- 末尾のバッファへ移動
-keymap.set("n", "<A-0>", "<Cmd>BufferLast<CR>", { noremap = true, silent = true })
+keymap.set(
+  "n",
+  "<A-0>",
+  "<Cmd>BufferLast<CR>",
+  { noremap = true, silent = true }
+)
 -- バッファを閉じる
-keymap.set("n", "<A-c>", "<Cmd>BufferClose<CR>", { noremap = true, silent = true })
+keymap.set(
+  "n",
+  "<A-c>",
+  "<Cmd>BufferClose<CR>",
+  { noremap = true, silent = true }
+)
 
 -- BufferCurrentの背景色を明るくして目立たせる
-vim.api.nvim_set_hl(0, 'BufferCurrent', {
-  fg = '#abb2bf', -- 文字色
-  bg = '#3e4451', -- 背景色
-  bold = true     -- 太字にする
+vim.api.nvim_set_hl(0, "BufferCurrent", {
+  fg = "#abb2bf", -- 文字色
+  bg = "#3e4451", -- 背景色
+  bold = true, -- 太字にする
 })
 
-vim.api.nvim_set_hl(0, 'BufferCurrentSign', {
-  fg = '#abb2bf', -- 文字色
-  bg = '#3e4451', -- 背景色
-  bold = true     -- 太字にする
+vim.api.nvim_set_hl(0, "BufferCurrentSign", {
+  fg = "#abb2bf", -- 文字色
+  bg = "#3e4451", -- 背景色
+  bold = true, -- 太字にする
 })
 
-vim.api.nvim_set_hl(0, 'BufferVisible', {
-  fg = '#5c6370',
-  bg = '#282c34'
+vim.api.nvim_set_hl(0, "BufferVisible", {
+  fg = "#5c6370",
+  bg = "#282c34",
 })
 
-vim.api.nvim_set_hl(0, 'BufferInactive', {
-  fg = '#5c6370',
-  bg = '#1c1f24'
+vim.api.nvim_set_hl(0, "BufferInactive", {
+  fg = "#5c6370",
+  bg = "#1c1f24",
 })
 
-require("nvim-autopairs").setup {}
+require("nvim-autopairs").setup({})
 
 -- ========================================
 -- plugins(Comment.nvim)
 -- ========================================
-require('Comment').setup()
+require("Comment").setup()
 
 -- ========================================
 -- plugins(quicker.nvim)
@@ -211,7 +277,11 @@ require("quicker").setup({
     {
       ">",
       function()
-        require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
+        require("quicker").expand({
+          before = 2,
+          after = 2,
+          add_to_existing = true,
+        })
       end,
       desc = "Expand quickfix context",
     },
@@ -225,14 +295,10 @@ require("quicker").setup({
   },
 })
 vim.o.grepprg = "rg --vimgrep --ignore-file=.gitignore --hidden --smart-case"
-vim.api.nvim_create_user_command(
-  "Grep",
-  function(opts)
-    vim.cmd("silent! grep! " .. opts.args)
-    vim.cmd("copen")
-  end,
-  { nargs = "+" }
-)
+vim.api.nvim_create_user_command("Grep", function(opts)
+  vim.cmd("silent! grep! " .. opts.args)
+  vim.cmd("copen")
+end, { nargs = "+" })
 
 -- ========================================
 -- plugins(yazi.nvim)
@@ -246,11 +312,11 @@ end)
 -- plugins(blink.cmp)
 -- ========================================
 
-require('blink.cmp').setup({
+require("blink.cmp").setup({
   -- キーマップの設定
   keymap = {
-    preset = 'default',
-    ['<Tab>'] = { 'snippet_forward', 'fallback', 'accept', 'fallback' },
+    preset = "default",
+    ["<Tab>"] = { "snippet_forward", "fallback", "accept", "fallback" },
   },
   completion = {
     ghost_text = {
@@ -258,12 +324,15 @@ require('blink.cmp').setup({
     },
     menu = {
       draw = {
-        columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
+        columns = {
+          { "label", "label_description", gap = 1 },
+          { "kind_icon", "kind" },
+        },
       },
     },
   },
   sources = {
-    default = { 'lsp', 'path', 'snippets', 'buffer' },
+    default = { "lsp", "path", "snippets", "buffer" },
   },
   appearance = {
     use_nvim_cmp_as_default = false,
@@ -274,29 +343,29 @@ require('blink.cmp').setup({
 -- plugins(LSPをlsp.luaから読み込み)
 -- ========================================
 
-local lsp = require './lsp'
+local lsp = require("./lsp")
 lsp.initLsp()
 
 -- ========================================
 -- plugins(conform.nvim)
 -- ========================================
 
-local conform = require './conform-config'
+local conform = require("./conform-config")
 conform.initConform()
 
 -- ========================================
 -- plugins(Treesitterとプラグインをtreesitter.luaから読み込み)
 -- ========================================
 
-local treesitter = require './treesitter'
+local treesitter = require("./treesitter")
 treesitter.initTreesitter()
 
 -- ========================================
 -- plugins(trouble.nvim)
 -- ========================================
 
-require('trouble').setup({
-  opts= {},
+require("trouble").setup({
+  opts = {},
   cmd = "Trouble",
   modes = {
     diagnostics_window = {
@@ -325,8 +394,18 @@ require('trouble').setup({
   },
 })
 
-keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics_window<cr>", { noremap = true, silent = true, desc = "Diagnostics (Trouble)" })
-keymap.set("n", "<leader>xX", "<cmd>Trouble diagnostics_buffer_window<cr>", { noremap = true, silent = true, desc = "Buffer Diagnostics (Trouble)" })
+keymap.set(
+  "n",
+  "<leader>xx",
+  "<cmd>Trouble diagnostics_window<cr>",
+  { noremap = true, silent = true, desc = "Diagnostics (Trouble)" }
+)
+keymap.set(
+  "n",
+  "<leader>xX",
+  "<cmd>Trouble diagnostics_buffer_window<cr>",
+  { noremap = true, silent = true, desc = "Buffer Diagnostics (Trouble)" }
+)
 
 -- ========================================
 -- plugins(gitsigns.nvim)
@@ -334,7 +413,7 @@ keymap.set("n", "<leader>xX", "<cmd>Trouble diagnostics_buffer_window<cr>", { no
 
 require("gitsigns").setup({
   on_attach = function(bufnr)
-    local gitsigns = require('gitsigns')
+    local gitsigns = require("gitsigns")
 
     local function map(mode, l, r, opts)
       opts = opts or {}
@@ -343,51 +422,53 @@ require("gitsigns").setup({
     end
 
     -- Navigation
-    map('n', ']c', function()
+    map("n", "]c", function()
       if vim.wo.diff then
-        vim.cmd.normal({']c', bang = true})
+        vim.cmd.normal({ "]c", bang = true })
       else
-        gitsigns.nav_hunk('next')
+        gitsigns.nav_hunk("next")
       end
     end)
-    map('n', '[c', function()
+    map("n", "[c", function()
       if vim.wo.diff then
-        vim.cmd.normal({'[c', bang = true})
+        vim.cmd.normal({ "[c", bang = true })
       else
-        gitsigns.nav_hunk('prev')
+        gitsigns.nav_hunk("prev")
       end
     end)
 
     -- Actions
-    map('n', '<leader>hs', gitsigns.stage_hunk)
-    map('n', '<leader>hr', gitsigns.reset_hunk)
-    map('v', '<leader>hs', function()
-      gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') })
+    map("n", "<leader>hs", gitsigns.stage_hunk)
+    map("n", "<leader>hr", gitsigns.reset_hunk)
+    map("v", "<leader>hs", function()
+      gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
     end)
-    map('v', '<leader>hr', function()
-      gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') })
+    map("v", "<leader>hr", function()
+      gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
     end)
-    map('n', '<leader>hS', gitsigns.stage_buffer)
-    map('n', '<leader>hR', gitsigns.reset_buffer)
-    map('n', '<leader>hp', gitsigns.preview_hunk)
-    map('n', '<leader>hi', gitsigns.preview_hunk_inline)
-    map('n', '<leader>hb', function()
+    map("n", "<leader>hS", gitsigns.stage_buffer)
+    map("n", "<leader>hR", gitsigns.reset_buffer)
+    map("n", "<leader>hp", gitsigns.preview_hunk)
+    map("n", "<leader>hi", gitsigns.preview_hunk_inline)
+    map("n", "<leader>hb", function()
       gitsigns.blame_line({ full = true })
     end)
-    map('n', '<leader>hd', gitsigns.diffthis)
-    map('n', '<leader>hD', function()
-      gitsigns.diffthis('~')
+    map("n", "<leader>hd", gitsigns.diffthis)
+    map("n", "<leader>hD", function()
+      gitsigns.diffthis("~")
     end)
-    map('n', '<leader>hQ', function() gitsigns.setqflist('all') end)
-    map('n', '<leader>hq', gitsigns.setqflist)
+    map("n", "<leader>hQ", function()
+      gitsigns.setqflist("all")
+    end)
+    map("n", "<leader>hq", gitsigns.setqflist)
 
     -- Toggles
-    map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
-    map('n', '<leader>tw', gitsigns.toggle_word_diff)
+    map("n", "<leader>tb", gitsigns.toggle_current_line_blame)
+    map("n", "<leader>tw", gitsigns.toggle_word_diff)
 
     -- Text object
-    map({'o', 'x'}, 'ih', gitsigns.select_hunk)
-  end
+    map({ "o", "x" }, "ih", gitsigns.select_hunk)
+  end,
 })
 
 -- ========================================
@@ -395,5 +476,5 @@ require("gitsigns").setup({
 -- ========================================
 
 require("todo-comments").setup({
-	signs = false,
+  signs = false,
 })
