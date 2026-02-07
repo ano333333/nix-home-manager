@@ -1,9 +1,6 @@
-{
-  pkgs,
-  pkgs-yazi,
-  ...
-}:
-with pkgs.vimPlugins; [
+{ pkgs, pkgs-yazi, ... }:
+with pkgs.vimPlugins;
+[
   lualine-nvim
   vim-devicons
   fzf-lua
@@ -36,7 +33,5 @@ with pkgs.vimPlugins; [
   blink-cmp
   trouble-nvim
   conform-nvim
-] ++
-(with pkgs-yazi.vimPlugins; [
-  yazi-nvim
-])
+  todo-comments-nvim
+] ++ (with pkgs-yazi.vimPlugins; [ yazi-nvim ])

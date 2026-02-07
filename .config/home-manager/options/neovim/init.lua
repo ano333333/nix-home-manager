@@ -390,3 +390,10 @@ require("gitsigns").setup({
   end
 })
 
+-- ========================================
+-- plugins(todo-comments.nvim)
+-- ========================================
+
+require("todo-comments").setup({
+	signs = false,
+})
