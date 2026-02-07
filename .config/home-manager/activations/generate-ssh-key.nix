@@ -1,10 +1,6 @@
 # ssh-keygenをactivationで実行する
-{
-  lib,
-  config,
-  pkgs,
-  email,
-}: lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+{ lib, config, pkgs, email, }:
+lib.hm.dag.entryAfter [ "writeBoundary" ] ''
   set -eu
 
   SSH_DIR="${config.home.homeDirectory}/.ssh"

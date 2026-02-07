@@ -1,16 +1,11 @@
-{
-  email,
-}:
-{
+{ email, }: {
   enable = true;
   settings = {
     user = {
       inherit email;
       name = "ano333333";
     };
-    core = {
-      sshCommand = "ssh -i ~/.ssh/id_ed25519";
-    };
+    core = { sshCommand = "ssh -i ~/.ssh/id_ed25519"; };
     pager = {
       diff = "delta";
       log = "delta";

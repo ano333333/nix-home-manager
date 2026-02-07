@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}: {
+{ pkgs, ... }: {
   nix = {
     enable = false;
     settings = {
@@ -36,12 +33,8 @@
 
   homebrew = {
     enable = true;
-    onActivation = {
-      autoUpdate = true;
-    };
-    casks = [
-      "ghostty"
-    ];
+    onActivation = { autoUpdate = true; };
+    casks = [ "ghostty" ];
   };
 
   nixpkgs.hostPlatform = "aarch64-darwin";

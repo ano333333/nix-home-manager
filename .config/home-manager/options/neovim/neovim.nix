@@ -1,8 +1,4 @@
-{
-  neovimPlugins,
-  ...
-}: 
-{
+{ neovimPlugins, ... }: {
   enable = true;
   defaultEditor = true;
   plugins = neovimPlugins;
