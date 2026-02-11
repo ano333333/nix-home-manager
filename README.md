@@ -9,6 +9,7 @@
 1. このリポジトリをクローン
 2. `nix run .#update` を実行して環境を構築
 3. 初回実行時にSSH鍵が自動生成されます
+4. ~/.config/nvim/lua/にlsp-ai.jsonを配置する。記載は.config/home-manager/options/neovim/内の例を参考にすること
 
 ## 使用可能なコマンド
 
