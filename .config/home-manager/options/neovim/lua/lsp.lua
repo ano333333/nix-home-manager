@@ -282,6 +282,9 @@ function M.initLsp()
   -- plugins(LSP/vtsls, denols)
   -- ========================================
 
+  vim.lsp.config("htmx", {
+    filetypes = { "html" },
+  })
   vim.lsp.enable("htmx")
 
   vim.lsp.enable("vtsls")
