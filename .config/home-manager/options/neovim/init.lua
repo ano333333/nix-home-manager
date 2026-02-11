@@ -319,6 +319,9 @@ require("blink.cmp").setup({
     ["<Tab>"] = { "snippet_forward", "fallback", "accept", "fallback" },
   },
   completion = {
+    trigger = {
+      show_on_insert = true,
+    },
     ghost_text = {
       enabled = true,
     },
@@ -333,6 +336,13 @@ require("blink.cmp").setup({
   },
   sources = {
     default = { "lsp", "path", "snippets", "buffer" },
+    providers = {
+      lsp = {
+        -- lsp_aiのため非同期・タイムアウト延長
+        async = true,
+        timeout_ms = 1000,
+      },
+    },
   },
   appearance = {
     use_nvim_cmp_as_default = false,
