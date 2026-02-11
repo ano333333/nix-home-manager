@@ -1,0 +1,6 @@
+{
+  "type": "open_ai",
+  "completions_endpoint": "https://api.openai.com/v1/chat/completions",
+  "model": "gpt-5-mini",
+  "auth_token": "<access token>"
+}

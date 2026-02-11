@@ -332,6 +332,20 @@ function M.initLsp()
   -- (https://github.com/SilasMarvin/lsp-ai/wiki/Configuration)
   -- ========================================
 
+  local function load_lsp_ai_config()
+    local filename = vim.fn.stdpath("config") .. "/lua/lsp-ai.json"
+    local f = io.open(filename, "r")
+    if f then
+      local content = f:read("*a")
+      f:close()
+      print(vim.fn.json_decode(content))
+      return vim.fn.json_decode(content)
+    else
+      print("couldn't read lsp-ai.json")
+      return {}
+    end
+  end
+
   vim.lsp.config("lsp_ai", {
     filetypes = {
       "nix",
@@ -344,10 +358,7 @@ function M.initLsp()
     },
     init_options = {
       models = {
-        model1 = {
-          type = "ollama",
-          model = "qwen2.5-coder:7b",
-        },
+        model1 = load_lsp_ai_config(),
       },
       completion = {
         model = "model1",
