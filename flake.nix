@@ -17,10 +17,11 @@
       url = "github:LnL7/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    llm-agents.url = "github:numtide/llm-agents.nix";
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, nixpkgs-darwin, nix-darwin
-    , nixpkgs-claudecode, nixpkgs-yazi, }@inputs:
+    , nixpkgs-claudecode, nixpkgs-yazi, llm-agents, }@inputs:
 
     let
       systems = [ "x86_64-linux" "aarch64-darwin" ];
@@ -61,6 +62,7 @@
                 [ "claude-code" ];
             };
             pkgs-yazi = import nixpkgs-yazi { system = system; };
+            llm-agents = llm-agents.packages.${system};
           };
           modules = [ ./.config/home-manager/home.nix ];
         };

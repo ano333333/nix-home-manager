@@ -1,4 +1,5 @@
-{ inputs, lib, config, pkgs, system, pkgs-claudecode, pkgs-yazi, ... }:
+{ inputs, lib, config, pkgs, system, pkgs-claudecode, pkgs-yazi, llm-agents, ...
+}:
 let
   username = "ano3";
   email = "ano333333github@gmail.com";
@@ -76,7 +77,9 @@ in {
       # alsa-utils for aplay command(ubuntu only)
       ++ (if system == "x86_64-linux" then [ pkgs.alsa-utils ] else [ ])
       # kooha(ubuntu only)
-      ++ (if system == "x86_64-linux" then [ pkgs.kooha ] else [ ]);
+      ++ (if system == "x86_64-linux" then [ pkgs.kooha ] else [ ])
+      # llm-agents
+      ++ (with llm-agents; [ ccusage codex opencode ccusage-codex ]);
   };
 
   fonts = { fontconfig = { enable = true; }; };
