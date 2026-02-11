@@ -8,6 +8,7 @@ config.color_scheme = "Calamity"
 
 config.font_size = 10.0
 config.font = wezterm.font("HackGen Console NF")
+config.warn_about_missing_glyphs = false
 
 -- disable ligatures
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
