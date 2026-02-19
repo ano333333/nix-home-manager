@@ -23,14 +23,6 @@ snippets:
     keyword: gitsw
     snippet: git switch
 
-  - name: nvim
-    keyword: n
-    snippet: nvim
-
-  - name: yazi
-    keyword: Y
-    snippet: yazi
-
   - name: branch
     keyword: br
     snippet: git symbolic-ref --short HEAD
@@ -38,3 +30,10 @@ snippets:
       lbuffer: '^git\s+'
     evaluate: true
 
+  - name: nvim
+    keyword: n
+    snippet: nvim
+
+  - name: yazi
+    keyword: Y
+    snippet: yazi
