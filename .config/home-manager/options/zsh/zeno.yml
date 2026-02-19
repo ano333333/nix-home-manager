@@ -30,6 +30,10 @@ snippets:
       lbuffer: '^git\s+'
     evaluate: true
 
+  - name: lazygit
+    keyword: lg
+    snippet: lazygit
+
   - name: nvim
     keyword: n
     snippet: nvim
