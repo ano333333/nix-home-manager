@@ -12,6 +12,8 @@ let
     inherit pkgs-yazi;
   });
 
+  playwrightMcp = (import ./packages/playwright-mcp.nix { inherit pkgs; });
+
   # pkgをx86_64-linuxの場合のみNixGLでラップする
   wrapNixGLWrapper = pkg:
     (if system == "x86_64-linux" then config.lib.nixGL.wrap pkg else pkg);
@@ -65,6 +67,8 @@ in {
       pkgs.gotools # for goimports
       pkgs.nodePackages.prettier
       pkgs.biome
+
+      playwrightMcp
 
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
