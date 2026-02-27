@@ -30,6 +30,17 @@ snippets:
       lbuffer: '^git\s+'
     evaluate: true
 
+  - name: git rebase -i
+    keyword: gitri
+    snippet: git rebase -i
+
+  - name: --autosquash
+    keyword: -a
+    snippet: echo "--autosquash"
+    context:
+      lbuffer: '^git rebase -i\s+'
+    evaluate: true
+
   - name: lazygit
     keyword: lg
     snippet: lazygit
