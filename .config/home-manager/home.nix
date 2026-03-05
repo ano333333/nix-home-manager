@@ -106,6 +106,8 @@ in {
     lib.hm.dag.entryAfter [ "writeBoundary" ] "";
   home.activation.setup-rust-analyzer =
     import ./activations/setup-rust-analyzer.nix { inherit lib pkgs; };
+  home.activation.setup-skills =
+    import ./activations/setup-skills.nix { inherit lib config pkgs; };
 
   programs.direnv = {
     enable = true;
