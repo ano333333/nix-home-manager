@@ -52,3 +52,11 @@ snippets:
   - name: yazi
     keyword: Y
     snippet: yazi
+
+  - name: claude
+    keyword: cc
+    snippet: claude
+
+  - name: codex
+    keyword: cx
+    snippet: codex
