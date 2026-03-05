@@ -45,6 +45,7 @@ in {
       pkgs.delta
       (wrapNixGLWrapper pkgs.wezterm)
       pkgs.zoxide
+      pkgs.difftastic
 
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
