@@ -1,7 +1,16 @@
 local M = {}
+local util = require("conform.util")
 
 function M.initConform()
   require("conform").setup({
+    formatters = {
+      biome = {
+        -- biome.json / biome.jsonc があるプロジェクトでのみ Biome を有効化
+        require_cwd = true,
+        cwd = util.root_file({ "biome.json", "biome.jsonc" }),
+      },
+    },
+
     formatters_by_ft = {
       -- Lua
       lua = { "stylua" },
@@ -15,10 +24,11 @@ function M.initConform()
       -- Nix
       nix = { "nixfmt" },
 
-      javascript = { "biome", "prettier" },
-      typescript = { "biome", "prettier" },
-      javascriptreact = { "biome", "prettier" },
-      typescriptreact = { "biome", "prettier" },
+      -- TS/JS: まず Biome、使えない場合のみ Prettier
+      javascript = { "biome", "prettier", stop_after_first = true },
+      typescript = { "biome", "prettier", stop_after_first = true },
+      javascriptreact = { "biome", "prettier", stop_after_first = true },
+      typescriptreact = { "biome", "prettier", stop_after_first = true },
 
       -- Svelte
       svelte = { "prettier" },
