@@ -15,6 +15,8 @@
       # package モジュールを無効化してプロンプトから完全に非表示にする
       disabled = true;
     };
+
+    gcloud = { disabled = true; };
   };
 }
 
