@@ -3,7 +3,7 @@
   settings = {
     user = {
       inherit email;
-      name = "ano333333";
+      name = "ano3";
     };
     core = { sshCommand = "ssh -i ~/.ssh/id_ed25519"; };
     pager = {
