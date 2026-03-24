@@ -423,6 +423,18 @@ function M.initLsp()
     },
   })
   vim.lsp.enable("lsp_ai")
+
+  -- ========================================
+  -- plugins(LSP/tinymist)
+  -- (https://github.com/Myriad-Dreamin/tinymist)
+  -- ========================================
+
+  vim.lsp.config("tinymist", {
+    settings = {
+      tinymist = {},
+    },
+  })
+  vim.lsp.enable("tinymist")
 end
 
 return M

@@ -41,6 +41,8 @@ function M.initConform()
       -- その他のWeb関連
       markdown = { "prettier" },
       yaml = { "prettier" },
+
+      typst = { "typstyle" },
     },
 
     -- 保存時に自動フォーマット

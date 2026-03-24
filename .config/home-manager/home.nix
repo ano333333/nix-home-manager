@@ -46,6 +46,7 @@ in {
       (wrapNixGLWrapper pkgs.wezterm)
       pkgs.zoxide
       pkgs.difftastic
+      pkgs.typst
 
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
@@ -62,6 +63,8 @@ in {
       pkgs.svelte-language-server
       pkgs.nil
       pkgs.nixfmt-classic
+      pkgs.tinymist
+      pkgs.typstyle
 
       pkgs.stylua
       pkgs.gofumpt
@@ -114,7 +117,10 @@ in {
     nix-direnv.enable = true;
   };
 
-  home.sessionVariables = { ZENO_HOME = "${config.xdg.configHome}/zeno"; };
+  home.sessionVariables = {
+    ZENO_HOME = "${config.xdg.configHome}/zeno";
+    TYPST_FONT_PATHS = "${pkgs.noto-fonts-cjk-sans}/share/fonts";
+  };
   xdg = {
     enable = true;
     configFile."zeno/config.yml".text =
