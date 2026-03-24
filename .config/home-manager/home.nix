@@ -47,6 +47,7 @@ in {
       pkgs.zoxide
       pkgs.difftastic
       pkgs.typst
+      pkgs.tdf
 
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
