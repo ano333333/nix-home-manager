@@ -17,7 +17,9 @@ in lib.hm.dag.entryAfter [ "writeBoundary" ] ''
   else
     echo "Updating Claude skills repository..."
     cd "${claudeSkillsPath}"
+    ${pkgs.git}/bin/git remote set-url origin ${skillsHttpsUrl}
     ${pkgs.git}/bin/git pull origin ${skillsRef}
+    ${pkgs.git}/bin/git remote set-url origin ${skillsSshUrl}
   fi
 
   # .agents/skills のセットアップ
@@ -29,6 +31,8 @@ in lib.hm.dag.entryAfter [ "writeBoundary" ] ''
   else
     echo "Updating agents skills repository..."
     cd "${agentsSkillsPath}"
+    ${pkgs.git}/bin/git remote set-url origin ${skillsHttpsUrl}
     ${pkgs.git}/bin/git pull origin ${skillsRef}
+    ${pkgs.git}/bin/git remote set-url origin ${skillsSshUrl}
   fi
 ''
