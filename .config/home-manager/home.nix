@@ -1,5 +1,5 @@
-{ inputs, lib, config, pkgs, system, pkgs-claudecode, pkgs-codex, pkgs-yazi
-, llm-agents, ... }:
+{ inputs, lib, config, pkgs, system, pkgs-claudecode, pkgs-codex, pkgs-typst
+, pkgs-yazi, llm-agents, ... }:
 let
   username = "ano3";
   email = "ano333333github@gmail.com";
@@ -46,7 +46,7 @@ in {
       (wrapNixGLWrapper pkgs.wezterm)
       pkgs.zoxide
       pkgs.difftastic
-      pkgs.typst
+      (pkgs-typst.typst.withPackages (ps: with ps; [ mmdr ]))
       pkgs.tdf
 
       pkgs.jetbrains.phpstorm
