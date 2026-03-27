@@ -229,6 +229,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-codex": {
+      "locked": {
+        "lastModified": 1774575017,
+        "narHash": "sha256-dmrSw1pCMe/FQfYNHa6C9XmlrJ4uoP5fiIoIXx4Sh1w=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ffe93a687100a860bba45878169aee8aa2d8edcf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ffe93a687100a860bba45878169aee8aa2d8edcf",
+        "type": "github"
+      }
+    },
     "nixpkgs-darwin": {
       "locked": {
         "lastModified": 1774068921,
@@ -300,6 +316,7 @@
         "nixgl": "nixgl",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-claudecode": "nixpkgs-claudecode",
+        "nixpkgs-codex": "nixpkgs-codex",
         "nixpkgs-darwin": "nixpkgs-darwin",
         "nixpkgs-yazi": "nixpkgs-yazi"
       }

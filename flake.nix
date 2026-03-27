@@ -3,6 +3,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/25.11";
     nixpkgs-claudecode.url =
       "github:NixOS/nixpkgs/d1c2cd5033acedf3f29affd8d44e288107e95238";
+    nixpkgs-codex.url =
+      "github:NixOS/nixpkgs/ffe93a687100a860bba45878169aee8aa2d8edcf";
     # for yazi version 26.1.4
     nixpkgs-yazi.url =
       "github:NixOS/nixpkgs/a56cd57f820aff743ba6aaa7894f88ed77f085a9";
@@ -21,7 +23,7 @@
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, nixpkgs-darwin, nix-darwin
-    , nixpkgs-claudecode, nixpkgs-yazi, llm-agents, }@inputs:
+    , nixpkgs-claudecode, nixpkgs-codex, nixpkgs-yazi, llm-agents, }@inputs:
 
     let
       systems = [ "x86_64-linux" "aarch64-darwin" ];
@@ -60,6 +62,11 @@
               config.allowUnfreePredicate = pkg:
                 builtins.elem (nixpkgs-claudecode.lib.getName pkg)
                 [ "claude-code" ];
+            };
+            pkgs-codex = import nixpkgs-codex {
+              system = system;
+              config.allowUnfreePredicate = pkg:
+                builtins.elem (nixpkgs-codex.lib.getName pkg) [ "codex" ];
             };
             pkgs-yazi = import nixpkgs-yazi { system = system; };
             llm-agents = llm-agents.packages.${system};

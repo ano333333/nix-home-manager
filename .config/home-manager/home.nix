@@ -1,5 +1,5 @@
-{ inputs, lib, config, pkgs, system, pkgs-claudecode, pkgs-yazi, llm-agents, ...
-}:
+{ inputs, lib, config, pkgs, system, pkgs-claudecode, pkgs-codex, pkgs-yazi
+, llm-agents, ... }:
 let
   username = "ano3";
   email = "ano333333github@gmail.com";
@@ -52,6 +52,7 @@ in {
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
       pkgs-claudecode.claude-code
+      pkgs-codex.codex
       pkgs.lsp-ai
 
       pkgs.lua-language-server
@@ -88,7 +89,7 @@ in {
       # kooha(ubuntu only)
       ++ (if system == "x86_64-linux" then [ pkgs.kooha ] else [ ])
       # llm-agents
-      ++ (with llm-agents; [ ccusage codex opencode ccusage-codex ]);
+      ++ (with llm-agents; [ ccusage opencode ccusage-codex ]);
   };
 
   fonts = { fontconfig = { enable = true; }; };
