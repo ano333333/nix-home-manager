@@ -17,7 +17,13 @@
 ```bash
 nix run .#update
 ```
-フレークの更新とhome-managerの設定適用を一括で実行します。
+home-managerの設定適用を実行します。
+
+### flake.lockの更新
+```bash
+nix run .#updateFlake
+```
+flake.lockを更新します。
 
 ### Docker初期化
 ```bash
@@ -47,7 +53,8 @@ Dockerの初期設定を実行します。
 ├── flake.nix                                    # Nixフレーク設定
 ├── flake.lock                                   # 依存関係ロックファイル
 ├── scripts/
-│   └── homeManagerUpdate.sh                     # 更新スクリプト
+│   ├── homeManagerUpdate.sh                     # home-manager適用スクリプト
+│   └── flakeUpdate.sh                           # flake更新スクリプト
 └── .config/
     └── home-manager/
         ├── home.nix                             # メイン設定ファイル

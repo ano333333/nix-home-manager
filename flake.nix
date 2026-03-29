@@ -44,11 +44,21 @@
             runtimeInputs = [ pkgs.nix ];
             text = pkgs.lib.readFile ./scripts/homeManagerUpdate.sh;
           };
+          # updateFlakeコマンドに指定するために、flakeUpdate.shをnixストアにコピー
+          flakeUpdate = pkgs.writeShellApplication {
+            name = "flake-update";
+            runtimeInputs = [ pkgs.nix ];
+            text = pkgs.lib.readFile ./scripts/flakeUpdate.sh;
+          };
           initDocker = import ./scripts/initDocker.nix { inherit pkgs; };
         in {
           update = {
             type = "app";
             program = "${homeManagerUpdate}/bin/home-manager-update";
+          };
+          updateFlake = {
+            type = "app";
+            program = "${flakeUpdate}/bin/flake-update";
           };
           initDocker = {
             type = "app";

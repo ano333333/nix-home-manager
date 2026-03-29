@@ -12,7 +12,13 @@
 ```bash
 nix run .#update
 ```
-flake.lockの更新、home-manager設定の適用を実行します。macOSではnix-darwin設定も適用されます。設定変更を反映するための主要コマンドです。
+home-manager設定の適用を実行します。macOSではnix-darwin設定も適用されます。設定変更を反映するための主要コマンドです。
+
+### flake.lockの更新
+```bash
+nix run .#updateFlake
+```
+flake.lockを更新します。
 
 **注意：macOSでの既知の問題**
 現在、macOS (darwin) では `nix run .#update` がエラーを起こす問題があります。回避策として、以下のコマンドでスクリプトを直接実行してください：
@@ -53,7 +59,7 @@ nix flake check
   - `homeConfigurations.linux` - Linux用Home Manager
   - `homeConfigurations.darwin` - macOS用Home Manager
   - `darwinConfigurations.darwin` - nix-darwinシステム設定
-- システムごとに2つのapp出力：`update`と`initDocker`
+- システムごとに3つのapp出力：`update`、`updateFlake`、`initDocker`
 
 ### Home Manager設定
 メイン設定ファイル：`.config/home-manager/home.nix`
@@ -125,6 +131,7 @@ else throw "Unsupported system: ${system}"
 ### scriptsディレクトリ
 `scripts/`には以下が含まれます：
 - `homeManagerUpdate.sh` - flake appでラップされる更新ロジック
+- `flakeUpdate.sh` - flake.lock更新ロジック
 - `initDocker.nix` - Linux用Dockerインストール
 - `installHomebrew.sh` - Homebrewインストールヘルパー
 
