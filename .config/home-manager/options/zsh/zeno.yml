@@ -59,4 +59,4 @@ snippets:
 
   - name: codex
     keyword: cx
-    snippet: codex
+    snippet: codex -c features.codex_hooks=true
