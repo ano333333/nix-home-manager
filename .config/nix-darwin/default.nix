@@ -34,7 +34,8 @@
   homebrew = {
     enable = true;
     onActivation = { autoUpdate = true; };
-    casks = [ "ghostty" ];
+    brews = [ "ffmpeg" ];
+    casks = [ "ghostty" "mpv" ];
   };
 
   nixpkgs.hostPlatform = "aarch64-darwin";
