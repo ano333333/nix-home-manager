@@ -48,6 +48,10 @@ in {
       pkgs.difftastic
       (pkgs-typst.typst.withPackages (ps: with ps; [ mmdr ]))
       pkgs.tdf
+      pkgs.steam
+      pkgs.slack
+      pkgs.discord
+      pkgs.rocketchat-desktop
 
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
