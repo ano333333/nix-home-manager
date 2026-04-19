@@ -98,6 +98,14 @@
   # Install firefox.
   programs.firefox.enable = true;
 
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+  };
+
+  programs.zsh.enable = true;
+  users.defaultUserShell = pkgs.zsh;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
