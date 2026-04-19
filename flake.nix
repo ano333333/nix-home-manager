@@ -65,31 +65,49 @@
             program = "${initDocker}/bin/initDocker";
           };
         });
+      extraSpecialArgs = system: {
+        inherit inputs;
+        system = system;
+        pkgs-claudecode = import nixpkgs-claudecode {
+          system = system;
+          config.allowUnfreePredicate = pkg:
+            builtins.elem (nixpkgs-claudecode.lib.getName pkg)
+            [ "claude-code" ];
+        };
+        pkgs-codex = import nixpkgs-codex {
+          system = system;
+          config.allowUnfreePredicate = pkg:
+            builtins.elem (nixpkgs-codex.lib.getName pkg) [ "codex" ];
+        };
+        pkgs-typst = import nixpkgs-typst { system = system; };
+        pkgs-yazi = import nixpkgs-yazi { system = system; };
+        llm-agents = llm-agents.packages.${system};
+      };
       homeConfigurationFor = system:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { system = system; };
-          extraSpecialArgs = {
-            inherit inputs;
-            system = system;
-            pkgs-claudecode = import nixpkgs-claudecode {
-              system = system;
-              config.allowUnfreePredicate = pkg:
-                builtins.elem (nixpkgs-claudecode.lib.getName pkg)
-                [ "claude-code" ];
-            };
-            pkgs-codex = import nixpkgs-codex {
-              system = system;
-              config.allowUnfreePredicate = pkg:
-                builtins.elem (nixpkgs-codex.lib.getName pkg) [ "codex" ];
-            };
-            pkgs-typst = import nixpkgs-typst { system = system; };
-            pkgs-yazi = import nixpkgs-yazi { system = system; };
-            llm-agents = llm-agents.packages.${system};
-          };
+          extraSpecialArgs = extraSpecialArgs { system = system; };
           modules = [ ./.config/home-manager/home.nix ];
         };
     in {
       apps = appsForSystems;
+
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./configuration.nix
+          home-manager.nixosModules.default
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.ano3 = ./.config/home-manager/home.nix;
+              extraSpecialArgs = extraSpecialArgs "x86_64-linux";
+            };
+          }
+        ];
+        specialArgs = { inherit inputs; };
+      };
 
       homeConfigurations = {
         linux = homeConfigurationFor "x86_64-linux";
