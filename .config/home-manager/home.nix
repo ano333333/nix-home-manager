@@ -1,5 +1,5 @@
 { inputs, lib, config, pkgs, system, pkgs-claudecode, pkgs-codex, pkgs-typst
-, pkgs-yazi, llm-agents, ... }:
+, pkgs-yazi, llm-agents, hyprland-plugins, ... }:
 let
   username = "ano3";
   email = "ano333333github@gmail.com";
@@ -240,4 +240,13 @@ in {
   # python / pipのシンボリックリンクを作成
   home.file.".bin/python".source = "${pkgs.python312}/bin/python3";
   home.file.".bin/pip".source = "${pkgs.python312Packages.pip}/bin/pip";
+
+  wayland.windowManager.hyprland = {
+    enable = true;
+    # Use the Hyprland/XDPH packages from the NixOS module to avoid version skew.
+    package = null;
+    portalPackage = null;
+    plugins = with pkgs; [ hyprpanel wofi hyprpaper dunst hyprshot nautilus ];
+    settings = import ./options/hyprland.nix { inherit pkgs; };
+  };
 }

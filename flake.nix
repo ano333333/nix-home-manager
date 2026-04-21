@@ -23,11 +23,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     llm-agents.url = "github:numtide/llm-agents.nix";
+    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, nixpkgs-darwin, nix-darwin
     , nixpkgs-claudecode, nixpkgs-codex, nixpkgs-typst, nixpkgs-yazi, llm-agents
-    , }@inputs:
+    , hyprland, hyprland-plugins, }@inputs:
 
     let
       systems = [ "x86_64-linux" "aarch64-darwin" ];
@@ -82,6 +87,8 @@
         pkgs-typst = import nixpkgs-typst { system = system; };
         pkgs-yazi = import nixpkgs-yazi { system = system; };
         llm-agents = llm-agents.packages.${system};
+        hyprland = hyprland.packages.${system};
+        hyprland-plugins = hyprland-plugins.packages.${system};
       };
       homeConfigurationFor = system:
         home-manager.lib.homeManagerConfiguration {
