@@ -3,7 +3,26 @@
   input = { kb_layout = "jp"; };
   "$mod" = "SUPER";
   bind = [
-    "$mod, R, exec, ${pkgs.wofi}/bin/wofi --show drun"
-    "$mod, F, exec, ${pkgs.nautilus}/bin/nautilus"
+    "$mod CTRL, r, exec, ${pkgs.wofi}/bin/wofi --show drun"
+    "$mod CTRL, e, exec, ${pkgs.nautilus}/bin/nautilus"
+    "$mod CTRL, t, exec, wezterm"
+
+    "$mod CTRL, q, killactive"
+
+    "$mod SHIFT, H, movefocus, l"
+    "$mod SHIFT, L, movefocus, r"
+    "$mod SHIFT, K, movefocus, u"
+    "$mod SHIFT, J, movefocus, d"
+
+    "$mod, 1, workspace, 1"
+    "$mod, 2, workspace, 2"
+    "$mod, 3, workspace, 3"
   ];
+  bindm = [ "$mod, mouse:272, moveWindow" "$mod, mouse:273, resizeWindow" ];
+  general = {
+    gaps_in = 5;
+    gaps_out = 10;
+    border_size = 2;
+  };
+  animations = { enabled = true; };
 }
