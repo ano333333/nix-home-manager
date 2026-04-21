@@ -18,7 +18,8 @@
     "$mod CTRL, 2, workspace, 2"
     "$mod CTRL, 3, workspace, 3"
   ];
-  bindm = [ "$mod, mouse:272, moveWindow" "$mod, mouse:273, resizeWindow" ];
+  bindm = [ "$mod, mouse:272, movewindow" "$mod, mouse:273, resizewindow" ];
+  binds = { drag_threshold = 10; };
   general = {
     gaps_in = 5;
     gaps_out = 10;
