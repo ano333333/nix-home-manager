@@ -14,9 +14,9 @@
     "$mod SHIFT, K, movefocus, u"
     "$mod SHIFT, J, movefocus, d"
 
-    "$mod, 1, workspace, 1"
-    "$mod, 2, workspace, 2"
-    "$mod, 3, workspace, 3"
+    "$mod CTRL, 1, workspace, 1"
+    "$mod CTRL, 2, workspace, 2"
+    "$mod CTRL, 3, workspace, 3"
   ];
   bindm = [ "$mod, mouse:272, moveWindow" "$mod, mouse:273, resizeWindow" ];
   general = {
@@ -25,4 +25,5 @@
     border_size = 2;
   };
   animations = { enabled = true; };
+  xwayland = { force_zero_scaling = true; };
 }

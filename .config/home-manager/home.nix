@@ -247,6 +247,6 @@ in {
     package = null;
     portalPackage = null;
     plugins = with pkgs; [ hyprpanel wofi hyprpaper dunst hyprshot nautilus ];
-    settings = import ./options/hyprland.nix { inherit pkgs; };
+    settings = import ./options/hyprland/hyprland.nix { inherit pkgs; };
   };
 }
