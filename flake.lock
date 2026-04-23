@@ -633,38 +633,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-claudecode": {
-      "locked": {
-        "lastModified": 1767856126,
-        "narHash": "sha256-UG2rnhbB1RILbrvNUyosda7SpUULRtTUBakuXpX5FuI=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "d1c2cd5033acedf3f29affd8d44e288107e95238",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "d1c2cd5033acedf3f29affd8d44e288107e95238",
-        "type": "github"
-      }
-    },
-    "nixpkgs-codex": {
-      "locked": {
-        "lastModified": 1774575017,
-        "narHash": "sha256-dmrSw1pCMe/FQfYNHa6C9XmlrJ4uoP5fiIoIXx4Sh1w=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "ffe93a687100a860bba45878169aee8aa2d8edcf",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "ffe93a687100a860bba45878169aee8aa2d8edcf",
-        "type": "github"
-      }
-    },
     "nixpkgs-darwin": {
       "locked": {
         "lastModified": 1774068921,
@@ -681,19 +649,19 @@
         "type": "github"
       }
     },
-    "nixpkgs-typst": {
+    "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1774575017,
-        "narHash": "sha256-dmrSw1pCMe/FQfYNHa6C9XmlrJ4uoP5fiIoIXx4Sh1w=",
+        "lastModified": 1776329215,
+        "narHash": "sha256-a8BYi3mzoJ/AcJP8UldOx8emoPRLeWqALZWu4ZvjPXw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "ffe93a687100a860bba45878169aee8aa2d8edcf",
+        "rev": "b86751bc4085f48661017fa226dee99fab6c651b",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
-        "rev": "ffe93a687100a860bba45878169aee8aa2d8edcf",
         "type": "github"
       }
     },
@@ -792,10 +760,8 @@
         "nix-darwin": "nix-darwin",
         "nixgl": "nixgl",
         "nixpkgs": "nixpkgs_4",
-        "nixpkgs-claudecode": "nixpkgs-claudecode",
-        "nixpkgs-codex": "nixpkgs-codex",
         "nixpkgs-darwin": "nixpkgs-darwin",
-        "nixpkgs-typst": "nixpkgs-typst",
+        "nixpkgs-unstable": "nixpkgs-unstable",
         "nixpkgs-yazi": "nixpkgs-yazi",
         "skills": "skills"
       }
