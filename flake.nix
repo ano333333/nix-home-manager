@@ -1,13 +1,8 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/25.11";
-    nixpkgs-claudecode.url =
-      "github:NixOS/nixpkgs/d1c2cd5033acedf3f29affd8d44e288107e95238";
-    nixpkgs-codex.url =
-      "github:NixOS/nixpkgs/ffe93a687100a860bba45878169aee8aa2d8edcf";
-    # for typst.withPackages
-    nixpkgs-typst.url =
-      "github:NixOS/nixpkgs/ffe93a687100a860bba45878169aee8aa2d8edcf";
+    # unstableから最新のclaudecode, codex, typstを取得
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     # for yazi version 26.1.4
     nixpkgs-yazi.url =
       "github:NixOS/nixpkgs/a56cd57f820aff743ba6aaa7894f88ed77f085a9";
@@ -35,8 +30,8 @@
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, nixpkgs-darwin, nix-darwin
-    , nixpkgs-claudecode, nixpkgs-codex, nixpkgs-typst, nixpkgs-yazi, llm-agents
-    , hyprland, hyprland-plugins, skills, }@inputs:
+    , nixpkgs-unstable, nixpkgs-yazi, llm-agents, hyprland, hyprland-plugins
+    , skills, }@inputs:
 
     let
       systems = [ "x86_64-linux" "aarch64-darwin" ];
@@ -78,18 +73,18 @@
         inherit inputs;
         inherit skills;
         system = system;
-        pkgs-claudecode = import nixpkgs-claudecode {
-          system = system;
-          config.allowUnfreePredicate = pkg:
-            builtins.elem (nixpkgs-claudecode.lib.getName pkg)
-            [ "claude-code" ];
+        pkgs-unstable = let
+          unstablePkgs = import nixpkgs-unstable {
+            system = system;
+            config.allowUnfreePredicate = pkg:
+              builtins.elem (nixpkgs-unstable.lib.getName pkg)
+              [ "claude-code" "codex" ];
+          };
+        in {
+          claude-code = unstablePkgs.claude-code;
+          codex = unstablePkgs.codex;
+          typst = unstablePkgs.typst;
         };
-        pkgs-codex = import nixpkgs-codex {
-          system = system;
-          config.allowUnfreePredicate = pkg:
-            builtins.elem (nixpkgs-codex.lib.getName pkg) [ "codex" ];
-        };
-        pkgs-typst = import nixpkgs-typst { system = system; };
         pkgs-yazi = let
           yaziPkgs = import nixpkgs-yazi { system = system; };
         in {

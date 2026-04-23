@@ -1,5 +1,5 @@
-{ inputs, lib, config, pkgs, system, pkgs-claudecode, pkgs-codex, pkgs-typst
-, pkgs-yazi, llm-agents, hyprland-plugins, skills, ... }:
+{ inputs, lib, config, pkgs, system, pkgs-unstable, pkgs-yazi, llm-agents
+, hyprland-plugins, skills, ... }:
 let
   username = "ano3";
   email = "ano333333github@gmail.com";
@@ -46,7 +46,7 @@ in {
       (wrapNixGLWrapper pkgs.wezterm)
       pkgs.zoxide
       pkgs.difftastic
-      (pkgs-typst.typst.withPackages (ps: with ps; [ mmdr ]))
+      (pkgs-unstable.typst.withPackages (ps: with ps; [ mmdr ]))
       pkgs.tdf
       pkgs.steam
       pkgs.slack
@@ -55,8 +55,8 @@ in {
 
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
-      pkgs-claudecode.claude-code
-      pkgs-codex.codex
+      pkgs-unstable.claude-code
+      pkgs-unstable.codex
       pkgs.lsp-ai
 
       pkgs.lua-language-server
