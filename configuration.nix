@@ -88,7 +88,7 @@
   users.users.ano3 = {
     isNormalUser = true;
     description = "ano3";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs;
       [
         #  thunderbird
@@ -108,7 +108,7 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [ google-chrome ];
+  environment.systemPackages = with pkgs; [ google-chrome docker-compose ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -154,4 +154,6 @@
     portalPackage =
       inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
+
+  virtualisation.docker.enable = true;
 }
