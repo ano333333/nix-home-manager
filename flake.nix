@@ -28,11 +28,15 @@
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
     };
+    skills = {
+      url = "github:ano333333/skills";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, nixpkgs-darwin, nix-darwin
     , nixpkgs-claudecode, nixpkgs-codex, nixpkgs-typst, nixpkgs-yazi, llm-agents
-    , hyprland, hyprland-plugins, }@inputs:
+    , hyprland, hyprland-plugins, skills, }@inputs:
 
     let
       systems = [ "x86_64-linux" "aarch64-darwin" ];
@@ -72,6 +76,7 @@
         });
       extraSpecialArgs = system: {
         inherit inputs;
+        inherit skills;
         system = system;
         pkgs-claudecode = import nixpkgs-claudecode {
           system = system;

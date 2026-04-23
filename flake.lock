@@ -796,7 +796,24 @@
         "nixpkgs-codex": "nixpkgs-codex",
         "nixpkgs-darwin": "nixpkgs-darwin",
         "nixpkgs-typst": "nixpkgs-typst",
-        "nixpkgs-yazi": "nixpkgs-yazi"
+        "nixpkgs-yazi": "nixpkgs-yazi",
+        "skills": "skills"
+      }
+    },
+    "skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1776965180,
+        "narHash": "sha256-CQ64PLx/j1IaNns9YQOfsd8de5+LaT3Ezjw7MG0/I0c=",
+        "owner": "ano333333",
+        "repo": "skills",
+        "rev": "4a5686e652748687a966fc28e02c0563d596fadb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ano333333",
+        "repo": "skills",
+        "type": "github"
       }
     },
     "systems": {

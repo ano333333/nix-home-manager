@@ -116,7 +116,7 @@ in {
   home.activation.setup-rust-analyzer =
     import ./activations/setup-rust-analyzer.nix { inherit lib pkgs; };
   home.activation.setup-skills =
-    import ./activations/setup-skills.nix { inherit lib config pkgs; };
+    import ./activations/setup-skills.nix { inherit lib config pkgs skills; };
 
   programs.direnv = {
     enable = true;
@@ -249,4 +249,6 @@ in {
     plugins = with pkgs; [ hyprpanel wofi hyprpaper dunst hyprshot nautilus ];
     settings = import ./options/hyprland/hyprland.nix { inherit pkgs; };
   };
+  home.file.".config/hypr/hyprpaper.conf".source =
+    ./options/hyprland/hyprpaper.conf;
 }
