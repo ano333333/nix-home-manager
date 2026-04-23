@@ -98,7 +98,7 @@
       homeConfigurationFor = system:
         home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { system = system; };
-          extraSpecialArgs = extraSpecialArgs { system = system; };
+          extraSpecialArgs = extraSpecialArgs system;
           modules = [ ./.config/home-manager/home.nix ];
         };
     in {
@@ -118,7 +118,7 @@
             };
           }
         ];
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs skills; };
       };
 
       homeConfigurations = {

@@ -1,5 +1,5 @@
 { inputs, lib, config, pkgs, system, pkgs-claudecode, pkgs-codex, pkgs-typst
-, pkgs-yazi, llm-agents, hyprland-plugins, ... }:
+, pkgs-yazi, llm-agents, hyprland-plugins, skills, ... }:
 let
   username = "ano3";
   email = "ano333333github@gmail.com";
