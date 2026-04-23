@@ -90,7 +90,13 @@
             builtins.elem (nixpkgs-codex.lib.getName pkg) [ "codex" ];
         };
         pkgs-typst = import nixpkgs-typst { system = system; };
-        pkgs-yazi = import nixpkgs-yazi { system = system; };
+        pkgs-yazi = let
+          yaziPkgs = import nixpkgs-yazi { system = system; };
+        in {
+          yazi = yaziPkgs.yazi;
+          yaziPlugins = yaziPkgs.yaziPlugins;
+          vimPlugins.yazi-nvim = yaziPkgs.vimPlugins.yazi-nvim;
+        };
         llm-agents = llm-agents.packages.${system};
         hyprland = hyprland.packages.${system};
         hyprland-plugins = hyprland-plugins.packages.${system};
