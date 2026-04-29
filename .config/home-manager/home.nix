@@ -48,10 +48,8 @@ in {
       pkgs.difftastic
       (pkgs-unstable.typst.withPackages (ps: with ps; [ mmdr ]))
       pkgs.tdf
-      pkgs.steam
       pkgs.slack
       pkgs.discord
-      pkgs.rocketchat-desktop
 
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
@@ -87,12 +85,10 @@ in {
     # fonts
       ++ (import ./font.nix { inherit pkgs; })
       # obsidian(mac only)
-      ++ (if system == "aarch64-darwin" then [ pkgs.obsidian ] else [ ])
-      # alsa-utils for aplay command(ubuntu only)
-      ++ (if system == "x86_64-linux" then [ pkgs.alsa-utils ] else [ ])
-      # kooha(ubuntu only)
-      ++ (if system == "x86_64-linux" then [ pkgs.kooha ] else [ ])
-      # llm-agents
+      ++ (if system == "x86_64-linux" then
+        with pkgs; [ alsa-utils kooha steam rocketchat-desktop ]
+      else
+        with pkgs; [ obsidian ])
       ++ (with llm-agents; [ ccusage opencode ccusage-codex ]);
   };
 
@@ -241,13 +237,15 @@ in {
   home.file.".bin/python".source = "${pkgs.python312}/bin/python3";
   home.file.".bin/pip".source = "${pkgs.python312Packages.pip}/bin/pip";
 
-  wayland.windowManager.hyprland = {
+  wayland.windowManager.hyprland = if system == "x86_64-linux" then {
     enable = true;
     # Use the Hyprland/XDPH packages from the NixOS module to avoid version skew.
     package = null;
     portalPackage = null;
     plugins = with pkgs; [ hyprpanel wofi hyprpaper dunst hyprshot nautilus ];
     settings = import ./options/hyprland/hyprland.nix { inherit pkgs; };
+  } else {
+    enable = false;
   };
   home.file.".config/hypr/hyprpaper.conf".source =
     ./options/hyprland/hyprpaper.conf;
