@@ -77,16 +77,17 @@
           unstablePkgs = import nixpkgs-unstable {
             system = system;
             config.allowUnfreePredicate = pkg:
-              builtins.elem (nixpkgs-unstable.lib.getName pkg)
-              [ "claude-code" "codex" ];
+              builtins.elem (nixpkgs-unstable.lib.getName pkg) [
+                "claude-code"
+                "codex"
+              ];
           };
         in {
           claude-code = unstablePkgs.claude-code;
           codex = unstablePkgs.codex;
           typst = unstablePkgs.typst;
         };
-        pkgs-yazi = let
-          yaziPkgs = import nixpkgs-yazi { system = system; };
+        pkgs-yazi = let yaziPkgs = import nixpkgs-yazi { system = system; };
         in {
           yazi = yaziPkgs.yazi;
           yaziPlugins = yaziPkgs.yaziPlugins;
