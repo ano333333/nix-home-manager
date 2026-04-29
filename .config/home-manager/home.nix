@@ -13,6 +13,7 @@ let
   });
 
   playwrightMcp = (import ./packages/playwright-mcp.nix { inherit pkgs; });
+  playwrightCli = (import ./packages/playwright-cli.nix { inherit pkgs; });
 
   # pkgをx86_64-linuxの場合のみNixGLでラップする
   wrapNixGLWrapper = pkg:
@@ -79,6 +80,7 @@ in {
       pkgs.biome
 
       playwrightMcp
+      playwrightCli
 
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
       pkgs.python312
