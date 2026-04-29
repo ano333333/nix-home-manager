@@ -12,7 +12,6 @@ let
     inherit pkgs-yazi;
   });
 
-  playwrightMcp = (import ./packages/playwright-mcp.nix { inherit pkgs; });
   playwrightCli = (import ./packages/playwright-cli.nix { inherit pkgs; });
 
   # pkgをx86_64-linuxの場合のみNixGLでラップする
@@ -79,7 +78,6 @@ in {
       pkgs.nodePackages.prettier
       pkgs.biome
 
-      playwrightMcp
       playwrightCli
 
       # asdf内のpythonビルドが失敗するため、一時3.12をグローバルインストールする
