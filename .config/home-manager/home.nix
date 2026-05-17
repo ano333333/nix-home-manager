@@ -13,10 +13,18 @@ let
   });
 
   playwrightCli = (import ./packages/playwright-cli.nix { inherit pkgs; });
-
   # pkgをx86_64-linuxの場合のみNixGLでラップする
   wrapNixGLWrapper = pkg:
     (if system == "x86_64-linux" then config.lib.nixGL.wrap pkg else pkg);
+  pencilGuiLauncher = pkgs.writeShellScriptBin "pencil-gui" ''
+    if [ ! -x "$HOME/.local/share/pencil/Pencil.AppImage" ]; then
+      echo "Pencil AppImage is not installed yet. Run home-manager activation first." >&2
+      exit 1
+    fi
+
+    exec ${wrapNixGLWrapper pkgs.appimage-run}/bin/appimage-run \
+      "$HOME/.local/share/pencil/Pencil.AppImage" "$@"
+  '';
 in {
   nixpkgs = { config = { allowUnfree = true; }; };
 
@@ -86,7 +94,8 @@ in {
       ++ (import ./font.nix { inherit pkgs; })
       # obsidian(mac only)
       ++ (if system == "x86_64-linux" then
-        with pkgs; [ alsa-utils kooha steam rocketchat-desktop ]
+        with pkgs;
+        [ alsa-utils kooha steam rocketchat-desktop ] ++ [ pencilGuiLauncher ]
       else
         with pkgs; [ obsidian ])
       ++ (with llm-agents; [ ccusage opencode ccusage-codex ]);
@@ -107,6 +116,11 @@ in {
     import ./activations/setup-obsidian-appimage.nix {
       inherit lib config pkgs;
     }
+  else
+    lib.hm.dag.entryAfter [ "writeBoundary" ] "";
+  # Pencil AppImageセットアップ (Linux only)
+  home.activation.setupPencilAppImage = if system == "x86_64-linux" then
+    import ./activations/setup-pencil-appimage.nix { inherit lib config pkgs; }
   else
     lib.hm.dag.entryAfter [ "writeBoundary" ] "";
   home.activation.setup-rust-analyzer =
