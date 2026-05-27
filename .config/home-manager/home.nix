@@ -109,7 +109,10 @@ in {
   programs.git = import ./options/git.nix { inherit email; };
   home.file.".gitconfig.ai".source = ./options/.gitconfig.ai;
 
-  programs.ssh = { enable = true; };
+  programs.ssh = {
+    includes = [ "${config.home.homeDirectory}/.ssh/config.secrets" ];
+    enable = true;
+  };
   home.activation.generateSshKey = import ./activations/generate-ssh-key.nix {
     inherit lib config pkgs email;
   };
