@@ -53,6 +53,7 @@ in {
       pkgs.gh
       pkgs.delta
       (wrapNixGLWrapper pkgs.wezterm)
+      pkgs.zinit
       pkgs.zoxide
       pkgs.difftastic
       (pkgs-unstable.typst.withPackages (ps: with ps; [ mmdr ]))
@@ -148,7 +149,7 @@ in {
     enableCompletion = true;
 
     # sessionVariablesが何故か効かなかったのでzshrcで指定する
-    initContent = builtins.readFile ./options/zsh/zshrc;
+    initContent = import ./options/zsh/zshrc.nix { inherit pkgs; };
   };
 
   programs.starship = import ./options/starship.nix;
