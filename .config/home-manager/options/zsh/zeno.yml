@@ -60,3 +60,29 @@ snippets:
   - name: codex
     keyword: cx
     snippet: codex -c features.codex_hooks=true
+
+  - name: nix
+    keyword: ni
+    snippet: nix
+
+  - name: nix develop
+    keyword: d
+    snippet: develop
+    context:
+      lbuffer: '^nix\s+'
+
+  - name: nix run
+    keyword: r
+    snippet: run
+    context:
+      lbuffer: '^nix\s+'
+
+  - name: nix shell
+    keyword: sh
+    snippet: shell -p
+    context:
+      lbuffer: '^nix\s+'
+
+  - name: nix run .#update
+    keyword: niru
+    snippet: nix run .#update
