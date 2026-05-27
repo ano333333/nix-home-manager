@@ -20,6 +20,10 @@
   };
 
   includes = [
+    # gh auth login等の情報を後付でinclude(これはgit管理しない)
+    {
+      path = "~/.gitconfig.secrets";
+    }
     # プライベートのアカウント用の.gitconfigはincludeIfで読み込む
     {
       condition = "gitdir:~/private/";

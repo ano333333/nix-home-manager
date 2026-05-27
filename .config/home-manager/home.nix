@@ -50,6 +50,7 @@ in {
       pkgs.ripgrep
       pkgs.deno
       pkgs.lazygit
+      pkgs.gh
       pkgs.delta
       (wrapNixGLWrapper pkgs.wezterm)
       pkgs.zoxide
