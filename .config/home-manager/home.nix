@@ -13,6 +13,7 @@ let
   });
 
   playwrightCli = (import ./packages/playwright-cli.nix { inherit pkgs; });
+  pi = import ./packages/pi.nix { inherit pkgs; };
   # pkgをx86_64-linuxの場合のみNixGLでラップする
   wrapNixGLWrapper = pkg:
     (if system == "x86_64-linux" then config.lib.nixGL.wrap pkg else pkg);
@@ -65,6 +66,7 @@ in {
       pkgs.code-cursor
       pkgs-unstable.claude-code
       pkgs-unstable.codex
+      pi
       pkgs.lsp-ai
 
       pkgs.lua-language-server
