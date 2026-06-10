@@ -27,11 +27,15 @@
       url = "github:ano333333/skills";
       flake = false;
     };
+    piExtensions = {
+      url = "github:ano333333/pi-extensions/0e53b68df6c4aac8645a99a6d20d9d63a744c40e";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, nixpkgs-darwin, nix-darwin
     , nixpkgs-unstable, nixpkgs-yazi, llm-agents, hyprland, hyprland-plugins
-    , skills, }@inputs:
+    , skills, piExtensions, }@inputs:
 
     let
       systems = [ "x86_64-linux" "aarch64-darwin" ];
@@ -72,6 +76,7 @@
       extraSpecialArgs = system: {
         inherit inputs;
         inherit skills;
+        inherit piExtensions;
         system = system;
         pkgs-unstable = let
           unstablePkgs = import nixpkgs-unstable {

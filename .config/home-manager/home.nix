@@ -1,5 +1,5 @@
 { inputs, lib, config, pkgs, system, pkgs-unstable, pkgs-yazi, llm-agents
-, hyprland-plugins, skills, ... }:
+, hyprland-plugins, skills, piExtensions, ... }:
 let
   username = "ano3";
   email = "ano333333github@gmail.com";
@@ -174,6 +174,10 @@ in {
 
   # claude-code config
   home.file.".claude/settings.json".source = ./options/claude-code.json;
+  home.file.".pi/agent/extensions" = {
+    source = "${piExtensions}/extensions";
+    recursive = true;
+  };
 
   # nixGL(Linux on amd64 only)
   nixGL = lib.mkIf (system == "x86_64-linux") {

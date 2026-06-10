@@ -728,6 +728,23 @@
         "type": "github"
       }
     },
+    "piExtensions": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1780634043,
+        "narHash": "sha256-jZN8/UIqklsYqVBhrWsaXQEsuoVgocXYYb5qvcQFMYU=",
+        "owner": "ano333333",
+        "repo": "pi-extensions",
+        "rev": "0e53b68df6c4aac8645a99a6d20d9d63a744c40e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ano333333",
+        "repo": "pi-extensions",
+        "rev": "0e53b68df6c4aac8645a99a6d20d9d63a744c40e",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -763,6 +780,7 @@
         "nixpkgs-darwin": "nixpkgs-darwin",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixpkgs-yazi": "nixpkgs-yazi",
+        "piExtensions": "piExtensions",
         "skills": "skills"
       }
     },
