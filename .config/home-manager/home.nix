@@ -53,6 +53,7 @@ in {
       pkgs.lazygit
       pkgs.gh
       pkgs.delta
+      inputs.hunk.packages.${system}.hunk
       (wrapNixGLWrapper pkgs.wezterm)
       pkgs.zinit
       pkgs.zoxide
