@@ -28,7 +28,7 @@
       flake = false;
     };
     piExtensions = {
-      url = "github:ano333333/pi-extensions/0e53b68df6c4aac8645a99a6d20d9d63a744c40e";
+      url = "github:ano333333/pi-extensions";
       flake = false;
     };
   };

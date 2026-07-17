@@ -731,17 +731,16 @@
     "piExtensions": {
       "flake": false,
       "locked": {
-        "lastModified": 1780634043,
-        "narHash": "sha256-jZN8/UIqklsYqVBhrWsaXQEsuoVgocXYYb5qvcQFMYU=",
+        "lastModified": 1781102501,
+        "narHash": "sha256-vN0G7LKhOubR2mh5V1jVWYN4tMG4aieAYn7mJjzGny0=",
         "owner": "ano333333",
         "repo": "pi-extensions",
-        "rev": "0e53b68df6c4aac8645a99a6d20d9d63a744c40e",
+        "rev": "eee6fb045a34d4e46a1e0c63455b0d25da18a95b",
         "type": "github"
       },
       "original": {
         "owner": "ano333333",
         "repo": "pi-extensions",
-        "rev": "0e53b68df6c4aac8645a99a6d20d9d63a744c40e",
         "type": "github"
       }
     },
