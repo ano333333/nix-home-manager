@@ -215,6 +215,9 @@ in {
   home.file.".config/wezterm/cheatsheet.lua".source =
     ./options/wezterm/cheatsheet.lua;
 
+  # herdr
+  home.file.".config/herdr/config.toml".source = ./options/herdr.toml;
+
   # yazi
   programs.yazi = {
     enable = true;

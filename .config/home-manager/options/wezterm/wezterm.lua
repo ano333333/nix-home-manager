@@ -5,6 +5,8 @@ local config = wezterm.config_builder()
 config.automatically_reload_config = true
 
 config.color_scheme = "Calamity"
+config.disable_default_key_bindings = true
+config.enable_tab_bar = false
 
 config.font_size = 10.0
 config.font = wezterm.font("HackGen Console NF")
