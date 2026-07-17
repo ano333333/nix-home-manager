@@ -54,6 +54,7 @@ in {
       pkgs.gh
       pkgs.delta
       inputs.hunk.packages.${system}.hunk
+      inputs.herdr.packages.${system}.herdr
       (wrapNixGLWrapper pkgs.wezterm)
       pkgs.zinit
       pkgs.zoxide

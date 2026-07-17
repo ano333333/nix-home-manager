@@ -22,6 +22,10 @@
       url = "github:modem-dev/hunk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    herdr = {
+      url = "github:ogulcancelik/herdr";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -39,7 +43,7 @@
 
   outputs = { self, nixpkgs, home-manager, nixgl, nixpkgs-darwin, nix-darwin
     , nixpkgs-unstable, nixpkgs-yazi, llm-agents, hyprland, hyprland-plugins
-    , hunk, skills, piExtensions, }@inputs:
+    , hunk, herdr, skills, piExtensions, }@inputs:
 
     let
       systems = [ "x86_64-linux" "aarch64-darwin" ];
