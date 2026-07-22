@@ -134,9 +134,6 @@ in {
     lib.hm.dag.entryAfter [ "writeBoundary" ] "";
   home.activation.setup-rust-analyzer =
     import ./activations/setup-rust-analyzer.nix { inherit lib pkgs; };
-  home.activation.setup-skills =
-    import ./activations/setup-skills.nix { inherit lib config pkgs skills; };
-
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
@@ -176,6 +173,8 @@ in {
 
   # claude-code config
   home.file.".claude/settings.json".source = ./options/claude-code.json;
+  home.file.".claude/skills".source = skills;
+  home.file.".agents/skills".source = skills;
   home.file.".pi/agent/extensions" = {
     source = "${piExtensions}/extensions";
     recursive = true;
