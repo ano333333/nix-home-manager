@@ -39,11 +39,15 @@
       url = "github:ano333333/pi-extensions";
       flake = false;
     };
+    zeno = {
+      url = "github:yuki-yano/zeno.zsh";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, nixpkgs-darwin, nix-darwin
     , nixpkgs-unstable, nixpkgs-yazi, llm-agents, hyprland, hyprland-plugins
-    , hunk, herdr, skills, piExtensions, }@inputs:
+    , hunk, herdr, skills, piExtensions, zeno, }@inputs:
 
     let
       systems = [ "x86_64-linux" "aarch64-darwin" ];
@@ -85,6 +89,7 @@
         inherit inputs;
         inherit skills;
         inherit piExtensions;
+        inherit zeno;
         system = system;
         pkgs-unstable = let
           unstablePkgs = import nixpkgs-unstable {

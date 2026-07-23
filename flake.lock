@@ -897,7 +897,8 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixpkgs-yazi": "nixpkgs-yazi",
         "piExtensions": "piExtensions",
-        "skills": "skills"
+        "skills": "skills",
+        "zeno": "zeno"
       }
     },
     "rust-overlay": {
@@ -1078,6 +1079,22 @@
       "original": {
         "owner": "hyprwm",
         "repo": "xdg-desktop-portal-hyprland",
+        "type": "github"
+      }
+    },
+    "zeno": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775355942,
+        "narHash": "sha256-05+w1WP/SHKp97JTGsvO3csI123U7py+fVSKnAWiUNY=",
+        "owner": "yuki-yano",
+        "repo": "zeno.zsh",
+        "rev": "2e8fbecce0fc3692a5fcc9033ecca7ab35263e56",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yuki-yano",
+        "repo": "zeno.zsh",
         "type": "github"
       }
     }

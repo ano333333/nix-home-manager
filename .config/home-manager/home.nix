@@ -1,5 +1,5 @@
 { inputs, lib, config, pkgs, system, pkgs-unstable, pkgs-yazi, llm-agents
-, hyprland-plugins, skills, piExtensions, ... }:
+, hyprland-plugins, skills, piExtensions, zeno, ... }:
 let
   username = "ano3";
   email = "ano333333github@gmail.com";
@@ -56,7 +56,6 @@ in {
       inputs.hunk.packages.${system}.hunk
       inputs.herdr.packages.${system}.herdr
       (wrapNixGLWrapper pkgs.wezterm)
-      pkgs.zinit
       pkgs.zoxide
       pkgs.difftastic
       (pkgs-unstable.typst.withPackages (ps: with ps; [ mmdr ]))
@@ -153,7 +152,7 @@ in {
     enableCompletion = true;
 
     # sessionVariablesが何故か効かなかったのでzshrcで指定する
-    initContent = import ./options/zsh/zshrc.nix { inherit pkgs; };
+    initContent = import ./options/zsh/zshrc.nix { inherit zeno; };
   };
 
   programs.starship = import ./options/starship.nix;
