@@ -1,5 +1,5 @@
 [keys]
-prefix = "ctrl+w"
+prefix = "ctrl+p"
 
 new_tab = "prefix+t"
 close_tab = "prefix+shift+w"
