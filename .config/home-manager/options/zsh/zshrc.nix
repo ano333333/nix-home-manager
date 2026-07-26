@@ -5,8 +5,17 @@
   export ASDF_DATA_DIR="$HOME/.asdf";
   export PATH="$ASDF_DATA_DIR/shims:$PATH"
 
-  # zeno is pinned by flake.lock.
-  source ${zeno}/zeno.zsh
+  # zeno is pinned by flake.lock. Copy it out of the Nix store because Deno
+  # creates node_modules next to the source when zeno starts.
+  export ZENO_HOME="''${TMPDIR:-/tmp}/zeno-''${USER}"
+  export ZENO_ROOT="$ZENO_HOME/${builtins.baseNameOf zeno}"
+  mkdir -p "$ZENO_HOME"
+  ln -sfn "$HOME/.config/zeno/config.yml" "$ZENO_HOME/config.yml"
+  if [[ ! -f "$ZENO_ROOT/zeno.zsh" ]]; then
+    cp -R ${zeno} "$ZENO_ROOT"
+    chmod -R u+w "$ZENO_ROOT"
+  fi
+  source "$ZENO_ROOT/zeno.zsh"
 
   # ########################################
   # zeno
