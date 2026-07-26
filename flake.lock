@@ -925,11 +925,11 @@
     "skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1784295308,
-        "narHash": "sha256-w5cNDL3Nim8zJOS3R1oTdVGsVRx0QzhaAqM9hnUXbJU=",
+        "lastModified": 1784741324,
+        "narHash": "sha256-ujVMf6R7INgi3ZcMboOR679+Q2K07eWZml+95eSjmG0=",
         "owner": "ano333333",
         "repo": "skills",
-        "rev": "658179762a32a55e3abe88a554797352662b3585",
+        "rev": "e3b7c59b90e841e19d9d304e152e576cbf3f8ca4",
         "type": "github"
       },
       "original": {
