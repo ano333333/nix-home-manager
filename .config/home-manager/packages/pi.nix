@@ -50,8 +50,8 @@ pkgs.buildNpmPackage {
   inherit version src;
 
   nodejs = pkgs.nodejs_22;
+  npmDepsHash = "sha256-iT20AoIOxLxJe09Q8uIA2SfXXREZpu/iK4rvwrIe4Qg=";
   npmDepsFetcherVersion = 2;
-  npmDepsHash = "sha256-GkTfbND2WFKrrqFnKbLtiFMfS2+fpX+ZYfqUvoQrzm4=";
   npmInstallFlags = [
     "--omit=dev"
   ];

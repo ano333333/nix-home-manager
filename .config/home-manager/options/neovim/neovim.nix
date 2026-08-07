@@ -1,6 +1,8 @@
 { neovimPlugins, ... }: {
   enable = true;
   defaultEditor = true;
+  withRuby = true;
+  withPython3 = true;
   plugins = neovimPlugins;
-  extraLuaConfig = builtins.readFile ./init.lua;
+  initLua = builtins.readFile ./init.lua;
 }
