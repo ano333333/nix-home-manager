@@ -1,6 +1,8 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs-blender.url =
+      "github:NixOS/nixpkgs/871b9fd269ff6246794583ce4ee1031e1da71895";
     # unstableから最新のclaudecode, codex, typstを取得
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     # for yazi version 26.1.4
@@ -46,8 +48,8 @@
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, nixpkgs-darwin, nix-darwin
-    , nixpkgs-unstable, nixpkgs-yazi, llm-agents, hyprland, hyprland-plugins
-    , hunk, herdr, skills, piExtensions, zeno, }@inputs:
+    , nixpkgs-blender, nixpkgs-unstable, nixpkgs-yazi, llm-agents, hyprland
+    , hyprland-plugins, hunk, herdr, skills, piExtensions, zeno, }@inputs:
 
     let
       systems = [ "x86_64-linux" "aarch64-darwin" ];
@@ -104,6 +106,10 @@
           claude-code = unstablePkgs.claude-code;
           codex = unstablePkgs.codex;
           typst = unstablePkgs.typst;
+        };
+        pkgs-blender = import nixpkgs-blender {
+          system = system;
+          config.allowUnfree = true;
         };
         pkgs-yazi = let yaziPkgs = import nixpkgs-yazi { system = system; };
         in {

@@ -1,5 +1,5 @@
-{ inputs, lib, config, pkgs, system, pkgs-unstable, pkgs-yazi, llm-agents
-, hyprland-plugins, skills, piExtensions, zeno, ... }:
+{ inputs, lib, config, pkgs, system, pkgs-blender, pkgs-unstable, pkgs-yazi
+, llm-agents, hyprland-plugins, skills, piExtensions, zeno, ... }:
 let
   username = "ano3";
   email = "ano333333github@gmail.com";
@@ -62,6 +62,7 @@ in {
       pkgs.tdf
       pkgs.slack
       pkgs.discord
+      pkgs-blender.blender
 
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
