@@ -881,11 +881,11 @@
     "skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1784741324,
-        "narHash": "sha256-ujVMf6R7INgi3ZcMboOR679+Q2K07eWZml+95eSjmG0=",
+        "lastModified": 1786288074,
+        "narHash": "sha256-JbLJ6e7GFSjS3uEfVDT1hWjWZGj9qpErs9pPiJjarRo=",
         "owner": "ano333333",
         "repo": "skills",
-        "rev": "e3b7c59b90e841e19d9d304e152e576cbf3f8ca4",
+        "rev": "7d285371e7936616b1724e5bfa0a46be6fce4f9d",
         "type": "github"
       },
       "original": {
