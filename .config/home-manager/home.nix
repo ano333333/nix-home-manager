@@ -60,6 +60,7 @@ in {
       pkgs.difftastic
       (pkgs-unstable.typst.withPackages (ps: with ps; [ mmdr ]))
       pkgs.tdf
+      pkgs.sqlite
       pkgs.slack
       pkgs.discord
       pkgs-blender.blender
