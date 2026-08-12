@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/25.11";
     nixpkgs-blender.url =
       "github:NixOS/nixpkgs/871b9fd269ff6246794583ce4ee1031e1da71895";
     # unstableから最新のclaudecode, codex, typstを取得
@@ -9,14 +9,14 @@
     nixpkgs-yazi.url =
       "github:NixOS/nixpkgs/a56cd57f820aff743ba6aaa7894f88ed77f085a9";
     home-manager = {
-      url = "github:nix-community/home-manager/release-26.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixgl = { url = "github:nix-community/nixGL"; };
     # バージョン指定のnixpkgsをnix-darwinと併用する場合はnixpkgs-xx.xx-darwinブランチが必要
-    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
     nix-darwin = {
-      url = "github:LnL7/nix-darwin/nix-darwin-26.05";
+      url = "github:LnL7/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     llm-agents.url = "github:numtide/llm-agents.nix";

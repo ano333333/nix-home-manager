@@ -1,4 +1,4 @@
-{ email, ... }: {
+{ email, }: {
   enable = true;
   settings = {
     user = {
@@ -17,7 +17,6 @@
       dark = true;
       line-numbers = true;
     };
-    interactive.diffFilter = "delta --color-only";
   };
 
   includes = [

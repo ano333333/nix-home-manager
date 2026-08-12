@@ -88,7 +88,7 @@ in {
       pkgs.stylua
       pkgs.gofumpt
       pkgs.gotools # for goimports
-      pkgs.prettier
+      pkgs.nodePackages.prettier
       pkgs.biome
 
       playwrightCli
@@ -104,7 +104,8 @@ in {
         with pkgs;
         [ alsa-utils kooha steam rocketchat-desktop ] ++ [ pencilGuiLauncher ]
       else
-        with pkgs; [ obsidian ]) ++ (with llm-agents; [ ccusage opencode ]);
+        with pkgs; [ obsidian ])
+      ++ (with llm-agents; [ ccusage opencode ccusage-codex ]);
   };
 
   fonts = { fontconfig = { enable = true; }; };
@@ -151,7 +152,6 @@ in {
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    dotDir = config.home.homeDirectory;
 
     # sessionVariablesが何故か効かなかったのでzshrcで指定する
     initContent = import ./options/zsh/zshrc.nix { inherit zeno; };
@@ -169,7 +169,7 @@ in {
 
   programs.delta = {
     enable = true;
-    enableGitIntegration = false;
+    enableGitIntegration = true;
   };
 
   # claude-code config
@@ -182,7 +182,7 @@ in {
   };
 
   # nixGL(Linux on amd64 only)
-  targets.genericLinux.nixGL = lib.mkIf (system == "x86_64-linux") {
+  nixGL = lib.mkIf (system == "x86_64-linux") {
     packages = import inputs.nixgl { inherit pkgs; };
     defaultWrapper = "mesa";
     installScripts = [ "mesa" ];
@@ -269,7 +269,6 @@ in {
 
   wayland.windowManager.hyprland = if system == "x86_64-linux" then {
     enable = true;
-    configType = "hyprlang";
     # Use the Hyprland/XDPH packages from the NixOS module to avoid version skew.
     package = null;
     portalPackage = null;
