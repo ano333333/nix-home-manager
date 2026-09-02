@@ -141,7 +141,6 @@ in {
   };
 
   home.sessionVariables = {
-    ZENO_HOME = "/tmp/zeno-${username}";
     TYPST_FONT_PATHS = "${pkgs.noto-fonts-cjk-sans}/share/fonts";
   };
   xdg = {

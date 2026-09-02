@@ -7,7 +7,8 @@
 
   # zeno is pinned by flake.lock. Copy it out of the Nix store because Deno
   # creates node_modules next to the source when zeno starts.
-  export ZENO_HOME="''${TMPDIR:-/tmp}/zeno-''${USER}"
+  export ZENO_HOME="$HOME/.zeno"
+  # FIXME: zenoを更新すると前のバージョンのソースが放置される
   export ZENO_ROOT="$ZENO_HOME/${builtins.baseNameOf zeno}"
   mkdir -p "$ZENO_HOME"
   ln -sfn "$HOME/.config/zeno/config.yml" "$ZENO_HOME/config.yml"
