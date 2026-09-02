@@ -84,6 +84,7 @@ in {
       pkgs.nixfmt-classic
       pkgs.tinymist
       pkgs.typstyle
+      pkgs.clang-tools
 
       pkgs.stylua
       pkgs.gofumpt

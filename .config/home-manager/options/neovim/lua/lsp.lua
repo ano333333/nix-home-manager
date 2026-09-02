@@ -435,6 +435,27 @@ function M.initLsp()
     },
   })
   vim.lsp.enable("tinymist")
+
+  -- ========================================
+  -- plugins(LSP/clangd)
+  -- ========================================
+  vim.lsp.config("clangd", {
+    cmd = { "clangd", "--background-index", "--clang-tidy" },
+    filetypes = { "c", "cpp", "objc", "objcpp" },
+    root_markers = {
+      ".clangd",
+      "compile_commands.json",
+      "compile_flags.txt",
+      ".git",
+    },
+    on_attach = function(client, bufnr)
+      vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+      vim.lsp.completion.enable(true, client.id, bufnr, {
+        autotrigger = true,
+      })
+    end,
+  })
+  vim.lsp.enable("clangd")
 end
 
 return M
