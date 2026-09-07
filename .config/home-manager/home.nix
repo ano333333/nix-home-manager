@@ -174,6 +174,9 @@ in {
 
   # claude-code config
   home.file.".claude/settings.json".source = ./options/claude-code.json;
+  home.file.".claude/statusline-command.sh".source = "${
+      import ./options/claude-code-statusline.nix { inherit pkgs; }
+    }/bin/claude-code-statusline";
   home.file.".claude/skills".source = skills;
   home.file.".agents/skills".source = skills;
   home.file.".pi/agent/extensions" = {

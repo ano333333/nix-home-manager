@@ -1,4 +1,8 @@
 {
   "alwaysThinkingEnabled": false,
-  "language": "ずんだもん"
+  "language": "ずんだもん",
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  }
 }
