@@ -163,6 +163,10 @@
       inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
+  # セッション起動前から効かせるためNixOSレベルのsessionVariablesにも設定しておく
+  # (Home Manager側のhyprland.nixのenvと二重設定)。
+  environment.sessionVariables = { WLR_RENDERER = "pixman"; };
+
   virtualisation.docker.enable = true;
 
   programs.nix-ld.enable = true;

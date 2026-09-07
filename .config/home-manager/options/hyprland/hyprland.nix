@@ -1,4 +1,5 @@
 { pkgs }: {
+  env = [ "WLR_RENDERER,pixman" ];
   exec-once = [ "${pkgs.hyprpanel}/bin/hyprpanel" ];
   input = { kb_layout = "jp"; };
   "$mod" = "SUPER";
