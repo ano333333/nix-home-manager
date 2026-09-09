@@ -862,11 +862,11 @@
     "piExtensions": {
       "flake": false,
       "locked": {
-        "lastModified": 1781102501,
-        "narHash": "sha256-vN0G7LKhOubR2mh5V1jVWYN4tMG4aieAYn7mJjzGny0=",
+        "lastModified": 1788972510,
+        "narHash": "sha256-7ukzZEd08hOCxc2FadBz4uOeCXqrrWOLIXM+pMIRgKE=",
         "owner": "ano333333",
         "repo": "pi-extensions",
-        "rev": "eee6fb045a34d4e46a1e0c63455b0d25da18a95b",
+        "rev": "fc02a05a492594608c0a5387cb65b674a25c61d0",
         "type": "github"
       },
       "original": {
