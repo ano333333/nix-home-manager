@@ -3,7 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/25.11";
     nixpkgs-blender.url =
       "github:NixOS/nixpkgs/871b9fd269ff6246794583ce4ee1031e1da71895";
-    # unstableから最新のclaudecode, codex, typstを取得
+    # unstableから最新のclaudecode, codex, typst, rust-analyzerを取得
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     # for yazi version 26.1.4
     nixpkgs-yazi.url =
@@ -106,6 +106,7 @@
           claude-code = unstablePkgs.claude-code;
           codex = unstablePkgs.codex;
           typst = unstablePkgs.typst;
+          rust-analyzer = unstablePkgs.rust-analyzer;
         };
         pkgs-blender = import nixpkgs-blender {
           system = system;

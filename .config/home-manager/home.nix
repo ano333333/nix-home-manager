@@ -74,7 +74,7 @@ in {
 
       pkgs.lua-language-server
       pkgs.gopls
-      pkgs.rust-analyzer
+      pkgs-unstable.rust-analyzer
       pkgs.rustfmt
       pkgs.htmx-lsp
       pkgs.typescript-language-server
