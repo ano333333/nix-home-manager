@@ -14,6 +14,7 @@ let
 
   playwrightCli = (import ./packages/playwright-cli.nix { inherit pkgs; });
   pi = import ./packages/pi.nix { inherit pkgs; };
+  claude-code = import ./packages/claude-code.nix { inherit pkgs; };
   # pkgをx86_64-linuxの場合のみNixGLでラップする
   wrapNixGLWrapper = pkg:
     (if system == "x86_64-linux" then config.lib.nixGL.wrap pkg else pkg);
@@ -67,7 +68,7 @@ in {
 
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
-      pkgs-unstable.claude-code
+      claude-code
       pkgs-unstable.codex
       pi
       pkgs.lsp-ai
