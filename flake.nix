@@ -101,6 +101,8 @@
           # codexはnixpkgs 25.11のrustc 1.91では依存のsqlx 0.9が
           # 要求するrustc 1.94を満たせないため、unstableのものを使う
           rustPlatform = unstablePkgs.rustPlatform;
+          # codediff-nvimはnixpkgs 25.11のもの(2.x)が古いためunstableを使用
+          codediff-nvim = unstablePkgs.vimPlugins.codediff-nvim;
         };
         pkgs-blender = import nixpkgs-blender {
           system = system;

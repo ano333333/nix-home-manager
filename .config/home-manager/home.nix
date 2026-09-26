@@ -9,6 +9,7 @@ let
 
   neovimPlugins = (import ./packages/neovim-plugins.nix {
     inherit pkgs;
+    inherit pkgs-unstable;
     inherit pkgs-yazi;
   });
 

@@ -1,10 +1,9 @@
-{ pkgs, pkgs-yazi, ... }:
+{ pkgs, pkgs-unstable, pkgs-yazi, ... }:
 with pkgs.vimPlugins;
 [
   lualine-nvim
   vim-devicons
   fzf-lua
-  gitsigns-nvim
   tint-nvim
   nvim-web-devicons
   barbar-nvim
@@ -35,3 +34,9 @@ with pkgs.vimPlugins;
   conform-nvim
   todo-comments-nvim
 ] ++ (with pkgs-yazi.vimPlugins; [ yazi-nvim ])
+++ [
+  (import ./codediff-nvim.nix {
+    inherit pkgs;
+    inherit (pkgs-unstable) codediff-nvim;
+  })
+]
