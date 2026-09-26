@@ -94,15 +94,13 @@
         inherit zeno;
         system = system;
         pkgs-unstable = let
-          unstablePkgs = import nixpkgs-unstable {
-            system = system;
-            config.allowUnfreePredicate = pkg:
-              builtins.elem (nixpkgs-unstable.lib.getName pkg) [ "codex" ];
-          };
+          unstablePkgs = import nixpkgs-unstable { system = system; };
         in {
-          codex = unstablePkgs.codex;
           typst = unstablePkgs.typst;
           rust-analyzer = unstablePkgs.rust-analyzer;
+          # codexはnixpkgs 25.11のrustc 1.91では依存のsqlx 0.9が
+          # 要求するrustc 1.94を満たせないため、unstableのものを使う
+          rustPlatform = unstablePkgs.rustPlatform;
         };
         pkgs-blender = import nixpkgs-blender {
           system = system;
