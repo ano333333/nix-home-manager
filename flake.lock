@@ -942,11 +942,11 @@
     "skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1789978260,
-        "narHash": "sha256-oqcLK3pm8ipsXh40Vq+xuYI8RvRtuxo4LHCmO1me8QU=",
+        "lastModified": 1790719764,
+        "narHash": "sha256-IqkGp3ghWR59ZfN07aiwliIpi7JrWBhTmm2cABXyioI=",
         "owner": "ano333333",
         "repo": "skills",
-        "rev": "35c2774692cb2531daa86c7ee3d69fc569593c8e",
+        "rev": "01248b7702016e3b41687d65416c1be32ba6d265",
         "type": "github"
       },
       "original": {
