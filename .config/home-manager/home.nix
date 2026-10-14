@@ -15,6 +15,7 @@ let
 
   playwrightCli = (import ./packages/playwright-cli.nix { inherit pkgs; });
   pi = import ./packages/pi.nix { inherit pkgs; };
+  oh-my-mermaid = import ./packages/oh-my-mermaid.nix { inherit pkgs; };
   claude-code = import ./packages/claude-code.nix { inherit pkgs; };
   codex = import ./packages/codex.nix {
     inherit pkgs;
@@ -76,6 +77,7 @@ in {
       claude-code
       codex
       pi
+      oh-my-mermaid
       pkgs.lsp-ai
 
       pkgs.lua-language-server
