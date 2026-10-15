@@ -33,10 +33,6 @@
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
     };
-    skills = {
-      url = "github:ano333333/skills";
-      flake = false;
-    };
     piExtensions = {
       url = "github:ano333333/pi-extensions";
       flake = false;
@@ -49,7 +45,7 @@
 
   outputs = { self, nixpkgs, home-manager, nixgl, nixpkgs-darwin, nix-darwin
     , nixpkgs-blender, nixpkgs-unstable, nixpkgs-yazi, llm-agents, hyprland
-    , hyprland-plugins, hunk, herdr, skills, piExtensions, zeno, }@inputs:
+    , hyprland-plugins, hunk, herdr, piExtensions, zeno, }@inputs:
 
     let
       systems = [ "x86_64-linux" "aarch64-darwin" ];
@@ -89,21 +85,20 @@
         });
       extraSpecialArgs = system: {
         inherit inputs;
-        inherit skills;
         inherit piExtensions;
         inherit zeno;
         system = system;
-        pkgs-unstable = let
-          unstablePkgs = import nixpkgs-unstable { system = system; };
-        in {
-          typst = unstablePkgs.typst;
-          rust-analyzer = unstablePkgs.rust-analyzer;
-          # codexはnixpkgs 25.11のrustc 1.91では依存のsqlx 0.9が
-          # 要求するrustc 1.94を満たせないため、unstableのものを使う
-          rustPlatform = unstablePkgs.rustPlatform;
-          # codediff-nvimはnixpkgs 25.11のもの(2.x)が古いためunstableを使用
-          codediff-nvim = unstablePkgs.vimPlugins.codediff-nvim;
-        };
+        pkgs-unstable =
+          let unstablePkgs = import nixpkgs-unstable { system = system; };
+          in {
+            typst = unstablePkgs.typst;
+            rust-analyzer = unstablePkgs.rust-analyzer;
+            # codexはnixpkgs 25.11のrustc 1.91では依存のsqlx 0.9が
+            # 要求するrustc 1.94を満たせないため、unstableのものを使う
+            rustPlatform = unstablePkgs.rustPlatform;
+            # codediff-nvimはnixpkgs 25.11のもの(2.x)が古いためunstableを使用
+            codediff-nvim = unstablePkgs.vimPlugins.codediff-nvim;
+          };
         pkgs-blender = import nixpkgs-blender {
           system = system;
           config.allowUnfree = true;
@@ -141,7 +136,7 @@
             };
           }
         ];
-        specialArgs = { inherit inputs skills; };
+        specialArgs = { inherit inputs; };
       };
 
       homeConfigurations = {

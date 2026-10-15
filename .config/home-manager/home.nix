@@ -1,5 +1,5 @@
 { inputs, lib, config, pkgs, system, pkgs-blender, pkgs-unstable, pkgs-yazi
-, llm-agents, hyprland-plugins, skills, piExtensions, zeno, ... }:
+, llm-agents, hyprland-plugins, piExtensions, zeno, ... }:
 let
   username = "ano3";
   email = "ano333333github@gmail.com";
@@ -187,11 +187,11 @@ in {
       import ./options/claude-code-statusline.nix { inherit pkgs; }
     }/bin/claude-code-statusline";
   home.file.".claude/skills" = {
-    source = skills;
+    source = ./skills;
     recursive = true;
   };
   home.file.".agents/skills" = {
-    source = skills;
+    source = ./skills;
     recursive = true;
   };
   home.file.".pi/agent/extensions" = {

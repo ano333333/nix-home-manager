@@ -914,7 +914,6 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixpkgs-yazi": "nixpkgs-yazi",
         "piExtensions": "piExtensions",
-        "skills": "skills",
         "zeno": "zeno"
       }
     },
@@ -936,22 +935,6 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "type": "github"
-      }
-    },
-    "skills": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1791119962,
-        "narHash": "sha256-njpeyi3WcTZur1Hw43FHqwGnE+DOJW0kHZKptlDMfSU=",
-        "owner": "ano333333",
-        "repo": "skills",
-        "rev": "872817188d503b9ca262c0de8bd9ab63f52c51b7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ano333333",
-        "repo": "skills",
         "type": "github"
       }
     },
