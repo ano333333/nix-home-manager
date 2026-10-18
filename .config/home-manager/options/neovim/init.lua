@@ -495,7 +495,14 @@ end, { desc = "Don't Save Current Session" })
 
 require("snacks").setup({
   bigfile = { enabled = true },
-  dashboard = { enabled = true },
+  dashboard = {
+    enabled = true,
+    -- startupセクションはlazy.nvim前提のため除外
+    sections = {
+      { section = "header" },
+      { section = "keys", gap = 1, padding = 1 },
+    },
+  },
   input = { enabled = true },
   notifier = { enabled = true },
   quickfile = { enabled = true },
