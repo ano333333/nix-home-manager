@@ -469,3 +469,22 @@ require("noice").setup({
     lsp_doc_border = true,
   },
 })
+
+-- ========================================
+-- plugins(persistence.nvim)
+-- ========================================
+
+require("persistence").setup({})
+
+keymap.set("n", "<leader>qs", function()
+  require("persistence").load()
+end, { desc = "Restore Session" })
+keymap.set("n", "<leader>qS", function()
+  require("persistence").select()
+end, { desc = "Select Session" })
+keymap.set("n", "<leader>ql", function()
+  require("persistence").load({ last = true })
+end, { desc = "Restore Last Session" })
+keymap.set("n", "<leader>qd", function()
+  require("persistence").stop()
+end, { desc = "Don't Save Current Session" })
