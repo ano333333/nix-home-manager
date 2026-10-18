@@ -55,8 +55,8 @@ vim.cmd("syntax on")
 -- 対応するカッコやブレースを表示 + 時間
 opt.showmatch = true
 opt.matchtime = 1
--- メッセージ表示欄2行
-opt.cmdheight = 2
+-- メッセージ表示欄なし(noice.nvimで表示する)
+opt.cmdheight = 0
 -- ステータス行を常に表示
 opt.laststatus = 2
 -- 行末のスペースの可視化
@@ -450,3 +450,22 @@ end, { desc = "Remote Flash" })
 keymap.set({ "o", "x" }, "R", function()
   require("flash").treesitter_search()
 end, { desc = "Treesitter Search" })
+
+-- ========================================
+-- plugins(noice.nvim)
+-- ========================================
+
+require("noice").setup({
+  lsp = {
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+    },
+  },
+  presets = {
+    bottom_search = true,
+    command_palette = true,
+    long_message_to_split = true,
+    lsp_doc_border = true,
+  },
+})
