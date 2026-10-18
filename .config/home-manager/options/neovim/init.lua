@@ -430,3 +430,23 @@ require("codediff").setup({})
 require("todo-comments").setup({
   signs = false,
 })
+
+-- ========================================
+-- plugins(flash.nvim)
+-- ========================================
+
+require("flash").setup({})
+
+-- vim-sandwichがsを使うため、gs/gSに割り当てる
+keymap.set({ "n", "x", "o" }, "gs", function()
+  require("flash").jump()
+end, { desc = "Flash" })
+keymap.set({ "n", "x", "o" }, "gS", function()
+  require("flash").treesitter()
+end, { desc = "Flash Treesitter" })
+keymap.set("o", "r", function()
+  require("flash").remote()
+end, { desc = "Remote Flash" })
+keymap.set({ "o", "x" }, "R", function()
+  require("flash").treesitter_search()
+end, { desc = "Treesitter Search" })
