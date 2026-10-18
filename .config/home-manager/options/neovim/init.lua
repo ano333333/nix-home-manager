@@ -488,3 +488,26 @@ end, { desc = "Restore Last Session" })
 keymap.set("n", "<leader>qd", function()
   require("persistence").stop()
 end, { desc = "Don't Save Current Session" })
+
+-- ========================================
+-- plugins(snacks.nvim)
+-- ========================================
+
+require("snacks").setup({
+  bigfile = { enabled = true },
+  dashboard = { enabled = true },
+  input = { enabled = true },
+  notifier = { enabled = true },
+  quickfile = { enabled = true },
+  scope = { enabled = true },
+  scroll = { enabled = true },
+  statuscolumn = { enabled = true },
+  words = { enabled = true },
+  indent = { enabled = false },
+  picker = { enabled = false },
+  explorer = { enabled = false },
+})
+
+keymap.set("n", "<leader>n", function()
+  Snacks.notifier.show_history()
+end, { desc = "Notification History" })

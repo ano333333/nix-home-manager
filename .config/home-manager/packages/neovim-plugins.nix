@@ -36,6 +36,7 @@ with pkgs.vimPlugins;
   flash-nvim
   noice-nvim
   persistence-nvim
+  snacks-nvim
 ] ++ (with pkgs-yazi.vimPlugins; [ yazi-nvim ])
 ++ [
   (import ./codediff-nvim.nix {
