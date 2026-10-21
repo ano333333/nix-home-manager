@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/25.11";
     nixpkgs-blender.url =
-      "github:NixOS/nixpkgs/871b9fd269ff6246794583ce4ee1031e1da71895";
+      "github:NixOS/nixpkgs/d674d9f0c1c4e2325f17eab20a7909d27740e702";
     # unstableから最新のcodex, typst, rust-analyzerを取得
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     # for yazi version 26.1.4
