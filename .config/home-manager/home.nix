@@ -16,6 +16,10 @@ let
   playwrightCli = (import ./packages/playwright-cli.nix { inherit pkgs; });
   pi = import ./packages/pi.nix { inherit pkgs; };
   oh-my-mermaid = import ./packages/oh-my-mermaid.nix { inherit pkgs; };
+  blender-mcp = import ./packages/blender-mcp.nix {
+    inherit pkgs;
+    inherit (pkgs-blender) blender;
+  };
   claude-code = import ./packages/claude-code.nix { inherit pkgs; };
   codex = import ./packages/codex.nix {
     inherit pkgs;
@@ -70,7 +74,8 @@ in {
       pkgs.sqlite
       pkgs.slack
       pkgs.discord
-      pkgs-blender.blender
+      blender-mcp.blender
+      blender-mcp.server
 
       pkgs.jetbrains.phpstorm
       pkgs.code-cursor
