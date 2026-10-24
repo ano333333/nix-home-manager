@@ -101,7 +101,7 @@ in {
       pkgs.stylua
       pkgs.gofumpt
       pkgs.gotools # for goimports
-      pkgs.nodePackages.prettier
+      pkgs.prettier
       pkgs.biome
 
       playwrightCli
