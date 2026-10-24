@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/26.05";
     nixpkgs-blender.url =
       "github:NixOS/nixpkgs/d674d9f0c1c4e2325f17eab20a7909d27740e702";
     # unstableから最新のcodex, typst, rust-analyzerを取得
@@ -9,7 +9,7 @@
     nixpkgs-yazi.url =
       "github:NixOS/nixpkgs/a56cd57f820aff743ba6aaa7894f88ed77f085a9";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixgl = { url = "github:nix-community/nixGL"; };
