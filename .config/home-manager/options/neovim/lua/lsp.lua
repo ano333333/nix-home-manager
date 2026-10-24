@@ -334,95 +334,101 @@ function M.initLsp()
 
   local function load_lsp_ai_config()
     local filename = vim.fn.stdpath("config") .. "/lua/lsp-ai.json"
-    local f = io.open(filename, "r")
-    if f then
-      local content = f:read("*a")
-      f:close()
-      print(vim.fn.json_decode(content))
-      return vim.fn.json_decode(content)
-    else
-      print("couldn't read lsp-ai.json")
-      return {}
+    local f, err, code = io.open(filename, "r")
+    if not f then
+      local reason = code == 2 and "configuration file does not exist" or err
+      vim.notify(
+        "LSP AI disabled: " .. filename .. ": " .. reason,
+        vim.log.levels.WARN
+      )
+      return nil
     end
+    local content = f:read("*a")
+    f:close()
+    return vim.fn.json_decode(content)
   end
 
-  vim.lsp.config("lsp_ai", {
-    filetypes = {
-      "nix",
-      "lua",
-      "javascript",
-      "typescript",
-      "css",
-      "html",
-      "json",
-    },
-    init_options = {
-      models = {
-        model1 = load_lsp_ai_config(),
+  local lsp_ai_config = load_lsp_ai_config()
+
+  if lsp_ai_config then
+    vim.lsp.config("lsp_ai", {
+      filetypes = {
+        "nix",
+        "lua",
+        "javascript",
+        "typescript",
+        "css",
+        "html",
+        "json",
       },
-      completion = {
-        model = "model1",
-        parameters = {
-          max_context = 1800,
-          max_completion_tokens = 50,
-          messages = {
-            {
-              role = "system",
-              content = 'Instructions:\n- You are an AI programming assistant.\n- Given a piece of code with the cursor location marked by "<CURSOR>", replace "<CURSOR>" with the correct code or comment.\n- First, think step-by-step.\n- Describe your plan for what to build in pseudocode, written out in great detail.\n- Then output the code replacing the "<CURSOR>"\n- Ensure that your completion fits within the language context of the provided code snippet (e.g., Python, JavaScript, Rust).\n\nRules:\n- Only respond with code or comments.\n- Only replace "<CURSOR>"; do not include any previously written code.\n- Never include "<CURSOR>" in your response\n- If the cursor is within a comment, complete the comment meaningfully.\n- Handle ambiguous cases by providing the most contextually appropriate completion.\n- Be consistent with your responses.',
+      init_options = {
+        models = {
+          model1 = lsp_ai_config,
+        },
+        completion = {
+          model = "model1",
+          parameters = {
+            max_context = 1800,
+            max_completion_tokens = 50,
+            messages = {
+              {
+                role = "system",
+                content = 'Instructions:\n- You are an AI programming assistant.\n- Given a piece of code with the cursor location marked by "<CURSOR>", replace "<CURSOR>" with the correct code or comment.\n- First, think step-by-step.\n- Describe your plan for what to build in pseudocode, written out in great detail.\n- Then output the code replacing the "<CURSOR>"\n- Ensure that your completion fits within the language context of the provided code snippet (e.g., Python, JavaScript, Rust).\n\nRules:\n- Only respond with code or comments.\n- Only replace "<CURSOR>"; do not include any previously written code.\n- Never include "<CURSOR>" in your response\n- If the cursor is within a comment, complete the comment meaningfully.\n- Handle ambiguous cases by providing the most contextually appropriate completion.\n- Be consistent with your responses.',
+              },
+              {
+                role = "user",
+                content = 'def greet(name):\n    print(f"Hello, {<CURSOR>}")',
+              },
+              {
+                role = "assistant",
+                content = "name",
+              },
+              {
+                role = "user",
+                content = "function sum(a, b) {\n    return a + <CURSOR>;\n}",
+              },
+              {
+                role = "assistant",
+                content = "b",
+              },
+              {
+                role = "user",
+                content = "fn multiply(a: i32, b: i32) -> i32 {\n    a * <CURSOR>\n}",
+              },
+              {
+                role = "assistant",
+                content = "b",
+              },
+              {
+                role = "user",
+                content = "# <CURSOR>\ndef add(a, b):\n    return a + b",
+              },
+              {
+                role = "assistant",
+                content = "Adds two numbers",
+              },
+              {
+                role = "user",
+                content = "# This function checks if a number is even\n<CURSOR>",
+              },
+              {
+                role = "assistant",
+                content = "def is_even(n):\n    return n % 2 == 0",
+              },
+              {
+                role = "user",
+                content = "{CODE}",
+              },
             },
-            {
-              role = "user",
-              content = 'def greet(name):\n    print(f"Hello, {<CURSOR>}")',
+            post_process = {
+              extractor = "(?s)<answer>(.*?)</answer>",
             },
-            {
-              role = "assistant",
-              content = "name",
-            },
-            {
-              role = "user",
-              content = "function sum(a, b) {\n    return a + <CURSOR>;\n}",
-            },
-            {
-              role = "assistant",
-              content = "b",
-            },
-            {
-              role = "user",
-              content = "fn multiply(a: i32, b: i32) -> i32 {\n    a * <CURSOR>\n}",
-            },
-            {
-              role = "assistant",
-              content = "b",
-            },
-            {
-              role = "user",
-              content = "# <CURSOR>\ndef add(a, b):\n    return a + b",
-            },
-            {
-              role = "assistant",
-              content = "Adds two numbers",
-            },
-            {
-              role = "user",
-              content = "# This function checks if a number is even\n<CURSOR>",
-            },
-            {
-              role = "assistant",
-              content = "def is_even(n):\n    return n % 2 == 0",
-            },
-            {
-              role = "user",
-              content = "{CODE}",
-            },
-          },
-          post_process = {
-            extractor = "(?s)<answer>(.*?)</answer>",
           },
         },
       },
-    },
-  })
-  vim.lsp.enable("lsp_ai")
+    })
+    vim.lsp.enable("lsp_ai")
+  end
 
   -- ========================================
   -- plugins(LSP/tinymist)
