@@ -63,7 +63,6 @@ in {
       pkgs.deno
       pkgs.lazygit
       pkgs.gh
-      pkgs.delta
       inputs.hunk.packages.${system}.hunk
       inputs.herdr.packages.${system}.herdr
       (wrapNixGLWrapper pkgs.wezterm)
@@ -180,11 +179,6 @@ in {
     ./options/neovim/lua/treesitter.lua;
   home.file.".config/nvim/lua/conform-config.lua".source =
     ./options/neovim/lua/conform-config.lua;
-
-  programs.delta = {
-    enable = true;
-    enableGitIntegration = true;
-  };
 
   # claude-code config
   home.file.".claude/settings.json".source = ./options/claude-code.json;

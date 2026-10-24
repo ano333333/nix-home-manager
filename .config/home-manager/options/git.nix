@@ -8,9 +8,7 @@
     core = { sshCommand = "ssh -i ~/.ssh/id_ed25519"; };
     pager = {
       diff = "hunk pager";
-      log = "delta";
       show = "hunk pager";
-      blame = "delta";
     };
     delta = {
       navigate = true;
