@@ -1,5 +1,7 @@
 # Home Manager 環境構築
 
+<img src="./main_image.png" style="width: 80%"/>
+
 このリポジトリは、NixのHome Managerを使用した環境構築のための設定ファイルです。
 
 ## 使用方法
