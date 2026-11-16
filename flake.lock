@@ -875,6 +875,22 @@
         "type": "github"
       }
     },
+    "piToolsSaira": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792474370,
+        "narHash": "sha256-pnr/dcBMZx/PA7O33VrTmHthGWbi1AsFRbINchi9VJ0=",
+        "owner": "SairaDev02",
+        "repo": "pi-tools-saira",
+        "rev": "856df2dfc8950559e1a68e2eac01de8211ed6539",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SairaDev02",
+        "repo": "pi-tools-saira",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -914,6 +930,7 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixpkgs-yazi": "nixpkgs-yazi",
         "piExtensions": "piExtensions",
+        "piToolsSaira": "piToolsSaira",
         "zeno": "zeno"
       }
     },

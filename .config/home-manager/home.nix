@@ -1,5 +1,5 @@
 { inputs, lib, config, pkgs, system, pkgs-blender, pkgs-unstable, pkgs-yazi
-, llm-agents, hyprland-plugins, piExtensions, zeno, ... }:
+, llm-agents, hyprland-plugins, piExtensions, piToolsSaira, zeno, ... }:
 let
   username = "ano3";
   email = "ano333333github@gmail.com";
@@ -197,6 +197,11 @@ in {
     source = "${piExtensions}/extensions";
     recursive = true;
   };
+  # pi-tools-saira: 単一ファイル構成の拡張をextensionsディレクトリへ配置
+  home.file.".pi/agent/extensions/nano-gpt-provider.ts".source =
+    "${piToolsSaira}/pi-nano-gpt-provider/src/nano-gpt-provider.ts";
+  home.file.".pi/agent/extensions/deepseek-hours.ts".source =
+    "${piToolsSaira}/pi-deepseek-hours/src/deepseek-hours.ts";
 
   # nixGL(Linux on amd64 only)
   nixGL = lib.mkIf (system == "x86_64-linux") {

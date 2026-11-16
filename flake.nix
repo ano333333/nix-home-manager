@@ -37,6 +37,10 @@
       url = "github:ano333333/pi-extensions";
       flake = false;
     };
+    piToolsSaira = {
+      url = "github:SairaDev02/pi-tools-saira";
+      flake = false;
+    };
     zeno = {
       url = "github:yuki-yano/zeno.zsh";
       flake = false;
@@ -45,7 +49,7 @@
 
   outputs = { self, nixpkgs, home-manager, nixgl, nixpkgs-darwin, nix-darwin
     , nixpkgs-blender, nixpkgs-unstable, nixpkgs-yazi, llm-agents, hyprland
-    , hyprland-plugins, hunk, herdr, piExtensions, zeno, }@inputs:
+    , hyprland-plugins, hunk, herdr, piExtensions, piToolsSaira, zeno, }@inputs:
 
     let
       systems = [ "x86_64-linux" "aarch64-darwin" ];
@@ -86,6 +90,7 @@
       extraSpecialArgs = system: {
         inherit inputs;
         inherit piExtensions;
+        inherit piToolsSaira;
         inherit zeno;
         system = system;
         pkgs-unstable =
