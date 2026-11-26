@@ -103,6 +103,13 @@
     defaultEditor = true;
   };
 
+  programs.chromium = {
+    enable = true;
+    extensions = [
+      "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
+    ];
+  };
+
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
 
