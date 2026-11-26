@@ -421,7 +421,11 @@ keymap.set(
 -- plugins(codediff.nvim)
 -- ========================================
 
-require("codediff").setup({})
+require("codediff").setup({
+  diff = {
+    gutter_signs = {},
+  },
+})
 
 -- ========================================
 -- plugins(todo-comments.nvim)
@@ -508,7 +512,12 @@ require("snacks").setup({
   quickfile = { enabled = true },
   scope = { enabled = true },
   scroll = { enabled = true },
-  statuscolumn = { enabled = true },
+  statuscolumn = {
+    enabled = true,
+    git = {
+      patterns = { "GitSign", "MiniDiffSign", "CodeDiff" },
+    },
+  },
   words = { enabled = true },
   indent = { enabled = false },
   picker = { enabled = false },
