@@ -18,6 +18,15 @@
     "$mod CTRL, 1, workspace, 1"
     "$mod CTRL, 2, workspace, 2"
     "$mod CTRL, 3, workspace, 3"
+    "$mod CTRL, 4, workspace, 4"
+    "$mod CTRL, 5, workspace, 5"
+    "$mod CTRL, 6, workspace, 6"
+    "$mod CTRL, 7, workspace, 7"
+    "$mod CTRL, 8, workspace, 8"
+    "$mod CTRL, 9, workspace, 9"
+    "$mod CTRL, 0, workspace, 10"
+    "$mod CTRL, left, workspace, -1"
+    "$mod CTRL, right, workspace, +1"
   ];
   bindm = [ "$mod, mouse:272, movewindow" "$mod, mouse:273, resizewindow" ];
   binds = { drag_threshold = 10; };
@@ -26,6 +35,9 @@
     gaps_out = 10;
     border_size = 2;
   };
-  animations = { enabled = true; };
+  animations = {
+    enabled = true;
+    animation = [ "workspaces, 1, 5, default, slide" ];
+  };
   xwayland = { force_zero_scaling = true; };
 }
