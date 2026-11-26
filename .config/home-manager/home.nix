@@ -116,7 +116,9 @@ in {
       # obsidian(mac only)
       ++ (if system == "x86_64-linux" then
         with pkgs;
-        [ alsa-utils kooha steam rocketchat-desktop ] ++ [ pencilGuiLauncher ]
+        [ alsa-utils kooha steam rocketchat-desktop ] ++ [ pencilGuiLauncher
+          (import ./packages/cspenguin.nix { inherit pkgs; })
+        ]
       else
         with pkgs; [ obsidian ])
       ++ (with llm-agents; [ ccusage opencode ccusage-codex ]);
@@ -145,6 +147,10 @@ in {
   # Pencil AppImageセットアップ (Linux only)
   home.activation.setupPencilAppImage = if system == "x86_64-linux" then
     import ./activations/setup-pencil-appimage.nix { inherit lib config pkgs; }
+  else
+    lib.hm.dag.entryAfter [ "writeBoundary" ] "";
+  home.activation.setupCspenguin = if system == "x86_64-linux" then
+    import ./activations/setup-cspenguin.nix { inherit lib config pkgs; }
   else
     lib.hm.dag.entryAfter [ "writeBoundary" ] "";
   home.activation.setup-rust-analyzer =

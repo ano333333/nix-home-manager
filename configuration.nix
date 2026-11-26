@@ -175,6 +175,10 @@
   environment.sessionVariables = { WLR_RENDERER = "pixman"; };
 
   virtualisation.docker.enable = true;
+  # Android apps (ibisPaint, etc.) on the Wayland desktop.
+  virtualisation.waydroid.enable = true;
+  # The running kernel lacks legacy ip_tables; use nftables for Waydroid's NAT.
+  virtualisation.waydroid.package = pkgs.waydroid-nftables;
 
   programs.nix-ld.enable = true;
 }

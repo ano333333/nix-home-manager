@@ -1,0 +1,920 @@
+--- a/install.sh
++++ b/install.sh
+@@ -101,7 +101,7 @@
+ FREETYPE_URL="https://archive.archlinux.org/packages/f/freetype2/freetype2-${FREETYPE_VERSION}-1-x86_64.pkg.tar.zst"
+ FREETYPE32_URL="https://archive.archlinux.org/packages/l/lib32-freetype2/lib32-freetype2-${FREETYPE_VERSION}-1-x86_64.pkg.tar.zst"
+ WEBVIEW2_URL="https://msedge.sf.dl.delivery.mp.microsoft.com/filestreamingservice/files/76eb3dc4-7851-45b7-a392-460523b0e2bb/MicrosoftEdgeWebView2RuntimeInstallerX64.exe"
+-WINETRICKS_URL="https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks"
++WINETRICKS_URL="https://raw.githubusercontent.com/Winetricks/winetricks/f3890f670867b5ffbc3938726db45c0f7d16c8ba/src/winetricks"
+ GECKO_VERSION="2.47.4"
+ GECKO_URL="https://dl.winehq.org/wine/wine-gecko/${GECKO_VERSION}/wine-gecko-${GECKO_VERSION}-x86_64.msi"
+ GECKO_MSI="$DOWNLOAD_DIR/wine-gecko-${GECKO_VERSION}-x86_64.msi"
+@@ -111,7 +111,7 @@
+ WINE_BIN="$WINE_DIR/bin/wine"
+ WINESERVER_BIN="$WINE_DIR/bin/wineserver"
+ FREETYPE_DIR="$WINE_DIR/lib/freetype2-${FREETYPE_VERSION}"
+-WINETRICKS_BIN="$LAUNCHER_DIR/winetricks"
++WINETRICKS_BIN="@WINETRICKS@"
+ LAUNCH_SCRIPT="$LAUNCHER_DIR/csp-launch.sh"
+ LAUNCHER_STUDIO="$LAUNCHER_DIR/clipstudio-launch.sh"
+ CSP_INSTALL_PATH="$WINEPREFIX/drive_c/Program Files/CELSYS/CLIP STUDIO 1.5/CLIP STUDIO PAINT/CLIPStudioPaint.exe"
+@@ -133,26 +133,11 @@
+     return "$_rc"
+ }
+ 
+-GH_RAW="https://raw.githubusercontent.com/parka6060/CSPenguin-Installer/main"
+-
+-fetch_asset() {
+-    local rel="$1" dest="$2"
+-    if [[ -f "$dest" && -s "$dest" ]]; then
+-        return 0
+-    fi
+-    [[ $DRY_RUN -eq 1 ]] && return 0
+-    mkdir -p "$(dirname "$dest")"
+-    info "fetching $rel"
+-    local tmp="${dest}.part"
+-    wget -q -O "$tmp" "$GH_RAW/$rel" || { rm -f "$tmp"; die "failed to download $rel"; }
+-    mv "$tmp" "$dest"
+-}
+-
++GH_RAW="https://raw.githubusercontent.com/parka6060/CSPenguin-Installer/868d022adfdc3740449241f4721debbf4b1b1426"
++
++# All repository assets are bundled locally. Missing files are errors.
+ ensure_asset() {
+-    local rel="$1" dest="$2"
+-    if [[ ! -f "$dest" ]]; then
+-        fetch_asset "$rel" "$dest"
+-    fi
++    [[ -s "$2" ]] || die "missing bundled asset: $1"
+ }
+ 
+ # winetricks' cjkfonts pulls in a 112MB/28-face font (Source Han Sans >:C) that adds ~60s to every CSP startup. Swap it for something smaller to fix boot time. use --update to update your prefix.
+@@ -174,7 +159,7 @@
+ 
+     local fonts_dir="$WINEPREFIX/drive_c/windows/Fonts"
+     mkdir -p "$fonts_dir"
+-    cp "$font_src" "$fonts_dir/$font_file"
++    install -m 0644 "$font_src" "$fonts_dir/$font_file"
+     rm -f "$fonts_dir/sourcehansans.ttc"
+ 
+     local temp_dir="$WINEPREFIX/drive_c/windows/Temp"
+@@ -354,106 +339,14 @@
+     ok "$msg"
+ }
+ 
++source "$SCRIPT_DIR/downloads.sh"
+ download_progress() {
+-    local name="$1" url="$2" dest="$3"
+-    if [[ -f "$dest" && -s "$dest" ]]; then
+-        ok "$name (cached)"
+-        return
+-    fi
+-    if [[ $DRY_RUN -eq 1 ]]; then
+-        ok "$name (dry run)"
+-        return
+-    fi
+-    local total
+-    total=$(curl -fsSIL "$url" \
+-        | awk 'tolower($1)=="content-length:" {print $2}' \
+-        | tail -1 | tr -d '\r' || true)
+-    local tmp="${dest}.part"
+-    if [[ -z "$total" ]] || ! [[ "$total" =~ ^[0-9]+$ ]] || [[ "$total" -eq 0 ]]; then
+-        wait_for "$name" wget -q --timeout=30 --tries=3 -O "$tmp" "$url"
+-        mv "$tmp" "$dest"
+-        return
+-    fi
+-    info "$name"
+-    wget -q --timeout=30 --tries=3 -O "$tmp" "$url" &
+-    local pid=$!
+-    local bw=30 current=0 pct=0 filled=0 empty=0
+-    while kill -0 "$pid" 2>/dev/null; do
+-        [[ -f "$tmp" ]] && current=$(stat -c%s "$tmp" 2>/dev/null || echo 0)
+-        pct=$((current * 100 / total))
+-        [[ $pct -gt 100 ]] && pct=100
+-        filled=$((pct * bw / 100))
+-        empty=$((bw - filled))
+-        printf "\r  ${TEAL}│${RESET}   ${AMBER}%s${RESET}${DIM}%s${RESET} %3d%%  %dMB/%dMB  " \
+-            "$(printf '█%.0s' $(seq 1 $filled) 2>/dev/null)" \
+-            "$(printf '░%.0s' $(seq 1 $empty) 2>/dev/null)" \
+-            "$pct" "$((current / 1048576))" "$((total / 1048576))"
+-        sleep 0.3
+-    done
+-    wait "$pid" || die "download failed: $name"
+-    printf "\r  ${TEAL}│${RESET}   ${AMBER}%s${RESET} 100%%  %dMB/%dMB  \n" \
+-        "$(printf '█%.0s' $(seq 1 $bw))" "$((total / 1048576))" "$((total / 1048576))"
+-    mv "$tmp" "$dest"
+-    ok "$name"
+-}
+-
+-_detect_pm() {
+-    command -v pacman >/dev/null 2>&1 && echo "pacman" && return
+-    command -v dnf    >/dev/null 2>&1 && echo "dnf"    && return
+-    command -v apt    >/dev/null 2>&1 && echo "apt"    && return
+-    echo "unknown"
+-}
+-
+-# single install abstraction for the detected package manager
+-_pm_install() {
+-    case "$(_detect_pm)" in
+-        pacman) sudo pacman -S --needed --noconfirm "$@" ;;
+-        dnf)    sudo dnf install -y "$@" ;;
+-        apt)    sudo apt install -y "$@" ;;
+-        *)      die "unsupported distro, install \"$*\" manually" ;;
+-    esac
+-}
+-
+-_gst_ok() { command -v gst-inspect-1.0 >/dev/null 2>&1 && gst-inspect-1.0 h264parse >/dev/null 2>&1; }
+-
+-_install_deps_pacman() {
+-    local pkgs=()
+-    command -v wget    >/dev/null 2>&1 || pkgs+=(wget)
+-    command -v curl    >/dev/null 2>&1 || pkgs+=(curl)
+-    command -v wmctrl  >/dev/null 2>&1 || pkgs+=(wmctrl)
+-    command -v xprop   >/dev/null 2>&1 || pkgs+=(xorg-xprop)
+-    command -v unzstd  >/dev/null 2>&1 || pkgs+=(zstd)
+-    command -v file    >/dev/null 2>&1 || pkgs+=(file)
+-    command -v cabextract >/dev/null 2>&1 || pkgs+=(cabextract)
+-    _gst_ok          || pkgs+=(gst-plugins-bad gst-plugins-good)
+-    [[ ${#pkgs[@]} -gt 0 ]] && _pm_install "${pkgs[@]}"
+-}
+-
+-_install_deps_dnf() {
+-    local pkgs=(freetype.i686)
+-    command -v wget    >/dev/null 2>&1 || pkgs+=(wget)
+-    command -v curl    >/dev/null 2>&1 || pkgs+=(curl)
+-    command -v wmctrl  >/dev/null 2>&1 || pkgs+=(wmctrl)
+-    command -v xprop   >/dev/null 2>&1 || pkgs+=(xprop)
+-    command -v unzstd  >/dev/null 2>&1 || pkgs+=(zstd)
+-    command -v file    >/dev/null 2>&1 || pkgs+=(file)
+-    command -v cabextract >/dev/null 2>&1 || pkgs+=(cabextract)
+-    _gst_ok          || pkgs+=(gstreamer1-tools gstreamer1-plugins-bad-free gstreamer1-plugins-good)
+-    _pm_install "${pkgs[@]}"
+-}
+-
+-_install_deps_apt() {
+-    local pkgs=(dirmngr ca-certificates)
+-    command -v wget    >/dev/null 2>&1 || pkgs+=(wget)
+-    command -v curl    >/dev/null 2>&1 || pkgs+=(curl)
+-    command -v wmctrl  >/dev/null 2>&1 || pkgs+=(wmctrl)
+-    command -v xprop   >/dev/null 2>&1 || pkgs+=(x11-utils)
+-    command -v unzstd  >/dev/null 2>&1 || pkgs+=(zstd)
+-    command -v file    >/dev/null 2>&1 || pkgs+=(file)
+-    command -v cabextract >/dev/null 2>&1 || pkgs+=(cabextract)
+-    _gst_ok          || pkgs+=(gstreamer1.0-plugins-bad gstreamer1.0-plugins-good)
+-    _pm_install "${pkgs[@]}"
+-}
++    [[ $DRY_RUN -eq 1 ]] && { ok "$1 (dry run)"; return; }
++    locked_download "$2" "$3" || die "download verification failed: $1"
++    ok "$1 (SHA-256 verified)"
++}
++
++_gst_ok() { gst-inspect-1.0 h264parse >/dev/null 2>&1; }
+ 
+ # log file
+ if [[ $DRY_RUN -eq 1 ]]; then
+@@ -488,30 +381,7 @@
+ # ============================================================
+ # detect latest Wine version from Kron4ek (excluding Proton)
+ # ============================================================
+-_latest_kron4ek_wine() {
+-    local _tags
+-    _tags=$(curl -s "https://api.github.com/repos/Kron4ek/Wine-Builds/releases" 2>/dev/null \
+-            | grep -oP '"tag_name":\s*"\K[^"]+' | grep -v '^proton' | head -20)
+-    if [[ -n "$_tags" ]]; then
+-        echo "$_tags" | head -1
+-    fi
+-}
+-
+-# ============================================================
+-# fetch a patch file from local or remote
+-# ============================================================
+-_try_fetch_patch() {
+-    local _dir="$1" _rel="$2" _file="$3"
+-    [[ -f "$_dir/$_file" ]] && return 0
+-    mkdir -p "$_dir"
+-    local _tmp="${_dir}/${_file}.part"
+-    if wget -q -O "$_tmp" "$GH_RAW/$_rel/$_file" 2>/dev/null; then
+-        mv "$_tmp" "$_dir/$_file"
+-        return 0
+-    fi
+-    rm -f "$_tmp" 2>/dev/null
+-    return 1
+-}
++_latest_kron4ek_wine() { echo "$WINE_VERSION"; }
+ 
+ # ============================================================
+ # extract Wine tarball to LAUNCHER_DIR
+@@ -534,39 +404,6 @@
+ # ============================================================
+ # bundle FreeType into WINE_DIR
+ # ============================================================
+-# map a missing freetype dependency (.so name) to the distro packages that
+-# provide it (native + 32-bit variant)
+-_freetype_dep_pkgs() {
+-    local lib="$1" pm="$2"
+-    case "$pm" in
+-        pacman)
+-            case "$lib" in
+-                libz.so*)        echo "zlib lib32-zlib" ;;
+-                libbz2.so*)      echo "bzip2 lib32-bzip2" ;;
+-                libpng16.so*)    echo "libpng lib32-libpng" ;;
+-                libharfbuzz.so*) echo "harfbuzz lib32-harfbuzz" ;;
+-                libbrotli*.so*)  echo "brotli lib32-brotli" ;;
+-            esac ;;
+-        dnf)
+-            case "$lib" in
+-                libz.so*)        echo "zlib zlib.i686" ;;
+-                libbz2.so*)      echo "bzip2-libs bzip2-libs.i686" ;;
+-                libpng16.so*)    echo "libpng libpng.i686" ;;
+-                libharfbuzz.so*) echo "harfbuzz harfbuzz.i686" ;;
+-                libbrotli*.so*)  echo "brotli brotli.i686" ;;
+-            esac ;;
+-        apt)
+-            case "$lib" in
+-                libz.so*)        echo "zlib1g zlib1g:i386" ;;
+-                libbz2.so*)      echo "libbz2-1.0 libbz2-1.0:i386" ;;
+-                libpng16.so*)    echo "libpng16-16 libpng16-16:i386" ;;
+-                libharfbuzz.so*) echo "libharfbuzz0b libharfbuzz0b:i386" ;;
+-                libbrotli*.so*)  echo "libbrotli1 libbrotli1:i386" ;;
+-            esac ;;
+-    esac
+-}
+-
+-# unique list of the shared libraries the bundled FreeType cannot resolve
+ _freetype_missing() {
+     ldd "$FREETYPE_DIR/lib64/libfreetype.so.6" "$FREETYPE_DIR/lib32/libfreetype.so.6" 2>/dev/null \
+         | grep "not found" \
+@@ -575,103 +412,18 @@
+         || true
+ }
+ 
+-# copy-pasteable fix command for the given libs
+-_freetype_fix_hint() {
+-    local pm="$1"; shift
+-    local prefix pkgs=() lib _pair _bits
+-    case "$pm" in
+-        pacman) prefix="sudo pacman -S" ;;
+-        dnf)    prefix="sudo dnf install" ;;
+-        apt)    prefix="sudo dpkg --add-architecture i386 && sudo apt update && sudo apt install" ;;
+-        *)      return ;;
+-    esac
+-    for lib in "$@"; do
+-        _pair=$(_freetype_dep_pkgs "$lib" "$pm")
+-        [[ -n "$_pair" ]] || continue
+-        read -r -a _bits <<< "$_pair"
+-        [[ ${#_bits[@]} -ge 2 ]] || continue
+-        pkgs+=("${_bits[1]}")
+-    done
+-    [[ ${#pkgs[@]} -gt 0 ]] || return
+-    printf 'install the 32-bit libraries, for example:\n    %s %s\n' "$prefix" "${pkgs[*]}"
+-}
+-
+-# some distros ship a library under a different soname than the Arch-built
+-# FreeType expects (e.g. Fedora ships libbz2.so.1, FreeType wants libbz2.so.1.0).
+-# if the real file exists on disk, link the expected name to it.
+-_freetype_fix_symlink() {
+-    local lib="$1"
+-    local base="${lib%.so*}.so"
+-    local real target
+-    while IFS= read -r real; do
+-        [[ -f "$real" ]] || continue
+-        target="${real%/*}/$lib"
+-        [[ -e "$target" ]] && continue
+-        info "linking ${target##*/} -> $(basename "$real")"
+-        sudo ln -s "$(basename "$real")" "$target" 2>/dev/null || true
+-    done < <(find /usr/lib /usr/lib32 /usr/lib64 /lib /lib32 /lib64 -maxdepth 1 -name "$base.*" -type f 2>/dev/null)
+-}
+-
+-# ensure the bundled FreeType can resolve its dependencies, installing the
+-# missing 32-bit libraries when possible; dies with a fix hint if not
+ _freetype_resolve() {
+-    local _missing _pkgs=() _lib _pair _pm _hint
+-    _missing=$(_freetype_missing)
+-    [[ -n "$_missing" ]] || return 0
+-    if [[ $DRY_RUN -eq 1 ]]; then
+-        info "FreeType needs extra libraries (dry run, not installing): $(tr '\n' ' ' <<< "$_missing")"
+-        return 0
+-    fi
+-    _pm="$(_detect_pm)"
+-    [[ "$_pm" != "unknown" ]] || die "bundled FreeType is missing dependencies: $(tr '\n' ' ' <<< "$_missing")
+-install the missing 32-bit libraries for your distribution, then re-run the installer"
+-    while IFS= read -r _lib; do
+-        read -r -a _pair <<< "$(_freetype_dep_pkgs "$_lib" "$_pm")"
+-        _pkgs+=("${_pair[@]}")
+-    done <<< "$_missing"
+-    if [[ ${#_pkgs[@]} -gt 0 ]]; then
+-        info "installing FreeType dependencies: ${_pkgs[*]}"
+-        if [[ "$_pm" == "apt" ]]; then
+-            sudo dpkg --add-architecture i386 2>/dev/null || true
+-            sudo apt update 2>/dev/null || true
+-        fi
+-        _pm_install "${_pkgs[@]}" || true
+-    fi
+-    _missing=$(_freetype_missing)
+-    if [[ -n "$_missing" ]]; then
+-        while IFS= read -r _lib; do
+-            _freetype_fix_symlink "$_lib"
+-        done <<< "$_missing"
+-        _missing=$(_freetype_missing)
+-    fi
+-    if [[ -n "$_missing" ]]; then
+-        _hint=$(_freetype_fix_hint "$_pm" $_missing)
+-        if [[ -n "$_hint" ]]; then
+-            die "bundled FreeType is still missing dependencies: $(tr '\n' ' ' <<< "$_missing")
+-
+-$_hint
+-then re-run the installer"
+-        else
+-            die "bundled FreeType is still missing dependencies: $(tr '\n' ' ' <<< "$_missing")
+-install the missing 32-bit libraries for your distribution, then re-run the installer"
+-        fi
+-    fi
++    local missing
++    missing=$(_freetype_missing)
++    [[ -z "$missing" ]] || die "FHS dependency missing: $missing"
+ }
+ 
+ _bundle_freetype() {
+     local _freetype_tar="$DOWNLOAD_DIR/freetype2-${FREETYPE_VERSION}-1-x86_64.pkg.tar.zst"
+     local _freetype32_tar="$DOWNLOAD_DIR/lib32-freetype2-${FREETYPE_VERSION}-1-x86_64.pkg.tar.zst"
+     local _extract_dir
+-    if [[ ! -f "$_freetype_tar" ]]; then
+-        download_progress "FreeType ${FREETYPE_VERSION}" "$FREETYPE_URL" "$_freetype_tar"
+-    else
+-        ok "FreeType ${FREETYPE_VERSION} (cached)"
+-    fi
+-    if [[ ! -f "$_freetype32_tar" ]]; then
+-        download_progress "FreeType ${FREETYPE_VERSION} (32-bit)" "$FREETYPE32_URL" "$_freetype32_tar"
+-    else
+-        ok "FreeType ${FREETYPE_VERSION} 32-bit (cached)"
+-    fi
++    download_progress "FreeType 64-bit" "$FREETYPE_URL" "$_freetype_tar"
++    download_progress "FreeType 32-bit" "$FREETYPE32_URL" "$_freetype32_tar"
+     info "bundling FreeType ${FREETYPE_VERSION} (32-bit + 64-bit)..."
+     rm -rf "$FREETYPE_DIR"
+     mkdir -p "$FREETYPE_DIR/lib64" "$FREETYPE_DIR/lib32"
+@@ -787,95 +539,8 @@
+     chmod +x "$LAUNCHER_STUDIO"
+ }
+ 
+-_write_prewarm_service() {
+-    mkdir -p "$HOME/.config/systemd/user"
+-    # Escape the loop variable so it is expanded by the generated service,
+-    # not by this installer heredoc (which runs with nounset enabled).
+-    cat > "$HOME/.config/systemd/user/csp-wineserver.service" << EOF
+-[Unit]
+-Description=Wine server pre-warm for CSP
+-After=default.target
+-
+-[Service]
+-Type=simple
+-Environment=PATH=$WINE_DIR/bin:/usr/bin
+-Environment=WINEPREFIX=$WINEPREFIX
+-Environment=WINESERVER=$WINESERVER_BIN
+-Environment=WINEDEBUG=-all
+-ExecStartPre=-$WINESERVER_BIN -k
+-ExecStartPre=-/usr/bin/bash -c 'for d in "$WINEPREFIX/drive_c/users/$(whoami)/Documents/CELSYS" "$WINEPREFIX/drive_c/users/$(whoami)/AppData/Roaming/CELSYS" "$WINEPREFIX/drive_c/users/$(whoami)/AppData/Local/CELSYS"; do [ -d "\$d" ] && find "\$d" -type f \( -name "*.sqlite" -o -name "*.db" \) -exec cat {} + > /dev/null 2>&1; done'
+-ExecStart=$WINESERVER_BIN -f -p
+-Restart=always
+-RestartSec=5s
+-
+-[Install]
+-WantedBy=default.target
+-EOF
+-}
+-
+-_install_patches() {
+-    local _patches_win="$SCRIPT_DIR/patches/x86_64-windows-wine${WINE_VERSION}"
+-    local _patches_unix="$SCRIPT_DIR/patches/x86_64-unix-wine${WINE_VERSION}"
+-
+-    if [[ ! -f "$_patches_win/mfplat.dll" ]] ||
+-       [[ ! -f "$_patches_win/mfreadwrite.dll" ]] ||
+-       [[ ! -f "$_patches_win/winegstreamer.dll" ]] ||
+-       [[ ! -f "$_patches_unix/winegstreamer.so" ]]; then
+-        # try to fetch the exact version from remote
+-        local _fallback="$DOWNLOAD_DIR/patches/x86_64-windows-wine${WINE_VERSION}"
+-        if _try_fetch_patch "$_fallback" "patches/x86_64-windows-wine${WINE_VERSION}" "mfplat.dll" &&
+-           _try_fetch_patch "$_fallback" "patches/x86_64-windows-wine${WINE_VERSION}" "mfreadwrite.dll" &&
+-           _try_fetch_patch "$_fallback" "patches/x86_64-windows-wine${WINE_VERSION}" "winegstreamer.dll"; then
+-            _patches_win="$_fallback"
+-            local _ufallback="$DOWNLOAD_DIR/patches/x86_64-unix-wine${WINE_VERSION}"
+-            _try_fetch_patch "$_ufallback" "patches/x86_64-unix-wine${WINE_VERSION}" "winegstreamer.so" || true
+-            _patches_unix="$_ufallback"
+-        fi
+-    fi
+-
+-    local _ok=0
+-    if [[ -f "$_patches_win/mfplat.dll" ]] &&
+-       [[ -f "$_patches_win/mfreadwrite.dll" ]] &&
+-       [[ -f "$_patches_win/winegstreamer.dll" ]] &&
+-       [[ -f "$_patches_unix/winegstreamer.so" ]]; then
+-        mkdir -p "$SYS32"
+-        local _wine_win="$WINE_DIR/lib/wine/x86_64-windows"
+-        [[ -d "$_wine_win" ]] || _wine_win="$WINE_DIR/lib64/wine/x86_64-windows"
+-        local _wine_unix="$WINE_DIR/lib/wine/x86_64-unix"
+-        [[ -d "$_wine_unix" ]] || _wine_unix="$WINE_DIR/lib64/wine/x86_64-unix"
+-
+-        if [[ -d "$_wine_win" ]]; then
+-            for dll in mfplat.dll mfreadwrite.dll winegstreamer.dll; do
+-                [[ -f "$_patches_win/$dll" ]] && cp "$_patches_win/$dll" "$_wine_win/$dll" && cp "$_patches_win/$dll" "$SYS32/$dll"
+-            done
+-            _ok=1
+-        fi
+-        if [[ -d "$_patches_unix" ]] && [[ -d "$_wine_unix" ]]; then
+-            [[ -f "$_patches_unix/winegstreamer.so" ]] && cp "$_patches_unix/winegstreamer.so" "$_wine_unix/winegstreamer.so"
+-        fi
+-    fi
+-
+-    if [[ $_ok -eq 1 ]]; then
+-        if ! run wine reg add "HKCU\\Software\\Wine\\DllOverrides" /v "mfplat" /t REG_SZ /d "native,builtin" /f ||
+-           ! run wine reg add "HKCU\\Software\\Wine\\DllOverrides" /v "mfreadwrite" /t REG_SZ /d "native,builtin" /f; then
+-            # wine reg add can potentially fail during a Wine version upgrade (prefix migration,
+-            # new wineserver not ready).  Fall back to writing a .reg file directly.
+-            local _reg_tmp="$WINEPREFIX/drive_c/windows/Temp/mf-overrides.reg"
+-            cat > "$_reg_tmp" << 'REGEOF'
+-REGEDIT4
+-
+-[HKEY_CURRENT_USER\Software\Wine\DllOverrides]
+-"mfplat"="native,builtin"
+-"mfreadwrite"="native,builtin"
+-REGEOF
+-            run wine regedit /S 'C:\windows\Temp\mf-overrides.reg' || warn "failed to set mfplat/mfreadwrite overrides"
+-            rm -f "$_reg_tmp"
+-        fi
+-        ok "patches applied: video export"
+-    else
+-        warn "exact patches not available for Wine ${WINE_VERSION}; video export may not work"
+-    fi
+-}
++# No opaque media DLLs or host autostart service are installed.
++_install_patches() { info "video export patches excluded (unverified binaries)"; }
+ 
+ # existing install found and no mode flag given -- ask what to do
+ if [[ $UPDATE_ONLY -eq 0 ]] && [[ $UPDATE_WINE -eq 0 ]] && [[ -f "$LAUNCH_SCRIPT" ]]; then
+@@ -985,19 +650,6 @@
+         _extract_wine "$_wine_tar"
+         _bundle_freetype
+ 
+-        # Keep an existing opt-in pre-warm service pointed at the new runtime.
+-        _prewarm_service="$HOME/.config/systemd/user/csp-wineserver.service"
+-        if [[ -f "$_prewarm_service" ]]; then
+-            _prewarm_enabled=0
+-            systemctl --user is-enabled csp-wineserver.service &>/dev/null && _prewarm_enabled=1
+-            _write_prewarm_service
+-            systemctl --user daemon-reload 2>/dev/null || warn "could not reload wineserver service"
+-            if [[ $_prewarm_enabled -eq 1 ]]; then
+-                systemctl --user restart csp-wineserver.service 2>/dev/null \
+-                    || warn "could not restart wineserver service"
+-            fi
+-        fi
+-
+         # clean up old Wine version
+         _old_wine_dir="$LAUNCHER_DIR/wine-${_current_wine}"
+         if [[ -d "$_old_wine_dir" ]] && [[ "$_old_wine_dir" != "$WINE_DIR" ]]; then
+@@ -1010,14 +662,11 @@
+ 
+         # dcomp (login/store panels) – always needed
+         DCOMP_DLL="$SCRIPT_DIR/patches/dcomp/dcomp.dll"
+-        PTHREAD_DLL="$SCRIPT_DIR/patches/dcomp/libwinpthread-1.dll"
+         ensure_asset "patches/dcomp/dcomp.dll"          "$DCOMP_DLL"
+-        ensure_asset "patches/dcomp/libwinpthread-1.dll" "$PTHREAD_DLL"
+         [[ -f "$DCOMP_DLL" ]] || die "dcomp.dll not found"
+-        cp "$DCOMP_DLL"    "$LAUNCHER_DIR/dcomp.dll"
++        install -m 0644 "$DCOMP_DLL" "$LAUNCHER_DIR/dcomp.dll"
+         mkdir -p "$SYS32"
+-        cp "$DCOMP_DLL"    "$SYS32/dcomp.dll"
+-        cp "$PTHREAD_DLL"  "$SYS32/libwinpthread-1.dll"
++        install -m 0644 "$DCOMP_DLL" "$SYS32/dcomp.dll"
+         run wine reg add "HKCU\\Software\\Wine\\DllOverrides" /v "dcomp" /t REG_SZ /d "native,builtin" /f || true
+         ok "dcomp.dll (login/store panels)"
+ 
+@@ -1088,72 +737,11 @@
+ 
+ if [[ $UPDATE_ONLY -eq 0 ]]; then
+ 
+-# banner + version select
+-
+-echo ""
+-echo ""
+-echo -e "          .--."
+-echo -e "         |o_o |  ${TEAL}${BOLD}CSPenguin-Installer!${RESET}"
+-echo -e "         |:_/ |  ${DIM}Never stop drawing.${RESET}"
+-echo -e "        //   \\ \\"
+-echo -e "       (|     | )  ${DIM}this script will ask for your password${RESET}"
+-echo -e "      /'\_   _/\`\\  ${DIM}once or twice to install packages${RESET}"
+-echo -e "      \___)=(___/  ${DIM}and set system limits.${RESET}"
+-echo ""
+-echo ""
+-echo -e "  ${BOLD}Which version of Clip Studio Paint?${RESET}"
+-echo "    1) 5.1.2 (latest)"
+-echo "    2) 5.0.4 (perpetual)"
+-echo "    3) 4.1.0"
+-echo "    4) 4.0.10 (perpetual)"
+-echo "    5) 3.2.3"
+-echo "    6) 3.0.8 (perpetual)"
+-echo "    7) 2.3.4"
+-echo "    8) 2.0.6 (perpetual)"
+-echo "    9) 1.13.2"
+-echo "    10) custom installer path or URL"
+-echo ""
+-
+-CSP_VERSION="" CSP_URL="" CSP_EXE_NAME=""
+-while true; do
+-    read -rp "  choice [1]: " choice </dev/tty
+-    choice="${choice:-1}"
+-    case "$choice" in
+-        1) CSP_VERSION="512"; break ;;
+-        2) CSP_VERSION="504"; break ;;
+-        3) CSP_VERSION="410"; break ;;
+-        4) CSP_VERSION="4010"; break ;;
+-        5) CSP_VERSION="323"; break ;;
+-        6) CSP_VERSION="308"; break ;;
+-        7) CSP_VERSION="234"; break ;;
+-        8) CSP_VERSION="206"; break ;;
+-        9) CSP_VERSION="1132"; break ;;
+-        10)
+-            read -rp "  path or URL: " custom </dev/tty
+-            if [[ "$custom" == http* ]]; then
+-                CSP_URL="$custom"
+-                CSP_EXE_NAME="$(basename "$custom")"
+-                CSP_VERSION="custom"
+-            elif [[ -f "$custom" ]]; then
+-                CSP_EXE_NAME="$(basename "$custom")"
+-                if [[ $DRY_RUN -eq 0 ]]; then
+-                    mkdir -p "$DOWNLOAD_DIR"
+-                    cp "$(realpath "$custom")" "$DOWNLOAD_DIR/$CSP_EXE_NAME"
+-                fi
+-                CSP_URL=""
+-                CSP_VERSION="custom"
+-            else
+-                echo "  file not found: $custom"; continue
+-            fi
+-            break ;;
+-        *) echo "  pick 1-10" ;;
+-    esac
+-done
+-
+-if [[ "$CSP_VERSION" != "custom" ]]; then
+-    CSP_URL="https://vd.clipstudio.net/clipcontent/paint/app/${CSP_VERSION}/CSP_${CSP_VERSION}w_setup.exe"
+-    CSP_EXE_NAME="CSP_${CSP_VERSION}w_setup.exe"
+-fi
++# Only this installer version is in downloads.json. Never execute a custom URL.
++CSP_VERSION=515
++CSP_URL="https://vd.clipstudio.net/clipcontent/paint/app/515/CSP_515w_setup.exe"
++CSP_EXE_NAME="CSP_515w_setup.exe"
++
+ # [1/7] dependencies
+ 
+ step "dependencies"
+@@ -1170,26 +758,7 @@
+ _gst_ok         || _missing+=("gstreamer plugins")
+ 
+ if [[ ${#_missing[@]} -gt 0 ]]; then
+-    warn "missing: ${_missing[*]}"
+-    _pm="$(_detect_pm)"
+-    if [[ "$_pm" == "unknown" ]]; then
+-        die "unsupported distro, install wget, curl, and gstreamer plugins manually"
+-    fi
+-    printf "  ${TEAL}│${RESET} " || true
+-    read -rp "  install automatically? [Y/n]: " _ans </dev/tty
+-    if [[ "${_ans:-y}" =~ ^[Yy]$ ]]; then
+-        if [[ $DRY_RUN -eq 1 ]]; then
+-            ok "dependencies (dry run)"
+-        else
+-            case "$_pm" in
+-                pacman) _install_deps_pacman ;;
+-                dnf)    _install_deps_dnf ;;
+-                apt)    _install_deps_apt ;;
+-            esac
+-        fi
+-    else
+-        die "install dependencies manually, then re-run"
+-    fi
++    die "Nix FHS dependencies missing: ${_missing[*]}"
+ fi
+ 
+ ok "dependencies"
+@@ -1212,61 +781,9 @@
+     ok "Clip Studio Paint (local file)"
+ fi
+ 
+-_dl_pids=()
+-_dl_names=()
+-_dl_dests=()
+-_dl_tmps=()
+-
+-_queue_dl() {
+-    local name="$1" url="$2" dest="$3"
+-    if [[ -f "$dest" && -s "$dest" ]]; then
+-        ok "$name (cached)"
+-        return
+-    fi
+-    if [[ $DRY_RUN -eq 1 ]]; then
+-        ok "$name (dry run)"
+-        return
+-    fi
+-    local tmp="${dest}.part"
+-    wget -q --timeout=30 --tries=3 -O "$tmp" "$url" &
+-    _dl_pids+=($!)
+-    _dl_names+=("$name")
+-    _dl_dests+=("$dest")
+-    _dl_tmps+=("$tmp")
+-}
+-
+-[[ $_need_wine -eq 1 ]] && _queue_dl "Wine ${WINE_VERSION}" "$WINE_URL" "$_wine_tar" \
+-                         || ok "Wine ${WINE_VERSION} (cached)"
+-_queue_dl "WebView2 Runtime" "$WEBVIEW2_URL" "$DOWNLOAD_DIR/MicrosoftEdgeWebView2RuntimeInstallerX64.exe"
+-_queue_dl "winetricks" "$WINETRICKS_URL" "$WINETRICKS_BIN"
+-
+-if [[ ${#_dl_pids[@]} -gt 0 ]]; then
+-    _frames=('|' '/' '-' '\')
+-    _i=0
+-    _remaining=${#_dl_pids[@]}
+-    while [[ $_remaining -gt 0 ]]; do
+-        for _j in "${!_dl_pids[@]}"; do
+-            if [[ -n "${_dl_pids[$_j]:-}" ]] && ! kill -0 "${_dl_pids[$_j]}" 2>/dev/null; then
+-                wait "${_dl_pids[$_j]}" || die "download failed: ${_dl_names[$_j]}"
+-                mv "${_dl_tmps[$_j]}" "${_dl_dests[$_j]}"
+-                printf "\r%80s\r" ""
+-                ok "${_dl_names[$_j]}"
+-                unset '_dl_pids[$_j]'
+-                _remaining=$((_remaining - 1))
+-            fi
+-        done
+-        if [[ $_remaining -gt 0 ]]; then
+-            _pending=""
+-            for _j in "${!_dl_names[@]}"; do
+-                [[ -n "${_dl_pids[$_j]:-}" ]] && _pending+="${_dl_names[$_j]}, "
+-            done
+-            _pending="${_pending%, }"
+-            printf "\r  ${TEAL}│${RESET} ${TEAL}%s${RESET} ${DIM}%s${RESET}  " "${_frames[$((_i % 4))]}" "$_pending"
+-            sleep 0.2
+-            _i=$((_i + 1))
+-        fi
+-    done
+-fi
++download_progress "Wine ${WINE_VERSION}" "$WINE_URL" "$_wine_tar"
++download_progress "WebView2" "$WEBVIEW2_URL" "$DOWNLOAD_DIR/MicrosoftEdgeWebView2RuntimeInstallerX64.exe"
++
+ 
+ if [[ $_need_wine -eq 1 ]] && [[ $DRY_RUN -eq 0 ]]; then
+     _extract_wine "$_wine_tar"
+@@ -1274,18 +791,11 @@
+ fi
+ 
+ if [[ $DRY_RUN -eq 0 ]]; then
+-    chmod +x "$WINETRICKS_BIN"
++
+     export PATH="$WINE_DIR/bin:$PATH"
+ fi
+ 
+-# For debugging when using a VM, avoids error during testing
+-if [[ -z "${LIBGL_ALWAYS_SOFTWARE:-}" ]] \
+-    && command -v systemd-detect-virt >/dev/null 2>&1 \
+-    && [[ "$(systemd-detect-virt 2>/dev/null)" != "none" ]]; then
+-    export LIBGL_ALWAYS_SOFTWARE=1
+-    export MESA_LOADER_DRIVER_OVERRIDE=llvmpipe
+-    ok "Mesa software rendering (VM without working DRI3)"
+-fi
++# FHS uses a namespace, which is not evidence of a software-only GPU.
+ 
+ # [3/7] wine prefix
+ 
+@@ -1299,39 +809,9 @@
+ fi
+ wait_for "initialising prefix" env WINEDEBUG=-all wineboot --init
+ 
+-if [[ $DRY_RUN -eq 1 ]]; then
+-    ok "esync file limits (dry run)"
+-else
+-    _nofile=$(ulimit -n 2>/dev/null || echo 0)
+-    if [[ "$_nofile" -ge 524288 ]]; then
+-        ok "esync file limits ($_nofile)"
+-    else
+-        _esync_set=0
+-        if systemctl --user status >/dev/null 2>&1; then
+-            mkdir -p "$HOME/.config/systemd/user.conf.d"
+-            cat > "$HOME/.config/systemd/user.conf.d/cspenguin-limits.conf" << 'EOF'
+-[Manager]
+-DefaultLimitNOFILE=524288
+-EOF
+-            ok "esync (systemd user config)"
+-            _esync_set=1
+-        fi
+-        _current_user="$(whoami)"
+-        if sudo tee /etc/security/limits.d/cspenguin.conf > /dev/null << EOF
+-# CSPenguin-Installer : esync file descriptor limit
+-$_current_user soft nofile 524288
+-$_current_user hard nofile 524288
+-EOF
+-        then
+-            [[ $_esync_set -eq 0 ]] && ok "esync (limits.d)"
+-            _esync_set=1
+-        fi
+-        if [[ $_esync_set -eq 0 ]]; then
+-            warn "could not set file limit"
+-        else
+-            _ESYNC_RESTART=1
+-        fi
+-    fi
++# NixOS: limits are inherited from the login session; no /etc writes.
++if [[ $(ulimit -n) -lt 524288 ]]; then
++    warn "esync: low file limit; configure security.pam.loginLimits in NixOS if needed"
+ fi
+ 
+ # [4/7] runtime + patches
+@@ -1379,20 +859,17 @@
+ 
+ if [[ $DRY_RUN -eq 1 ]]; then
+     ok "dcomp.dll (login/store panels)"
+-    ok "mfplat + winegstreamer (video export)"
++    info "video export patches excluded"
+     ok "CJK font: WenQuanYi Micro Hei (dry run)"
+ else
+     mkdir -p "$LAUNCHER_DIR"
+ 
+     DCOMP_DLL="$SCRIPT_DIR/patches/dcomp/dcomp.dll"
+-    PTHREAD_DLL="$SCRIPT_DIR/patches/dcomp/libwinpthread-1.dll"
+     ensure_asset "patches/dcomp/dcomp.dll"          "$DCOMP_DLL"
+-    ensure_asset "patches/dcomp/libwinpthread-1.dll" "$PTHREAD_DLL"
+     [[ -f "$DCOMP_DLL" ]] || die "dcomp.dll not found"
+ 
+-    cp "$DCOMP_DLL"    "$LAUNCHER_DIR/dcomp.dll"
+-    cp "$DCOMP_DLL"    "$SYS32/dcomp.dll"
+-    cp "$PTHREAD_DLL"  "$SYS32/libwinpthread-1.dll"
++    install -m 0644 "$DCOMP_DLL" "$LAUNCHER_DIR/dcomp.dll"
++    install -m 0644 "$DCOMP_DLL" "$SYS32/dcomp.dll"
+     run wine reg add "HKCU\\Software\\Wine\\DllOverrides" /v "dcomp" /t REG_SZ /d "native,builtin" /f || warn "failed to set dcomp override"
+     ok "dcomp.dll (login/store panels)"
+ 
+@@ -1435,9 +912,7 @@
+     wait $! || die "CSP installer failed"
+     [[ -f "$CSP_INSTALL_PATH" ]] || die "CSP not found after install, did you complete the installer?"
+ 
+-    find "$HOME/.local/share/applications" -name "*CLIP STUDIO PAINT*.desktop" -delete 2>/dev/null || true
+-    find "$HOME/Desktop" -name "*CLIP STUDIO PAINT*.desktop" -delete 2>/dev/null || true
+-    ok "Removed installer-generated launchers"
++    info "Other installations' launchers are preserved"
+ 
+     ok "Clip Studio Paint"
+ 
+@@ -1451,7 +926,7 @@
+ # [6/7] desktop integration
+ 
+ step "desktop integration"
+-info "creating app shortcuts and file previews."
++info "creating app shortcuts."
+ 
+ if [[ $DRY_RUN -eq 1 ]]; then
+     ok "launch scripts (dry run)"
+@@ -1459,48 +934,24 @@
+     if [[ "${XDG_CURRENT_DESKTOP:-}" == *"KDE"* ]]; then
+         ok "KDE window rules (dry run)"
+     fi
+-    ok ".clip thumbnails + MIME type (dry run)"
++    info "thumbnailer excluded"
+ else
+ 
+-# --- APP ICONS ---
+-# We pull the icons from the Wikimedea Commons and avoid shipping them in the repo to comply with trademark laws.
+-# This way if an icon is missing for some reason we still have a backup icon to use.
+-ICON_THEME_DIR="$HOME/.local/share/icons/hicolor/512x512/apps"
+-ICON_PAINT="$ICON_THEME_DIR/clipstudiopaint.png"
+-ICON_STUDIO="$ICON_THEME_DIR/clipstudio.png"
+-ICON_URL="https://upload.wikimedia.org/wikipedia/commons/1/14/Clipstudiopaint_app_logo.png"
+-mkdir -p "$ICON_THEME_DIR"
+-
+-_fetch_icon() {
+-    local dest="$1"
+-    if [[ -f "$dest" ]] && file "$dest" | grep -q 'PNG image'; then
+-        ok "icon: $(basename "$dest") (cached)"
+-        return
+-    fi
+-    local tmp="${dest}.part"
+-    if wget -q --timeout=30 --tries=3 -O "$tmp" "$ICON_URL" && file "$tmp" | grep -q 'PNG image'; then
+-        mv "$tmp" "$dest"
+-        ok "icon: $(basename "$dest")"
+-    else
+-        rm -f "$tmp" 2>/dev/null || true
+-        warn "icon download failed: $(basename "$dest")"
+-    fi
+-}
+-
+-_fetch_icon "$ICON_PAINT"
+-_fetch_icon "$ICON_STUDIO"
++# Use the icon theme; no unpinned icon download.
++ICON_PAINT=applications-graphics
++ICON_STUDIO=applications-graphics
+ 
+ _write_launchers
+ ok "launch scripts"
+ 
+-DESKTOP_FILE="$HOME/.local/share/applications/clipstudiopaint.desktop"
+-DESKTOP_STUDIO="$HOME/.local/share/applications/clipstudio.desktop"
++DESKTOP_FILE="$HOME/.local/share/applications/cspenguin-paint.desktop"
++DESKTOP_STUDIO="$HOME/.local/share/applications/cspenguin-studio.desktop"
+ mkdir -p "$HOME/.local/share/applications"
+ 
+ cat > "$DESKTOP_FILE" << EOF
+ [Desktop Entry]
+ Name=Clip Studio Paint
+-Exec=$LAUNCH_SCRIPT %f
++Exec=cspenguin paint %f
+ Terminal=false
+ Type=Application
+ Categories=Graphics;
+@@ -1512,7 +963,7 @@
+ cat > "$DESKTOP_STUDIO" << EOF
+ [Desktop Entry]
+ Name=CLIP STUDIO
+-Exec=$LAUNCHER_STUDIO
++Exec=cspenguin studio
+ Terminal=false
+ Type=Application
+ Categories=Graphics;
+@@ -1622,43 +1073,7 @@
+ update-desktop-database "$HOME/.local/share/applications" 2>/dev/null || true
+ gtk-update-icon-cache -f -t "$HOME/.local/share/icons/hicolor" 2>/dev/null || true
+ 
+-THUMBNAILER_SRC="$SCRIPT_DIR/patches/thumbnailer/clip-thumbnailer"
+-THUMBNAILER_BIN="$HOME/.local/bin/clip-thumbnailer"
+-ensure_asset "patches/thumbnailer/clip-thumbnailer" "$THUMBNAILER_SRC"
+-
+-mkdir -p "$HOME/.local/bin"
+-if [[ -x "$THUMBNAILER_BIN" ]]; then
+-    ok ".clip thumbnails (already installed)"
+-else
+-    install -Dm755 "$THUMBNAILER_SRC" "$THUMBNAILER_BIN"
+-
+-    _MIME_DIR="$HOME/.local/share/mime"
+-    mkdir -p "$_MIME_DIR/packages"
+-    if [[ ! -f "$_MIME_DIR/packages/clip.xml" ]]; then
+-        cat > "$_MIME_DIR/packages/clip.xml" << 'MIMEEOF'
+-<?xml version="1.0" encoding="UTF-8"?>
+-<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+-  <mime-type type="application/x-clip">
+-    <comment>Clip Studio Paint file</comment>
+-    <glob pattern="*.clip"/>
+-  </mime-type>
+-</mime-info>
+-MIMEEOF
+-        update-mime-database "$_MIME_DIR" 2>/dev/null || true
+-    fi
+-
+-    _THUMB_DIR="$HOME/.local/share/thumbnailers"
+-    mkdir -p "$_THUMB_DIR"
+-    if [[ ! -f "$_THUMB_DIR/clip.thumbnailer" ]]; then
+-        cat > "$_THUMB_DIR/clip.thumbnailer" << THUMBEOF
+-[Thumbnailer Entry]
+-TryExec=$THUMBNAILER_BIN
+-Exec=$THUMBNAILER_BIN %i %o
+-MimeType=application/x-clip;
+-THUMBEOF
+-    fi
+-    ok ".clip thumbnails + MIME type"
+-fi
++info "thumbnailer excluded (unverified binary and unsafe temporary files)"
+ 
+ fi
+ 
+@@ -1674,30 +1089,7 @@
+     gap
+ fi
+ 
+-info "pre-warming the wineserver at login"
+-info "reduces startup time by ~5-10s."
+-gap
+-if [[ $UPDATE_ONLY -eq 1 ]] && systemctl --user is-enabled csp-wineserver.service &>/dev/null; then
+-    _prewarm="y"
+-    info "updating existing wineserver service"
+-else
+-    printf "  ${TEAL}│${RESET}   " || true
+-    read -rp "enable wineserver pre-warm? [Y/n] " _prewarm </dev/tty
+-fi
+-if [[ "${_prewarm,,}" != "n" ]]; then
+-    if [[ $DRY_RUN -eq 1 ]]; then
+-        ok "wineserver service (dry run)"
+-    else
+-        _write_prewarm_service
+-        if systemctl --user daemon-reload 2>/dev/null && systemctl --user enable --now csp-wineserver.service 2>/dev/null; then
+-            ok "wineserver service enabled"
+-        else
+-            warn "could not enable wineserver service"
+-        fi
+-    fi
+-else
+-    ok "wineserver pre-warm skipped"
+-fi
++info "wineserver autostart is not installed by the NixOS package"
+ 
+ _install_ok=1
+ 
+@@ -1719,7 +1111,7 @@
+ echo -e "  ${AMBER}tips${RESET}"
+ echo -e "    ${DIM}pen pressure${RESET}  Preferences > Tablet > mouse mode"
+ echo -e "    ${DIM}hidpi${RESET}         winecfg > Graphics > DPI"
+-echo -e "    ${DIM}thumbnails${RESET}    enable in file manager preview settings"
++echo "    thumbnails: disabled in this package"
+ echo -e "                   (Dolphin: Configure Dolphin > Interface > Previews"
+ echo -e "                    > tick \"Clip Studio Paint File\", then restart Dolphin)"
+ echo ""

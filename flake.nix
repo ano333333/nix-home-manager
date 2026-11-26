@@ -86,6 +86,11 @@
             type = "app";
             program = "${initDocker}/bin/initDocker";
           };
+        } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          csp4 = {
+            type = "app";
+            program = "${import ./scripts/csp4.nix { inherit pkgs; }}/bin/csp4";
+          };
         });
       extraSpecialArgs = system: {
         inherit inputs;

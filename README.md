@@ -41,6 +41,26 @@ Dockerの初期設定を実行します。
 
 ## セットアップ内容
 
+### CLIP STUDIO PAINT 5 / CSPenguin（NixOS）
+
+`nix run .#update` のHome Manager activationで、CSPが未導入の場合に
+CSPenguinのセットアップ用端末を開きます。デスクトップ環境が取得できない場合は
+次回のデスクトップログイン時に開きます。
+途中の端末入力とWindowsインストーラのGUI操作は必要です。
+導入先は `~/.wine-csp` で、本体と起動スクリプトが揃っていれば次回以降はスキップします。
+起動は `cspenguin paint`、手動の再セットアップは `cspenguin install` です。
+Linuxの更新処理では `path:.` を使い、未追跡のローカルパッケージも取り込みます。
+
+### CLIP STUDIO PAINT 4（NixOS）
+
+専用Wine環境の準備と起動には `nix run path:.#csp4 -- help` を使用します。
+インストール・認証・WebView2の確認手順は [docs/csp4.md](docs/csp4.md) を参照してください。
+
+### Waydroid / ibisPaint（NixOS）
+
+WaydroidをNixOS構成で有効にしています。Androidの初期化とibisPaint Xの導入は
+[docs/waydroid.md](docs/waydroid.md) を参照してください。
+
 ### 基本設定
 
 - ユーザー名

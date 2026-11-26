@@ -1,0 +1,79 @@
+--- a/winetricks
++++ b/winetricks
+@@ -1289,18 +1289,8 @@
+ # verify a sha256sum
+ w_verify_sha256sum()
+ {
+-    _W_vs_wantsum=$1
+-    _W_vs_file=$2
+-
+-    w_get_sha256sum "${_W_vs_file}"
+-    if [ "${_W_gotsha256sum}"x != "${_W_vs_wantsum}"x ] ; then
+-        if [ "${WINETRICKS_FORCE}" = 1 ]; then
+-            w_warn "sha256sum mismatch! However --force was used, so trying anyway. Caveat emptor."
+-        else
+-            w_askpermission "SHA256 mismatch!\n\nURL: ${_W_url}\nDownloaded: ${_W_gotsha256sum}\nExpected: ${_W_vs_wantsum}\n\nThis is often the result of an updated package such as vcrun2019.\nIf you are willing to accept the risk, you can bypass this check.\nAlternatively, you may use the --force option to ignore this check entirely.\n\nContinue anyway?"
+-        fi
+-    fi
+-    unset _W_vs_wantsum _W_vs_file _W_gotsha256sum
++    w_get_sha256sum "$2"
++    [ "${_W_gotsha256sum}" = "$1" ] || w_die "SHA256 mismatch; refusing to execute downloaded content"
+ }
+ 
+ # verify any kind of shasum (that winetricks supports ;) ):
+@@ -1550,6 +1540,7 @@
+     _W_sum="$3"
+     _W_file="$4"
+     _W_cookiejar="$5"
++    [ "${#_W_sum}" -eq 64 ] || w_die "Download without pinned SHA256 is disabled"
+ 
+     case ${_W_packagename} in
+         .) w_die "bug: please do not download packages to top of cache" ;;
+@@ -8170,12 +8161,8 @@
+ 
+ load_dxvk()
+ {
+-    # https://github.com/doitsujin/dxvk
+-    _W_dxvk_version="$(w_get_github_latest_release doitsujin dxvk)"
+-    _W_dxvk_version="${_W_dxvk_version#v}"
+-    w_linkcheck_ignore=1 w_download "https://github.com/doitsujin/dxvk/releases/download/v${_W_dxvk_version}/dxvk-${_W_dxvk_version}.tar.gz"
+-    helper_dxvk "dxvk-${_W_dxvk_version}.tar.gz" "7.1" "1.3.204" "dxgi,d3d8,d3d9,d3d10core,d3d11"
+-    unset _W_dxvk_version
++    w_download "https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz" d85ce7c79f57ecd765aaa1b9e7007cb875e6fde9f6d331df799bce73d513ce87
++    helper_dxvk "dxvk-2.7.1.tar.gz" "7.1" "1.3.204" "dxgi,d3d8,d3d9,d3d10core,d3d11"
+ }
+ 
+ #----------------------------------------------------------------
+@@ -8424,12 +8411,8 @@
+ 
+ load_vkd3d()
+ {
+-    # https://github.com/HansKristian-Work/vkd3d-proton
+-    _W_vkd3d_proton_version="$(w_get_github_latest_release HansKristian-Work vkd3d-proton)"
+-    _W_vkd3d_proton_version="${_W_vkd3d_proton_version#v}"
+-    w_linkcheck_ignore=1 w_download "https://github.com/HansKristian-Work/vkd3d-proton/releases/download/v${_W_vkd3d_proton_version}/vkd3d-proton-${_W_vkd3d_proton_version}.tar.zst"
+-    helper_vkd3d_proton "vkd3d-proton-${_W_vkd3d_proton_version}.tar.zst"
+-    unset _W_vkd3d_proton_version
++    w_download "https://github.com/HansKristian-Work/vkd3d-proton/releases/download/v3.1/vkd3d-proton-3.1.tar.zst" b85ea8219b71093a3924913dd7aae6172333dc0c069983ed510816d67f02120b
++    helper_vkd3d_proton "vkd3d-proton-3.1.tar.zst"
+ }
+ 
+ #----------------------------------------------------------------
+@@ -13879,7 +13862,7 @@
+     # 2025/04/14: 0c09f2611660441084ce0df425c51c11e147e6447963c3690f97e0b25c55ed64
+     w_override_dlls native,builtin concrt140 msvcp140 msvcp140_1 msvcp140_2 msvcp140_atomic_wait msvcp140_codecvt_ids vcamp140 vccorlib140 vcomp140 vcruntime140
+ 
+-    w_download https://aka.ms/vs/17/release/vc_redist.x86.exe 0c09f2611660441084ce0df425c51c11e147e6447963c3690f97e0b25c55ed64
++    w_download https://download.visualstudio.microsoft.com/download/pr/e9604e21-4b79-4096-a4b3-1b63d4b55b4d/0C09F2611660441084CE0DF425C51C11E147E6447963C3690F97E0B25C55ED64/VC_redist.x86.exe 0c09f2611660441084ce0df425c51c11e147e6447963c3690f97e0b25c55ed64 vc_redist.x86.exe
+ 
+     # Setup will refuse to install msvcp140 & msvcp140_2 because the builtin's version number is higher, so manually replace them
+     # See https://bugs.winehq.org/show_bug.cgi?id=57518
+@@ -13907,7 +13890,7 @@
+             # vcruntime140_1 is only shipped on x64:
+             w_override_dlls native,builtin vcruntime140_1
+ 
+-            w_download https://aka.ms/vs/17/release/vc_redist.x64.exe cc0ff0eb1dc3f5188ae6300faef32bf5beeba4bdd6e8e445a9184072096b713b
++            w_download https://download.visualstudio.microsoft.com/download/pr/e9604e21-4b79-4096-a4b3-1b63d4b55b4d/CC0FF0EB1DC3F5188AE6300FAEF32BF5BEEBA4BDD6E8E445A9184072096B713B/VC_redist.x64.exe cc0ff0eb1dc3f5188ae6300faef32bf5beeba4bdd6e8e445a9184072096b713b vc_redist.x64.exe
+ 
+             # Also replace 64-bit msvcp140.dll & msvcp140_2.dll
+             w_try_cabextract --directory="${W_TMP}/win64"  "${W_CACHE}"/"${W_PACKAGE}"/vc_redist.x64.exe -F 'a12'
