@@ -1,7 +1,15 @@
 { pkgs }: {
   env = [ "WLR_RENDERER,pixman" ];
   exec-once = [ "${pkgs.hyprpanel}/bin/hyprpanel" ];
-  input = { kb_layout = "jp"; };
+  input = {
+    kb_layout = "jp";
+    tablet = {
+      # XPPen Deco 01 V2 の描画範囲を左ディスプレイ1枚に限定
+      output = "DP-2";
+      # 板タブ(255.98x159.13mm, 16:10)をディスプレイ(16:9)の縦横比に合わせて上側を使用
+      active_area_size = "255.98 143.99";
+    };
+  };
   "$mod" = "SUPER";
   bind = [
     "$mod CTRL, r, exec, ${pkgs.wofi}/bin/wofi --show drun"
