@@ -1,6 +1,27 @@
 { lib, config, pkgs }:
 let
   cspenguin = import ../packages/cspenguin.nix { inherit pkgs; };
+  paintDesktop = pkgs.writeText "cspenguin-paint.desktop" ''
+    [Desktop Entry]
+    Type=Application
+    Name=Clip Studio Paint
+    Exec=${cspenguin}/bin/cspenguin paint %f
+    Terminal=false
+    Categories=Graphics;
+    MimeType=application/x-clip;
+    StartupWMClass=clipstudiopaint.exe
+    Icon=applications-graphics
+  '';
+  studioDesktop = pkgs.writeText "cspenguin-studio.desktop" ''
+    [Desktop Entry]
+    Type=Application
+    Name=CLIP STUDIO
+    Exec=${cspenguin}/bin/cspenguin studio
+    Terminal=false
+    Categories=Graphics;
+    StartupWMClass=clipstudio.exe
+    Icon=applications-graphics
+  '';
   setup = pkgs.writeShellApplication {
     name = "cspenguin-setup";
     runtimeInputs = [ pkgs.coreutils pkgs.util-linux pkgs.xterm ];
@@ -36,6 +57,12 @@ let
   };
 in lib.hm.dag.entryAfter [ "writeBoundary" ] ''
   if [ -z "''${DRY_RUN_CMD:-}" ]; then
+    ${pkgs.coreutils}/bin/install -Dm644 ${paintDesktop} \
+      "${config.home.homeDirectory}/.local/share/applications/cspenguin-paint.desktop"
+    ${pkgs.coreutils}/bin/install -Dm644 ${studioDesktop} \
+      "${config.home.homeDirectory}/.local/share/applications/cspenguin-studio.desktop"
+    ${pkgs.desktop-file-utils}/bin/update-desktop-database \
+      "${config.home.homeDirectory}/.local/share/applications"
     if ! ${setup}/bin/cspenguin-setup --check; then
       # NixOS activation has no desktop environment or terminal. Keep a login
       # fallback and use the user manager's environment for immediate setup.

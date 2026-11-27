@@ -758,7 +758,7 @@
  
      ok "Clip Studio Paint"
  
-@@ -1451,7 +926,7 @@
+@@ -1451,81 +926,22 @@
  # [6/7] desktop integration
  
  step "desktop integration"
@@ -767,14 +767,15 @@
  
  if [[ $DRY_RUN -eq 1 ]]; then
      ok "launch scripts (dry run)"
-@@ -1459,48 +934,24 @@
+-    ok "desktop entries (dry run)"
++    info "desktop entries are managed by Home Manager activation"
      if [[ "${XDG_CURRENT_DESKTOP:-}" == *"KDE"* ]]; then
          ok "KDE window rules (dry run)"
      fi
 -    ok ".clip thumbnails + MIME type (dry run)"
 +    info "thumbnailer excluded"
  else
- 
+-
 -# --- APP ICONS ---
 -# We pull the icons from the Wikimedea Commons and avoid shipping them in the repo to comply with trademark laws.
 -# This way if an icon is missing for some reason we still have a backup icon to use.
@@ -802,37 +803,48 @@
 -
 -_fetch_icon "$ICON_PAINT"
 -_fetch_icon "$ICON_STUDIO"
-+# Use the icon theme; no unpinned icon download.
-+ICON_PAINT=applications-graphics
-+ICON_STUDIO=applications-graphics
  
  _write_launchers
  ok "launch scripts"
- 
+-
 -DESKTOP_FILE="$HOME/.local/share/applications/clipstudiopaint.desktop"
 -DESKTOP_STUDIO="$HOME/.local/share/applications/clipstudio.desktop"
-+DESKTOP_FILE="$HOME/.local/share/applications/cspenguin-paint.desktop"
-+DESKTOP_STUDIO="$HOME/.local/share/applications/cspenguin-studio.desktop"
- mkdir -p "$HOME/.local/share/applications"
- 
- cat > "$DESKTOP_FILE" << EOF
- [Desktop Entry]
- Name=Clip Studio Paint
+-mkdir -p "$HOME/.local/share/applications"
+-
+-cat > "$DESKTOP_FILE" << EOF
+-[Desktop Entry]
+-Name=Clip Studio Paint
 -Exec=$LAUNCH_SCRIPT %f
-+Exec=cspenguin paint %f
- Terminal=false
- Type=Application
- Categories=Graphics;
-@@ -1512,7 +963,7 @@
- cat > "$DESKTOP_STUDIO" << EOF
- [Desktop Entry]
- Name=CLIP STUDIO
+-Terminal=false
+-Type=Application
+-Categories=Graphics;
+-MimeType=application/x-clip;
+-StartupWMClass=clipstudiopaint.exe
+-Icon=$ICON_PAINT
+-EOF
+-
+-cat > "$DESKTOP_STUDIO" << EOF
+-[Desktop Entry]
+-Name=CLIP STUDIO
 -Exec=$LAUNCHER_STUDIO
-+Exec=cspenguin studio
- Terminal=false
- Type=Application
- Categories=Graphics;
-@@ -1622,43 +1073,7 @@
+-Terminal=false
+-Type=Application
+-Categories=Graphics;
+-StartupWMClass=clipstudio.exe
+-Icon=$ICON_STUDIO
+-EOF
+-
+-chmod +x "$DESKTOP_FILE" "$DESKTOP_STUDIO"
+-ok "desktop entries"
++info "desktop entries are managed by Home Manager activation"
+ 
+ if [[ "${XDG_CURRENT_DESKTOP:-}" == *"KDE"* ]]; then
+-    cp "$DESKTOP_FILE"   "$HOME/Desktop/clipstudiopaint.desktop" 2>/dev/null || true
+-    cp "$DESKTOP_STUDIO" "$HOME/Desktop/clipstudio.desktop"      2>/dev/null || true
+ 
+     _kwinrc="$HOME/.config/kwinrulesrc"
+     _kwc="" _krc=""
+@@ -1622,43 +1038,7 @@
  update-desktop-database "$HOME/.local/share/applications" 2>/dev/null || true
  gtk-update-icon-cache -f -t "$HOME/.local/share/icons/hicolor" 2>/dev/null || true
  
@@ -877,7 +889,7 @@
  
  fi
  
-@@ -1674,30 +1089,7 @@
+@@ -1674,30 +1054,7 @@
      gap
  fi
  
@@ -909,7 +921,7 @@
  
  _install_ok=1
  
-@@ -1719,7 +1111,7 @@
+@@ -1719,7 +1076,7 @@
  echo -e "  ${AMBER}tips${RESET}"
  echo -e "    ${DIM}pen pressure${RESET}  Preferences > Tablet > mouse mode"
  echo -e "    ${DIM}hidpi${RESET}         winecfg > Graphics > DPI"
