@@ -31,6 +31,8 @@ config.window_padding = {
   bottom = 0,
 }
 
+config.enable_kitty_keyboard = true
+
 -- タブのタイトル更新時のイベントを拾い、アクティブなタブの背景色を変更する
 wezterm.on(
   "format-tab-title",
