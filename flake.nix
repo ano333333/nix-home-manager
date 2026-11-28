@@ -45,11 +45,14 @@
       url = "github:yuki-yano/zeno.zsh";
       flake = false;
     };
+    # Hermes Gateway の設定（.config/home-manager/agent-herness.nix）。commit 済みの内容を読む。
+    agent-herness.url = "git+file:///home/ano3/agent-herness-test";
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, nixpkgs-darwin, nix-darwin
     , nixpkgs-blender, nixpkgs-unstable, nixpkgs-yazi, llm-agents, hyprland
-    , hyprland-plugins, hunk, herdr, piExtensions, piToolsSaira, zeno, }@inputs:
+    , hyprland-plugins, hunk, herdr, piExtensions, piToolsSaira, zeno
+    , agent-herness, }@inputs:
 
     let
       systems = [ "x86_64-linux" "aarch64-darwin" ];

@@ -38,6 +38,8 @@ let
       "$HOME/.local/share/pencil/Pencil.AppImage" "$@"
   '';
 in {
+  imports = lib.optional (system == "x86_64-linux") ./agent-herness.nix;
+
   nixpkgs = { config = { allowUnfree = true; }; };
 
   home = {
