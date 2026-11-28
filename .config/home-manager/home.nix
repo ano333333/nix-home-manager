@@ -82,7 +82,6 @@ in {
       codex
       pi
       oh-my-mermaid
-      pkgs.lsp-ai
 
       pkgs.lua-language-server
       pkgs.gopls
